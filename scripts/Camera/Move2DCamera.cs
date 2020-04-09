@@ -27,7 +27,8 @@ public class Move2DCamera : MonoBehaviour
     {
         #region 获取按键输入
         // 获取按键输入
-        if (Input.mousePosition.y <= 10) transform.Translate(-Vector3.up * speed * Time.deltaTime);
+        if (Input.mousePosition.y <= 10)
+            transform.Translate(-Vector3.up * speed * Time.deltaTime);
         if (Input.mousePosition.y > Screen.height - 10) transform.Translate(Vector3.up * speed * Time.deltaTime);
         if (Input.mousePosition.x <= 30) transform.Translate(Vector3.left * speed * Time.deltaTime);
         if (Input.mousePosition.x > Screen.width - 30) transform.Translate(-Vector3.left * speed * Time.deltaTime);
@@ -35,6 +36,7 @@ public class Move2DCamera : MonoBehaviour
         tourCamera.orthographicSize -=3000f*wheel;
 
         if (tourCamera.orthographicSize<500) {
+            Destroy(GameObject.Find(GameDefine.CellLineName));
             Destroy(gameObject);
             SecurityCamera.ChangeCamera("CameraFree");
         }
@@ -54,7 +56,6 @@ public class Move2DCamera : MonoBehaviour
         }
         #endregion
     }
-
 
     #region 漫游场景
     public void Pan()

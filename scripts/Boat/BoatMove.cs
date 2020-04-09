@@ -13,7 +13,6 @@ public class BoatMove : MonoBehaviour
     void Start()
     {
         ////////move
-        Debug.DrawLine(Vector3.zero,target,Color.red);
         target.x = transform.position.x + move_task_x;
         target.z = transform.position.z + move_task_z;
         target.y = transform.position.y;

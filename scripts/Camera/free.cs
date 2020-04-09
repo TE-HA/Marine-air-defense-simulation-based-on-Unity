@@ -5,7 +5,6 @@ using UnityEngine;
 public class free : MonoBehaviour
 {
     private GameObject km_main;
-
     public Transform tourCamera;
     #region 相机移动参数
     public float moveSpeed = 1.0f;
@@ -54,13 +53,14 @@ public class free : MonoBehaviour
         if (Input.mousePosition.x > Screen.width - 30) speedRight = tourCamera.right;
 
 
-        if (Input.GetKey(KeyCode.Z)) {
+        if (Input.GetKey(KeyCode.Z))
+        {
 
 
             float x = km_main.transform.position.x;
             float z = km_main.transform.position.z;
 
-            Vector3 point = new Vector3(x,400f,z);
+            Vector3 point = new Vector3(x, 400f, z);
             //gameObject.transform.Translate(point);
 
             float step = 500f * Time.deltaTime;
@@ -107,8 +107,10 @@ public class free : MonoBehaviour
             GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Camera2D), new Vector3(161, 600, 361), transform.rotation);
             instance.name = "Camera2D";
             SecurityCamera.ChangeCamera(instance.name);
+            
+            GameObject inn = (GameObject)Instantiate(Resources.Load(GameDefine.CellLine));
+            inn.name = GameDefine.CellLineName;
         }
-
 
         GetDirection();
         // 检测是否离不可穿透表面过近

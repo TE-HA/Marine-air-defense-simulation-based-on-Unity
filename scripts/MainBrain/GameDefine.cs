@@ -11,11 +11,10 @@ public class GameDefine
     //false:不能
     public static bool CanGetTask = false;
 
-
+    //栅格线缩放倍数
+    public static int GridScale = 1;
+    public const string Grid_Name = "Grid_";
     #endregion
-
-
-
 
     #region 所有不变类型的数据定义
     #endregion
@@ -24,7 +23,6 @@ public class GameDefine
     public const string startSence = "startGame";
     public const string mainSence = "currentGame";
     #endregion
-
 
     #region 特效effect
     public const string HitBoomExplosion = "Prefabs/effect/FTEM_Explosion03";
@@ -67,6 +65,11 @@ public class GameDefine
     #endregion
 
     #region 相机camera
+    //栅格线
+    public const string Grid = "Prefabs/UI/Grid";
+    public const string CellLine = "Prefabs/UI/GridLine";
+    public const string CellLineName = "GridLine";
+
     public const string Camera2D = "Prefabs/Camera/camera2d";
     //设置当前相机
     public static Camera CurrentCamera = Camera.main;

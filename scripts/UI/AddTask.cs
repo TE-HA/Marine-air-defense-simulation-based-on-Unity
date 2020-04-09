@@ -39,7 +39,6 @@ public class AddTask : MonoBehaviour
     }
     #endregion
 
-
     // Use this for initialization
     void Start()
     {
@@ -78,8 +77,6 @@ public class AddTask : MonoBehaviour
         EnemyTaskCount.text = PlayerPrefs.GetInt("EnemyTaskCount").ToString();
     }
     #endregion
-
-
 
     // Update is called once per frame
     void FixedUpdate()
@@ -145,16 +142,14 @@ public class AddTask : MonoBehaviour
             from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
             PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
             toward = Random.Range(0,360);
-            time = PlayerPrefs.GetInt("CurrTime")+i+5;
+            time = PlayerPrefs.GetInt("CurrTime")+10*i-5;
 
             PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
             PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
             Count();            
             AddToDateBase(id, target, from, toward, time);
-
         }
         Debug.Log("添加成功");
-
     }
     #endregion
 

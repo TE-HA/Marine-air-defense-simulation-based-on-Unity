@@ -62,7 +62,7 @@ public class GameManger
     public Vector3 MiddlePoint()
     {
         Vector3 center = Vector3.zero;
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));//射线
+        Ray ray = GameDefine.CurrentCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));//射线
 
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))//发射射线(射线，射线碰撞信息，射线长度，射线会检测的层级)
@@ -70,10 +70,11 @@ public class GameManger
             center = new Vector3(hit.point.x, 0, hit.point.z);
         }
 
-        Debug.Log(center);
+        //Debug.Log(center);
         return center;
     }
     #endregion
+
 
     #region OnGUI中对声音的管理
     GameObject audio = GameObject.Find("Audio");

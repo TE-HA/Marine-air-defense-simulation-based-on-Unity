@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
     #region 菜单参数定义
     public IPanel menu;
     public Text time;
+    public Text locayion_xx;
     public GameObject plane;
     public GameObject PausePanel;
     public int ClearTime = 0;
@@ -163,6 +164,7 @@ public class Menu : MonoBehaviour
 
     }
 
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -178,9 +180,24 @@ public class Menu : MonoBehaviour
          }*/
         #endregion
 
+        #region 更新系统时间
+        UpdateTime();
+        #endregion
 
-        #region 更新游戏时间
-        time = GameObject.Find("time").GetComponent<Text>();
+        #region 更新中心坐标
+        UpdateLocation();
+        #endregion
+
+        #region 更新系统左下角坐标
+
+
+        #endregion
+    }
+
+    #region 更新游戏时间
+    public void UpdateTime() {
+
+       time = GameObject.Find("time").GetComponent<Text>();
         if (jiange <= 0)
         {
             time.text = PlayerPrefs.GetInt("CurrTime").ToString() + " 秒";
@@ -191,9 +208,16 @@ public class Menu : MonoBehaviour
         {
             jiange--;
         }
-        #endregion
     }
+    #endregion
 
+    #region 更新中心界面坐标
+    public void UpdateLocation() {
+        locayion_xx = GameObject.Find("location").GetComponent<Text>();
+        Vector3 middle = GameManger.Instance.MiddlePoint();
+        locayion_xx.text = "("+(int)middle.x+" , "+(int)middle.z+")";
+    }
+    #endregion
 
     #region 清除特效
     public void ClearEffect()
@@ -212,7 +236,6 @@ public class Menu : MonoBehaviour
     }
     #endregion
 
-
     #region 海洋中的GameObject不清除 很烦，应该找个更好的海洋
     bool NameConLod(string name)
     {
@@ -225,7 +248,6 @@ public class Menu : MonoBehaviour
     }
     #endregion
 
-
     #region 清除特效，根据GameObject的tag清除
     bool inSence(string tag)
     {
@@ -236,7 +258,6 @@ public class Menu : MonoBehaviour
         return false;
     }
     #endregion
-
 
     #region 初始化血条信息
     public void InitBloodSlider(string objname)
