@@ -94,6 +94,15 @@ public class GameDefine
     public const string Move = "Prefabs/move";
     #endregion
 
+    #region 添加舰船
+    public const string addobj = "Prefabs/addobj";
+    public const string addobjname = "Prefabs/ship/ship/";
+    public const string Hangmu = "Prefabs/ship/ship/km_main";
+    public const string huweijian = "Prefabs/ship/ship/km_huwei";
+    public const string quzhujian = "Prefabs/ship/ship/km_quzhu";
+    public const string xunyangjian = "Prefabs/ship/ship/km_xuyang";
+    #endregion
+
     #region 敌军信息
     //enemy plane daodan count
     public const string EnemyPlaneDaodanCount = "EnemyPlaneDaodanCount";

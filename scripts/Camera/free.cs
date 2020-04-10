@@ -104,7 +104,8 @@ public class free : MonoBehaviour
         GameObject go = GameObject.Find("Camera2D");
         if (gameObject.transform.position.y > 600 && go == null)
         {
-            GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Camera2D), new Vector3(161, 600, 361), transform.rotation);
+            Vector3 point = GameManger.Instance.MiddlePoint();
+            GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Camera2D), new Vector3(point.x,600,point.z), transform.rotation);
             instance.name = "Camera2D";
             SecurityCamera.ChangeCamera(instance.name);
             

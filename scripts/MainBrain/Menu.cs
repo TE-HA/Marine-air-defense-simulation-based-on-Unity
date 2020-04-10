@@ -17,7 +17,6 @@ public class Menu : MonoBehaviour
     public List<string> tagList;
     #endregion
 
-
     // 数据定义
     void Awake()
     {
@@ -25,9 +24,11 @@ public class Menu : MonoBehaviour
         string sql_delete_all_task = "DELETE FROM graduate.all_task";
         string sql_delete_all_weapon_task = "DELETE FROM graduate.weapon_task";
         string sql_delete_all_move_task = "DELETE FROM graduate.move_task";
+        string sql_delete_all_addobj_task = "DELETE FROM graduate.addobj_task";
         MySqlT.Instance.DealSqlToSet(sql_delete_all_task);
         MySqlT.Instance.DealSqlToSet(sql_delete_all_move_task);
         MySqlT.Instance.DealSqlToSet(sql_delete_all_weapon_task);
+        MySqlT.Instance.DealSqlToSet(sql_delete_all_addobj_task);
         #endregion
 
         #region 游戏存档数据
@@ -40,6 +41,12 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetString("驱逐舰2", "km_3");
         PlayerPrefs.SetString("巡洋舰1", "km_2");
         PlayerPrefs.SetString("巡洋舰2", "km_4");
+        
+
+        PlayerPrefs.SetString("航空母舰", "hangmu");
+        PlayerPrefs.SetString("驱逐舰", "quzhu");
+        PlayerPrefs.SetString("巡洋舰", "xunyang");
+        PlayerPrefs.SetString("护卫舰", "huwei");
 
         PlayerPrefs.SetString("km_main", "航空母舰");
         PlayerPrefs.SetString("km_5", "护卫舰1");
@@ -164,7 +171,6 @@ public class Menu : MonoBehaviour
 
     }
 
-
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -212,10 +218,12 @@ public class Menu : MonoBehaviour
     #endregion
 
     #region 更新中心界面坐标
-    public void UpdateLocation() {
+    public void UpdateLocation()
+    {
+
         locayion_xx = GameObject.Find("location").GetComponent<Text>();
         Vector3 middle = GameManger.Instance.MiddlePoint();
-        locayion_xx.text = "("+(int)middle.x+" , "+(int)middle.z+")";
+        locayion_xx.text = "(" + (int)middle.x + " , " + (int)middle.z + ")";
     }
     #endregion
 

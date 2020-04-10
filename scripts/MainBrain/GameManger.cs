@@ -61,20 +61,32 @@ public class GameManger
     #region 获取屏幕中心点世界坐标
     public Vector3 MiddlePoint()
     {
-        Vector3 center = Vector3.zero;
-        Ray ray = GameDefine.CurrentCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));//射线
-
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))//发射射线(射线，射线碰撞信息，射线长度，射线会检测的层级)
+        try
         {
-            center = new Vector3(hit.point.x, 0, hit.point.z);
+            Vector3 center = Vector3.zero;
+            Ray ray = GameDefine.CurrentCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));//射线
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))//发射射线(射线，射线碰撞信息，射线长度，射线会检测的层级)
+            {
+                center = new Vector3(hit.point.x, 0, hit.point.z);
+            }
+
+            //Debug.Log(center);
+            return center;
+        }
+        catch {
+            return Vector3.zero;
         }
 
-        //Debug.Log(center);
-        return center;
     }
     #endregion
 
+    #region 获取战场中心点世界坐标（航母）
+    public Vector3 BoatMiddlePoint() {
+        return GameObject.Find("km_main").transform.position;
+    }
+    #endregion
 
     #region OnGUI中对声音的管理
     GameObject audio = GameObject.Find("Audio");

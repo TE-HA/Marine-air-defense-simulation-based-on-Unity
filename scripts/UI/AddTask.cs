@@ -9,6 +9,7 @@ public class AddTask : MonoBehaviour
     private Button ButtonAddTask;
     private Button ButtonBegin;
     private Button ButtonRandom;
+    private Button ButtonAddBoat;
     private Text EnemyTaskCount;
     private Text EnemyCount;
     private GameObject InputField;
@@ -39,7 +40,6 @@ public class AddTask : MonoBehaviour
     }
     #endregion
 
-    // Use this for initialization
     void Start()
     {
         #region 初始化暂停、静音以供输入
@@ -52,7 +52,7 @@ public class AddTask : MonoBehaviour
         #endregion
 
         InputField = GameObject.Find("InputMenu");
-      
+
         #region 按钮监听
         EnemyCount = GameObject.Find("EnemyCount").GetComponent<Text>();
         EnemyTaskCount = GameObject.Find("EnemyTaskCount").GetComponent<Text>();
@@ -66,19 +66,23 @@ public class AddTask : MonoBehaviour
         ButtonRandom = GameObject.Find("ButtonRandom").GetComponent<Button>();
         ButtonRandom.onClick.AddListener(RandomTask);
 
+        ButtonAddBoat = GameObject.Find("ButtonAddBoat").GetComponent<Button>();
+        ButtonAddBoat.onClick.AddListener(AddBoat);
 
         Count();
         #endregion
     }
 
+
+
     #region 敌军数量计算
-    void Count() {
+    void Count()
+    {
         EnemyCount.text = PlayerPrefs.GetInt("EnemyCount").ToString();
         EnemyTaskCount.text = PlayerPrefs.GetInt("EnemyTaskCount").ToString();
     }
     #endregion
 
-    // Update is called once per frame
     void FixedUpdate()
     {
     }
@@ -117,16 +121,43 @@ public class AddTask : MonoBehaviour
     }
     #endregion
 
+    #region 同时更改all_task and addobj_task数据库
+    public void AddObjDataBase(int id, string target, float x, float y)
+    {
+        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('addobj', '" + id + "', 'pending','no')";
+        try
+        {
+            SqlTask(sql_all_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+
+
+        string sql_addobj_task = "INSERT INTO `graduate`.`addobj_task` (`Aid`, `Atarget`, `Ax`, `Ay`) VALUES ('" + id + "', '" + target + "', '" + x + "','" + y + "')";
+        try
+        {
+            SqlTask(sql_addobj_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+    }
+    #endregion
+
 
     #region 初始化输入框，重置为空
     public void initInput()
     {
-        for (int i = 1; i <= 15; i++)
+        for (int i = 1; i <= 25; i++)
         {
-            FindInputField(i).text = string.Empty;
+            FindInputField(i).text = "";
         }
     }
     #endregion
+
 
 
     #region 添加随机敌机任务
@@ -141,12 +172,12 @@ public class AddTask : MonoBehaviour
 
             from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
             PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
-            toward = Random.Range(0,360);
-            time = PlayerPrefs.GetInt("CurrTime")+10*i-5;
+            toward = Random.Range(0, 360);
+            time = PlayerPrefs.GetInt("CurrTime") + 10 * i - 5;
 
             PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
             PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
-            Count();            
+            Count();
             AddToDateBase(id, target, from, toward, time);
         }
         Debug.Log("添加成功");
@@ -155,14 +186,18 @@ public class AddTask : MonoBehaviour
 
 
     #region 按钮监听事件
+
+    #region 开始/继续仿真
     public void Begin()
     {
         InputField.SetActive(false);
         Time.timeScale = 1;
         GameManger.Instance.UnMuteAll();
-        GameDefine.CanGetTask=true;
+        GameDefine.CanGetTask = true;
     }
+    #endregion
 
+    #region 添加敌机攻击任务
     public void AddTaskClick()
     {
         for (int i = 1; i <= 5; i++)
@@ -195,6 +230,33 @@ public class AddTask : MonoBehaviour
         initInput();
         Debug.Log("添加成功");
     }
+    #endregion
+
+    #region 添加舰船，位置是基于航母的偏移量
+    public void AddBoat()
+    {
+        for (int i = 16; i <= 20; i++)
+        {
+            if (FindInputField(i).text == string.Empty || FindInputField(i + 5).text == string.Empty)
+            {
+                return;
+            }
+            else
+            {
+                id = PlayerPrefs.GetInt("TaskID");
+                PlayerPrefs.SetInt("TaskID", id + 1);
+
+                Dropdown d = FindDropdown(i - 10);
+                target = PlayerPrefs.GetString(d.options[d.value].text);
+                float offset_x = float.Parse(FindInputField(i).text);
+                float offset_y = float.Parse(FindInputField(i + 5).text);
+                AddObjDataBase(id, target, offset_x, offset_y);
+            }
+        }
+        initInput();
+    }
+
+    #endregion
 
     #endregion
 }

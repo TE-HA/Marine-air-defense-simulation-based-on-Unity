@@ -105,9 +105,10 @@ public class weapon : MonoBehaviour
     public Vector3 GetBornPoint(int toward)
     {
         Vector3 bornPoint = new Vector3();
+        Vector3 middle = GameManger.Instance.MiddlePoint();
         int lenth = 2500;
-        bornPoint.x = lenth * Mathf.Sin(toward * Mathf.PI / 180);
-        bornPoint.z = lenth * Mathf.Cos(toward * Mathf.PI / 180);
+        bornPoint.x = middle.x-lenth * Mathf.Sin(toward * Mathf.PI / 180);
+        bornPoint.z = middle.z-lenth * Mathf.Cos(toward * Mathf.PI / 180);
         bornPoint.y = 500;
         //Debug.Log(bornPoint);
         return bornPoint;
@@ -148,29 +149,21 @@ public class weapon : MonoBehaviour
                 case "fire":
                     GameObject find = GameObject.Find(from);
                     FireZhanjian(find.name, target);
-                    Debug.Log("[战舰反击]：由 "+PlayerPrefs.GetString(find.name)+" 发射，拦截 "+target+" 导弹");
+                    Debug.Log("[战舰反击]：由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹");
                     break;
                 case "attack":
                     Vector3 bornPoint = GetBornPoint(toward);
-                    /*GameObject find_attack;
-                    try
-                    {
-                        find_attack = GameObject.Find(from);
-                        FirePlane(find_attack.name, target);
-                    }
-                    catch
-                    {*/
                     plane = (GameObject)Instantiate(Resources.Load(GameDefine.EnemyPlane), bornPoint, transform.rotation);
                     plane.name = from;
-                    plane.transform.forward = new Vector3(0, 500, 0) - bornPoint;
+                    Vector3 point = GameManger.Instance.MiddlePoint();
+                    plane.transform.forward = new Vector3(point.x, 500, point.z) - bornPoint;
                     GameData.enemyPlane.Add(plane);
                     FirePlane(plane.name, target);
                     //Debug.Log("mubiao"+target);
-                    Debug.Log("[敌机攻击]：由敌机"+plane.name+" 发射，攻击 "+PlayerPrefs.GetString(target)+" 战舰");
+                    Debug.Log("[敌机攻击]：由敌机" + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰");
                     // }
                     break;
                     #endregion
-
             }
             //finally
             string _update_finished = "update graduate.all_task set all_task_status='finished' where (all_task_id =" + all_task_id + ") and (all_task_type='" + type + "')";

@@ -64,6 +64,11 @@ public class AutoControl : MonoBehaviour
                     GameObject instance_move = (GameObject)Instantiate(Resources.Load(GameDefine.Move), transform.position, transform.rotation);
                     instance_move.GetComponent<move>().all_task_id = (int)dt.Rows[i][1];
                     break;
+                 case "addobj":
+                    GameObject instance_addobj = (GameObject)Instantiate(Resources.Load(GameDefine.addobj), transform.position, transform.rotation);
+                    instance_addobj.GetComponent<addobj>().addobj_id = (int)dt.Rows[i][1];
+                    break;
+
                 default:
                     break;
                     #endregion
