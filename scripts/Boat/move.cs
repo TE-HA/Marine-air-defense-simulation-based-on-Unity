@@ -16,10 +16,18 @@ public class move : MonoBehaviour
     public void AutoMove(string move_obj, float x, float z)
     {
         GameObject instance = GameObject.Find(move_obj);
-        try {
+        try
+        {
             instance.GetComponent<BoatMove>().enabled = false;
-        } catch{
-            Debug.Log("[改变航向]：改变 "+PlayerPrefs.GetString(instance.name)+" 位置，偏移量为x: "+x+" z: "+z);
+        }
+        catch
+        {
+            //Debug.Log("[改变航向]：改变 " + PlayerPrefs.GetString(instance.name) + " 位置，偏移量为x: " + x + " z: " + z);
+            #region 
+            GameData.messageType = 3;
+            GameData.message = "改变 " + PlayerPrefs.GetString(instance.name) + " 位置，偏移量为x: " + x + " z: " + z;
+            GameData.canShow = true;
+            #endregion
         }
 
         instance.AddComponent<BoatMove>().move_task_x = x;

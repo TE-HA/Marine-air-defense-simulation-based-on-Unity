@@ -14,7 +14,8 @@ public class MySqlT
     public static string _get_move_task = "SELECT * FROM graduate.move_task where (move_task_id=";
     //查询id为***的addobj任务
     public static string _get_addobj_task = "SELECT * FROM graduate.addobj_task where (Aid=";
-    //更新任务状态
+
+    //更新任务状态(测试用)
     public static string _update_status = "update graduate.all_task set all_task_get='no'";
     public static string _update_status_pending = "update graduate.all_task set all_task_status='pending'";
     #endregion

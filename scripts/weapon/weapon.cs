@@ -90,7 +90,7 @@ public class weapon : MonoBehaviour
     #region 获取weapon表中的武器任务
     public DataTable GetWeaponTask(string sql_weapon_task)
     {
-               DataSet ds = MySqlT.Instance.DealSqlToSet(sql_weapon_task);
+        DataSet ds = MySqlT.Instance.DealSqlToSet(sql_weapon_task);
         DataTable dt = ds.Tables[0];
         if (dt == null)
         {
@@ -110,7 +110,6 @@ public class weapon : MonoBehaviour
         bornPoint.x = middle.x-lenth * Mathf.Sin(toward * Mathf.PI / 180);
         bornPoint.z = middle.z-lenth * Mathf.Cos(toward * Mathf.PI / 180);
         bornPoint.y = 500;
-        //Debug.Log(bornPoint);
         return bornPoint;
     }
     #endregion
@@ -149,7 +148,12 @@ public class weapon : MonoBehaviour
                 case "fire":
                     GameObject find = GameObject.Find(from);
                     FireZhanjian(find.name, target);
-                    Debug.Log("[战舰反击]：由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹");
+                    //Debug.Log("[战舰反击]：由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹");
+                    #region 
+                    GameData.messageType = 2;
+                    GameData.message= " 由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹";
+                    GameData.canShow = true;
+                    #endregion
                     break;
                 case "attack":
                     Vector3 bornPoint = GetBornPoint(toward);
@@ -159,9 +163,12 @@ public class weapon : MonoBehaviour
                     plane.transform.forward = new Vector3(point.x, 500, point.z) - bornPoint;
                     GameData.enemyPlane.Add(plane);
                     FirePlane(plane.name, target);
-                    //Debug.Log("mubiao"+target);
-                    Debug.Log("[敌机攻击]：由敌机" + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰");
-                    // }
+                    //Debug.Log("[敌机攻击]：由敌机" + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰");
+                    #region 
+                    GameData.messageType = 1;
+                    GameData.message= " 由 敌机 " + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰";
+                    GameData.canShow = true;
+                    #endregion
                     break;
                     #endregion
             }

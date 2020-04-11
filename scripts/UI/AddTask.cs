@@ -73,8 +73,6 @@ public class AddTask : MonoBehaviour
         #endregion
     }
 
-
-
     #region 敌军数量计算
     void Count()
     {
@@ -163,7 +161,7 @@ public class AddTask : MonoBehaviour
     #region 添加随机敌机任务
     public void RandomTask()
     {
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 50; i++)
         {
             id = PlayerPrefs.GetInt("TaskID");
             PlayerPrefs.SetInt("TaskID", id + 1);
@@ -173,7 +171,7 @@ public class AddTask : MonoBehaviour
             from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
             PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
             toward = Random.Range(0, 360);
-            time = PlayerPrefs.GetInt("CurrTime") + 10 * i - 5;
+            time = PlayerPrefs.GetInt("CurrTime") + 10*i - 5;
 
             PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
             PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);

@@ -14,6 +14,11 @@ public class GameDefine
     //栅格线缩放倍数
     public static int GridScale = 1;
     public const string Grid_Name = "Grid_";
+
+    //能否显示游戏运行日志log
+    //true：能
+    //false：不能
+    public static bool ShowStatus = false;
     #endregion
 
     #region 所有不变类型的数据定义
@@ -46,6 +51,7 @@ public class GameDefine
     public const string GUIMuteEffect = "mute effect";
     public const string GUIClearEffect = "clear effect";
     public const string GUIUpdate = "update";
+    public const string GUIShowLog = "showlog";
     #endregion
 
 
@@ -53,6 +59,7 @@ public class GameDefine
     public const string InputMenu = "Prefabs/UI/InputMenu";
     public const string Panel = "Prefabs/UI/Panel";
     public const string PausePanelName = "InputMenu";
+    public const string ShowLogPanelName = "GameLog";
     public const string BloodSlider = "Prefabs/UI/BloodSlider";
     public const string BloodSlider_main = "km_main_info";
     public const string BloodSlider_1 = "km_1_info";
