@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class planeMove : MonoBehaviour
 {
+    #region 参数设置
     public float speed=100f;
-    private float minDistance = 4000f;//小于此距离时报警
+    private int jiange = 60;//时间间隔
+    private float minDistance = 10000f;//小于此距离时报警
     private int hit_count = 0;
     private bool isHitsmall = false;
     private bool isHitHeavy = false;
+    #endregion
 
-    // Use this for initialization
-    void Start() { 
-    }
-
+ 
     #region 预警机判断导弹距离战场距离的功能
     public float GetDistance(GameObject enemy) {
         return GameManger.Instance.DistanceBetweenTwoGameObject(enemy.transform,gameObject.transform);
@@ -99,11 +99,10 @@ public class planeMove : MonoBehaviour
                     AddWeaponTask(PlayerPrefs.GetInt("TaskID"), GameData.enemyDaodan[i].name, "km_1", -1, PlayerPrefs.GetInt("CurrTime") + 2);
                     PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
 
-                    AddMoveTask(PlayerPrefs.GetInt("TaskID"),"km_main",200,200);
+                   /* AddMoveTask(PlayerPrefs.GetInt("TaskID"),"km_main",200,200);
                     PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
-
+*/
                     GameData.enemyDaodan.Remove(GameData.enemyDaodan[i]);
-
                     GameDefine.CanGetTask = true;
                 }
                 else
@@ -117,8 +116,8 @@ public class planeMove : MonoBehaviour
     #endregion
 
 
-    private int jiange = 60;
     // Update is called once per frame
+    #region 追踪算法
     void FixedUpdate()
     {
         if (jiange<0) {
@@ -149,7 +148,10 @@ public class planeMove : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    #endregion
 
+
+    #region 检测撞击
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "daodan")
@@ -163,4 +165,6 @@ public class planeMove : MonoBehaviour
             }
         }
     }
+    #endregion
 }
+

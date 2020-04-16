@@ -106,6 +106,19 @@ public class GameManger
     //
     #endregion
 
+    #region 概率击毁
+    public bool Percent() {
+        int a = Random.Range(0, 100);
+        if (a < GameDefine.percent * 100)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    #endregion
+
     #region 返回两GameObject的距离
     public float DistanceBetweenTwoGameObject(Transform first, Transform second)
     {

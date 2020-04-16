@@ -18,8 +18,7 @@ public class weapon : MonoBehaviour
     private int toward;
     private double time;
     #endregion
-
-
+    
     private void Start()
     {
         weaponself = gameObject;
@@ -48,15 +47,12 @@ public class weapon : MonoBehaviour
         instance.GetComponent<fire_daodan_plane>().from = _from.transform;
         //Destroy(gameObject);
 
-
         if (instance == null)
         {
             return;
         }
     }
     #endregion
-
-
 
     #region 战舰反击
     public void FireZhanjian(string from, string target)
@@ -106,14 +102,13 @@ public class weapon : MonoBehaviour
     {
         Vector3 bornPoint = new Vector3();
         Vector3 middle = GameManger.Instance.MiddlePoint();
-        int lenth = 2500;
-        bornPoint.x = middle.x-lenth * Mathf.Sin(toward * Mathf.PI / 180);
-        bornPoint.z = middle.z-lenth * Mathf.Cos(toward * Mathf.PI / 180);
-        bornPoint.y = 500;
+        int lenth = 5000;
+        bornPoint.x = middle.x - lenth * Mathf.Sin(toward * Mathf.PI / 180);
+        bornPoint.z = middle.z - lenth * Mathf.Cos(toward * Mathf.PI / 180);
+        bornPoint.y = Random.Range(500, 600);
         return bornPoint;
     }
     #endregion
-
 
     #region 对已经操作的武器任务进行数据库更新
     public void UpdateWeaponTask(string sql_weapon_task)
@@ -143,32 +138,34 @@ public class weapon : MonoBehaviour
         {
             switch (type)
             {
-
                 #region 判断武器攻击类型
                 case "fire":
                     GameObject find = GameObject.Find(from);
                     FireZhanjian(find.name, target);
                     //Debug.Log("[战舰反击]：由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹");
-                    #region 
+                    #region
                     GameData.messageType = 2;
-                    GameData.message= " 由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹";
+                    GameData.message = " 由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹";
                     GameData.canShow = true;
                     #endregion
                     break;
                 case "attack":
+
                     Vector3 bornPoint = GetBornPoint(toward);
                     plane = (GameObject)Instantiate(Resources.Load(GameDefine.EnemyPlane), bornPoint, transform.rotation);
                     plane.name = from;
                     Vector3 point = GameManger.Instance.MiddlePoint();
-                    plane.transform.forward = new Vector3(point.x, 500, point.z) - bornPoint;
+                    plane.transform.forward = new Vector3(point.x, bornPoint.y, point.z) - bornPoint;
                     GameData.enemyPlane.Add(plane);
                     FirePlane(plane.name, target);
-                    //Debug.Log("[敌机攻击]：由敌机" + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰");
-                    #region 
+
+                    #region 修改信息 
                     GameData.messageType = 1;
-                    GameData.message= " 由 敌机 " + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰";
+                    GameData.message = " 由 敌机 " + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰";
                     GameData.canShow = true;
                     #endregion
+
+
                     break;
                     #endregion
             }

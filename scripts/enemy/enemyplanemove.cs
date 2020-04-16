@@ -9,6 +9,7 @@ public class enemyplanemove : MonoBehaviour {
     private bool isHitsmall = false;
     private bool isHitHeavy = false;
     #endregion
+
     // Use this for initialization
     void Start () {
 		
@@ -36,7 +37,8 @@ public class enemyplanemove : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        if (gameObject.transform.position.x>3000||gameObject.transform.position.x<-3000||gameObject.transform.position.z>3000||gameObject.transform.position.z<-3000) {
+        Vector3 point = GameManger.Instance.MiddlePoint();
+        if (gameObject.transform.position.x>point.x+ 5000||gameObject.transform.position.x<point.x-5000||gameObject.transform.position.z>point.z+5000||gameObject.transform.position.z<point.z-5000) {
             Destroy(gameObject);
         }
     }

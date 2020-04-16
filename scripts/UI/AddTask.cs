@@ -155,30 +155,35 @@ public class AddTask : MonoBehaviour
         }
     }
     #endregion
-
-
-
+    int lunci = 1;
     #region 添加随机敌机任务
     public void RandomTask()
     {
-        for (int i = 1; i <= 50; i++)
+        
+        for (int i = 1; i <= 10; i++)
         {
-            id = PlayerPrefs.GetInt("TaskID");
-            PlayerPrefs.SetInt("TaskID", id + 1);
-
+           
             target = "km_main";
 
-            from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
-            PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
+            //from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
+            //PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
             toward = Random.Range(0, 360);
-            time = PlayerPrefs.GetInt("CurrTime") + 10*i - 5;
+            from = "zhanji_" + (i+(lunci-1)*10).ToString();
+            for (int j = 0; j < 3; j++)
+            {
+         id = PlayerPrefs.GetInt("TaskID");
+            PlayerPrefs.SetInt("TaskID", id + 1);
 
-            PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
-            PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
-            Count();
-            AddToDateBase(id, target, from, toward, time);
+                time = PlayerPrefs.GetInt("CurrTime") + 70 * i + 20 * j - 60;
+                AddToDateBase(id, target, from, toward, time);
+
+                PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
+                PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
+            }
         }
+        Count();
         Debug.Log("添加成功");
+        lunci++;
     }
     #endregion
 
@@ -253,8 +258,6 @@ public class AddTask : MonoBehaviour
         }
         initInput();
     }
-
     #endregion
-
     #endregion
 }

@@ -32,7 +32,6 @@ public class free : MonoBehaviour
 
     private void GetDirection()
     {
-
         #region 加速移动
         if (Input.GetKeyDown(KeyCode.LeftShift)) moveSpeed *= shiftRate;
         if (Input.GetKeyUp(KeyCode.LeftShift)) moveSpeed /= shiftRate;
@@ -55,12 +54,10 @@ public class free : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Z))
         {
-
-
             float x = km_main.transform.position.x;
             float z = km_main.transform.position.z;
 
-            Vector3 point = new Vector3(x, 400f, z);
+            Vector3 point = new Vector3(x, gameObject.transform.position.y, z);
             //gameObject.transform.Translate(point);
 
             float step = 500f * Time.deltaTime;
@@ -101,6 +98,15 @@ public class free : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameDefine.ganglai)
+        {
+            Vector3 point =GameDefine.middlepoint;
+            point.y = 600;
+            gameObject.transform.localPosition =point;
+            gameObject.transform.forward = Vector3.down;
+            GameDefine.ganglai = false;
+        }
+
         GameObject go = GameObject.Find("Camera2D");
         if (gameObject.transform.position.y > 600 && go == null)
         {
@@ -108,7 +114,7 @@ public class free : MonoBehaviour
             GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Camera2D), new Vector3(point.x,600,point.z), transform.rotation);
             instance.name = "Camera2D";
             SecurityCamera.ChangeCamera(instance.name);
-            
+
             GameObject inn = (GameObject)Instantiate(Resources.Load(GameDefine.CellLine));
             inn.name = GameDefine.CellLineName;
         }

@@ -43,11 +43,11 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetString("巡洋舰1", "km_2");
         PlayerPrefs.SetString("巡洋舰2", "km_4");
 
-
-        PlayerPrefs.SetString("航空母舰", "hangmu");
-        PlayerPrefs.SetString("驱逐舰", "quzhu");
-        PlayerPrefs.SetString("巡洋舰", "xunyang");
-        PlayerPrefs.SetString("护卫舰", "huwei");
+        /*
+                PlayerPrefs.SetString("航空母舰", "hangmu");
+                PlayerPrefs.SetString("驱逐舰", "quzhu");
+                PlayerPrefs.SetString("巡洋舰", "xunyang");
+                PlayerPrefs.SetString("护卫舰", "huwei");*/
 
         PlayerPrefs.SetString("km_main", "航空母舰");
         PlayerPrefs.SetString("km_5", "护卫舰1");
@@ -75,7 +75,7 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetInt("FireTaskID", 1);
 
 
-        PlayerPrefs.SetInt("km_main_info_slider", 3000);
+        PlayerPrefs.SetInt("km_main_info_slider", 30000);
         PlayerPrefs.SetInt("km_1_info_slider", 20000);
         PlayerPrefs.SetInt("km_2_info_slider", 20000);
         PlayerPrefs.SetInt("km_3_info_slider", 20000);
@@ -156,9 +156,10 @@ public class Menu : MonoBehaviour
     }
 
     #region 更新游戏时间
-    public void UpdateTime() {
+    public void UpdateTime()
+    {
 
-       time = GameObject.Find("time").GetComponent<Text>();
+        time = GameObject.Find("time").GetComponent<Text>();
         if (jiange <= 0)
         {
             time.text = PlayerPrefs.GetInt("CurrTime").ToString() + " 秒";
@@ -295,18 +296,38 @@ public class Menu : MonoBehaviour
         }
         #endregion
 
-        #region GUI中更新数据库键位（测试用）
+        #region GUI中显示游戏日志
         if (GUI.Button(new Rect(1400, 200, 80, 20), GameDefine.GUIShowLog))
         {
             if (GameDefine.ShowStatus)
-            { 
+            {
                 UnShowLog();
             }
-            else {
+            else
+            {
                 ShowLog();
             }
         }
         #endregion
+
+        #region GUI中测试堆
+        if (GUI.Button(new Rect(1400, 230, 80, 20), "Heap"))
+        {
+            taskHeap t = new taskHeap();
+            t.insert(new TaskNode(1,20));
+            t.insert(new TaskNode(2,14));
+            t.insert(new TaskNode(3,26));
+            t.insert(new TaskNode(4,58));
+            t.insert(new TaskNode(5,2));
+            t.insert(new TaskNode(6,4));
+            t.insert(new TaskNode(7,6));
+            t.insert(new TaskNode(8,8));
+
+
+            t.show(t.top);
+        }
+        #endregion
+
     }
 }
 

@@ -20,7 +20,7 @@ public class MapGridDraw : MonoBehaviour
         lineRender.positionCount = points.Count;
         lineRender.SetPositions(points.ToArray());
 
-        lineRender.startWidth = 2f;
-        lineRender.endWidth = 2f;
+        lineRender.startWidth = 3f;
+        lineRender.endWidth = 3f;
     }
 }

@@ -13,12 +13,14 @@ public class GameDefine
 
     //栅格线缩放倍数
     public static int GridScale = 1;
-    public const string Grid_Name = "Grid_";
+    public const string Grid_Name = "Grid";
 
     //能否显示游戏运行日志log
     //true：能
     //false：不能
     public static bool ShowStatus = false;
+
+    public static float percent = 0.6f;
     #endregion
 
     #region 所有不变类型的数据定义
@@ -43,7 +45,6 @@ public class GameDefine
     public static bool MuteEffect = false;
     #endregion
 
-
     #region GUI按钮name OnGUI
     public const string GUICreate = "create";
     public const string GUIPause = "pause";
@@ -53,7 +54,6 @@ public class GameDefine
     public const string GUIUpdate = "update";
     public const string GUIShowLog = "showlog";
     #endregion
-
 
     #region 面板 panel
     public const string InputMenu = "Prefabs/UI/InputMenu";
@@ -75,6 +75,7 @@ public class GameDefine
     //栅格线
     public const string Grid = "Prefabs/UI/Grid";
     public const string CellLine = "Prefabs/UI/GridLine";
+    public const string GridObj = "Prefabs/UI/GridObj";
     public const string CellLineName = "GridLine";
 
     public const string Camera2D = "Prefabs/Camera/camera2d";
@@ -89,12 +90,13 @@ public class GameDefine
         prvsCamera = CurrentCamera;
         CurrentCamera = CurrCamera;
     }
-
+    public static Vector3 middlepoint = Vector3.zero;
+    public static bool ganglai = false;
     #endregion
-
 
     #region 武器weapon
     public const string Weapon = "Prefabs/weapon";
+    public static Vector3 daodanScale = new Vector3(3, 3, 3);
     #endregion
 
     #region 移动move
@@ -119,7 +121,6 @@ public class GameDefine
     #endregion
 
     #region 枚举类
-    #endregion
     public enum Tag
     {
         Camera,
@@ -128,10 +129,18 @@ public class GameDefine
         daodan,
     }
 
+    public enum TaskType
+    {
+        attack,
+        fire,
+        move,
+        addobj,
+    }
     public enum GameObjType
     {
         Plane_Warning,
         km_1,
         km_2,
     }
+    #endregion
 }

@@ -22,19 +22,9 @@ public class fire_daodan : MonoBehaviour
     private bool effect_2 = false;
     private bool effect_3 = false;
 
-    private AudioSource MusicPlayer;
     #endregion
 
-    #region 撞击播放音乐（没啥用）
-    public void Play()
-    {
-        AudioClip clip = Resources.Load<AudioClip>(GameDefine.HitSound);
-        MusicPlayer.clip = clip;
-        MusicPlayer.Play();
-    }
-    #endregion
-
-
+  
     void Start()
     {
     }
@@ -79,22 +69,22 @@ public class fire_daodan : MonoBehaviour
                     //特效2
                     //////////
                     //effect_2 = true;
-                    Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.DaodanFly), transform.Find("point").position, Quaternion.identity)));
+                   Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.DaodanFly), transform.Find("point").position, Quaternion.identity)),3f);
+                }
+            }
+            else
+            {
+                if (GameDefine.CurrentCamera.name == "Camera2D")
+                {
+                    gameObject.transform.localScale = GameDefine.daodanScale;
                 }
             }
 
             Vector3 _target = (target.position - transform.position).normalized;
 
 
-            float a;
-            if (transform.position.y < 100)
-            {
-                a = Vector3.Angle(transform.forward, _target) / RocSpeed;
-            }
-            else
-            {
-                a = Vector3.Angle(transform.forward, _target) / RocSpeed;
-            }
+            float a= Vector3.Angle(transform.forward, _target)/RocSpeed;
+                 
             if (a > -0.1f || a < 0.1f)
             {
                 transform.forward = Vector3.Slerp(transform.forward, _target, Time.deltaTime / a).normalized;
@@ -123,7 +113,6 @@ public class fire_daodan : MonoBehaviour
                 }
             }
         }
-
         //canfire = false;
     }
 
@@ -133,11 +122,9 @@ public class fire_daodan : MonoBehaviour
     {
         if (collision.gameObject.tag == GameDefine.Tag.plane.ToString() || collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString() || collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
         {
-        
             Destroy(gameObject);
             Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
             isHit = true;
-            // }
         }
     }
 }
