@@ -115,6 +115,8 @@ public class free : MonoBehaviour
             instance.name = "Camera2D";
             SecurityCamera.ChangeCamera(instance.name);
 
+            GameDefine.Ocean.SetActive(false);
+
             GameObject inn = (GameObject)Instantiate(Resources.Load(GameDefine.CellLine));
             inn.name = GameDefine.CellLineName;
         }

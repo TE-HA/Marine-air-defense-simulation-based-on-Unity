@@ -60,9 +60,11 @@ public class Move2DCamera : MonoBehaviour
         if (tourCamera.orthographicSize < 500)
         {
             Destroy(GameObject.Find(GameDefine.CellLineName));
-            Destroy(gameObject);
             SecurityCamera.ChangeCamera("CameraFree");
             GameDefine.ganglai = true;
+            GameDefine.Ocean.SetActive(true);
+            Destroy(go);
+            Destroy(gameObject);
         }
         if (Input.GetMouseButtonDown(1))
         {

@@ -8,7 +8,7 @@ public class fire_daodan_plane : MonoBehaviour
     #region 敌机进攻导弹参数设置
     public Transform target;
     public Transform from;
-    private float speed = 150f;
+    private float speed = 200f;
     private float RocSpeed = 180f;
     private Vector3 _target;
     private bool effect_1 = false;

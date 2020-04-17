@@ -5,7 +5,7 @@ using UnityEngine;
 public class fire_daodan : MonoBehaviour
 {
     #region 友军反击导弹类：参数设置
-    private float m_speed = 200f;
+    private float m_speed = 250f;
     private float first_speed = 100f;
     private float RocSpeed = 300f;
     // private float RocSpeed_second = 90000000f;
@@ -24,7 +24,7 @@ public class fire_daodan : MonoBehaviour
 
     #endregion
 
-  
+
     void Start()
     {
     }
@@ -59,7 +59,7 @@ public class fire_daodan : MonoBehaviour
             jiasu = true;
             if (transform.position.y > 50)
             {
-                RocSpeed = float.MaxValue-10f;
+                RocSpeed = float.MaxValue - 10f;
             }
             if (GameDefine.MuteEffect == false)
             {
@@ -69,7 +69,7 @@ public class fire_daodan : MonoBehaviour
                     //特效2
                     //////////
                     //effect_2 = true;
-                   Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.DaodanFly), transform.Find("point").position, Quaternion.identity)),3f);
+                    Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.DaodanFly), transform.Find("point").position, Quaternion.identity)), 3f);
                 }
             }
             else
@@ -83,8 +83,8 @@ public class fire_daodan : MonoBehaviour
             Vector3 _target = (target.position - transform.position).normalized;
 
 
-            float a= Vector3.Angle(transform.forward, _target)/RocSpeed;
-                 
+            float a = Vector3.Angle(transform.forward, _target) / RocSpeed;
+
             if (a > -0.1f || a < 0.1f)
             {
                 transform.forward = Vector3.Slerp(transform.forward, _target, Time.deltaTime / a).normalized;
@@ -120,11 +120,24 @@ public class fire_daodan : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == GameDefine.Tag.plane.ToString() || collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString() || collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
+        if (collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString() || collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
         {
             Destroy(gameObject);
             Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
             isHit = true;
+        }
+
+        if (collision.gameObject.tag == GameDefine.Tag.plane.ToString())
+        {
+            #region
+            GameData.messageType = 6;
+            GameData.message = "拦截 " + collision.gameObject.name + " 飞机成功";
+            GameData.canShow = true;
+            #endregion
+
+            Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
+            isHit = true;
+            Destroy(gameObject);
         }
     }
 }

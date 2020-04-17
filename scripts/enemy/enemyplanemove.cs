@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class enemyplanemove : MonoBehaviour {
     #region 定义参数
-    public float speed = 100f;
+    public float speed = 70f;
     private int hit_count = 0;
     private bool isHitsmall = false;
     private bool isHitHeavy = false;
+    private int distance = 8000;
     #endregion
 
     // Use this for initialization
@@ -38,7 +39,7 @@ public class enemyplanemove : MonoBehaviour {
         }
 
         Vector3 point = GameManger.Instance.MiddlePoint();
-        if (gameObject.transform.position.x>point.x+ 5000||gameObject.transform.position.x<point.x-5000||gameObject.transform.position.z>point.z+5000||gameObject.transform.position.z<point.z-5000) {
+        if (gameObject.transform.position.x>point.x+ distance||gameObject.transform.position.x<point.x-distance||gameObject.transform.position.z>point.z+distance||gameObject.transform.position.z<point.z-distance) {
             Destroy(gameObject);
         }
     }

@@ -34,13 +34,18 @@ public class ControlChatRoom : MonoBehaviour
                     chatText.text += addText;
                     break;
                  case 4:
-                    addText = "\n\n " + "<color=white>"+"*第 "+ PlayerPrefs.GetInt("CurrTime").ToString() + " 秒:"+ "</color>:"+ "<color=green>" + "[拦截成功]" + "</color>: " + GameData.message;
+                    addText = "\n\n " + "<color=white>"+"*第 "+ PlayerPrefs.GetInt("CurrTime").ToString() + " 秒:"+ "</color>:"+ "<color=green>" + "[拦截导弹成功]" + "</color>: " + GameData.message;
                     chatText.text += addText;
                     break;
                  case 5:
                     addText = "\n\n " + "<color=white>"+"*第 "+ PlayerPrefs.GetInt("CurrTime").ToString() + " 秒:"+ "</color>:"+ "<color=black>" + "[拦截失败]" + "</color>: " + GameData.message;
                     chatText.text += addText;
                     break;
+                 case 6:
+                    addText = "\n\n " + "<color=white>"+"*第 "+ PlayerPrefs.GetInt("CurrTime").ToString() + " 秒:"+ "</color>:"+ "<color=green>" + "[拦截飞机成功]" + "</color>: " + GameData.message;
+                    chatText.text += addText;
+                    break;
+
             }
             GameData.canShow = false;
             #region 关键代码

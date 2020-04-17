@@ -270,7 +270,7 @@ public class Menu : MonoBehaviour
             }
             else
             {
-                PausePanel.SetActive(false);
+                Destroy(PausePanel);
             }
         }
         #endregion
@@ -313,7 +313,7 @@ public class Menu : MonoBehaviour
         #region GUI中测试堆
         if (GUI.Button(new Rect(1400, 230, 80, 20), "Heap"))
         {
-            taskHeap t = new taskHeap();
+            /*taskHeap t = new taskHeap();
             t.insert(new TaskNode(1,20));
             t.insert(new TaskNode(2,14));
             t.insert(new TaskNode(3,26));
@@ -322,9 +322,7 @@ public class Menu : MonoBehaviour
             t.insert(new TaskNode(6,4));
             t.insert(new TaskNode(7,6));
             t.insert(new TaskNode(8,8));
-
-
-            t.show(t.top);
+            t.show(t.top);*/
         }
         #endregion
 

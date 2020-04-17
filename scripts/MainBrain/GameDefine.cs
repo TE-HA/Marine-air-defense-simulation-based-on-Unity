@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameDefine
 {
     #region 内部消息更新
+    //能打击导弹的阈值
+    public static float canFireValue = 10;
 
     //能否从数据库获取任务数据
     //true:能
@@ -42,7 +44,11 @@ public class GameDefine
     public const string DaodanPlane = "Prefabs/fire/daodan_plane";
     public const string HitSound = "Prefabs/Sound/VeryLargeExplosion";
     public const string TravelLine = "Prefabs/line";
-    public static bool MuteEffect = false;
+    public static bool MuteEffect = true;
+
+    public static string ShotRay = "Prefabs/Materials/ShotRay";
+    public static string WarningRay = "Prefabs/Materials/WarningRay";
+    public static string WatchRay = "Prefabs/Materials/WatchRay";
     #endregion
 
     #region GUI按钮name OnGUI
@@ -71,11 +77,16 @@ public class GameDefine
     public const string BloodSlider_Plane_Warning = "plane_warning_info";
     #endregion
 
+    #region 海洋Ocean
+    public static GameObject Ocean=GameObject.Find("Ocean");
+    #endregion
+
     #region 相机camera
     //栅格线
     public const string Grid = "Prefabs/UI/Grid";
     public const string CellLine = "Prefabs/UI/GridLine";
     public const string GridObj = "Prefabs/UI/GridObj";
+    public const string Ray = "Prefabs/UI/Ray";
     public const string CellLineName = "GridLine";
 
     public const string Camera2D = "Prefabs/Camera/camera2d";
@@ -136,11 +147,12 @@ public class GameDefine
         move,
         addobj,
     }
-    public enum GameObjType
+
+    public enum RayType
     {
-        Plane_Warning,
-        km_1,
-        km_2,
+        FireRay,
+        WarningRay,
+        WatchRay,
     }
     #endregion
 }

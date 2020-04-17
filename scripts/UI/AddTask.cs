@@ -17,6 +17,7 @@ public class AddTask : MonoBehaviour
     private int id;
     private string target;
     private string from;
+    private float kill;
     private int toward;
     private double time;
 
@@ -85,66 +86,6 @@ public class AddTask : MonoBehaviour
     {
     }
 
-    #region 数据库操作方法
-    public void SqlTask(string sql_task)
-    {
-        MySqlT.Instance.DealSqlToSet(sql_task);
-    }
-    #endregion
-
-
-    #region 同时更改all_task and weapon_task数据库
-    public void AddToDateBase(int id, string target, string form, int toward, double time)
-    {
-        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('attack', '" + id + "', 'pending','no')";
-        try
-        {
-            SqlTask(sql_all_task);
-        }
-        catch
-        {
-            Debug.LogError("检查添加数据");
-        }
-
-
-        string sql_weapon_task = "INSERT INTO `graduate`.`weapon_task` (`Tid`, `TTarget`, `TFrom`, `TType`, `TQueue`, `TTime`, `TToward`) VALUES ('" + id + "', '" + target + "', '" + from + "', 'attack', '-1', '" + time + "', '" + toward + "')";
-        try
-        {
-            SqlTask(sql_weapon_task);
-        }
-        catch
-        {
-            Debug.LogError("检查添加数据");
-        }
-    }
-    #endregion
-
-    #region 同时更改all_task and addobj_task数据库
-    public void AddObjDataBase(int id, string target, float x, float y)
-    {
-        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('addobj', '" + id + "', 'pending','no')";
-        try
-        {
-            SqlTask(sql_all_task);
-        }
-        catch
-        {
-            Debug.LogError("检查添加数据");
-        }
-
-
-        string sql_addobj_task = "INSERT INTO `graduate`.`addobj_task` (`Aid`, `Atarget`, `Ax`, `Ay`) VALUES ('" + id + "', '" + target + "', '" + x + "','" + y + "')";
-        try
-        {
-            SqlTask(sql_addobj_task);
-        }
-        catch
-        {
-            Debug.LogError("检查添加数据");
-        }
-    }
-    #endregion
-
 
     #region 初始化输入框，重置为空
     public void initInput()
@@ -159,27 +100,36 @@ public class AddTask : MonoBehaviour
     #region 添加随机敌机任务
     public void RandomTask()
     {
-        
-        for (int i = 1; i <= 10; i++)
-        {
-           
-            target = "km_main";
 
-            //from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
-            //PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
+        for (int i = 1; i <= 3; i++)
+        {
+            target = "km_main";
             toward = Random.Range(0, 360);
-            from = "zhanji_" + (i+(lunci-1)*10).ToString();
+            from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
+            PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
+
+            id = PlayerPrefs.GetInt("TaskID");
+            PlayerPrefs.SetInt("TaskID", id + 1);
+            kill = Random.Range(0.5f, 1);
+
+            time = PlayerPrefs.GetInt("CurrTime") + 5 * i + 5;
+            MySqlT.Instance.AddToDateBase(id, target, from, kill, toward, time);
+
+            PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
+            PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
+
+            /*from = "zhanji_" + (i + (lunci - 1) * 10).ToString();
             for (int j = 0; j < 3; j++)
             {
-         id = PlayerPrefs.GetInt("TaskID");
-            PlayerPrefs.SetInt("TaskID", id + 1);
+                id = PlayerPrefs.GetInt("TaskID");
+                PlayerPrefs.SetInt("TaskID", id + 1);
 
-                time = PlayerPrefs.GetInt("CurrTime") + 70 * i + 20 * j - 60;
+                time = PlayerPrefs.GetInt("CurrTime") + 7 * i + 2 * j;
                 AddToDateBase(id, target, from, toward, time);
 
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
                 PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
-            }
+            }*/
         }
         Count();
         Debug.Log("添加成功");
@@ -193,7 +143,8 @@ public class AddTask : MonoBehaviour
     #region 开始/继续仿真
     public void Begin()
     {
-        InputField.SetActive(false);
+        //InputField.SetActive(false);
+        Destroy(InputField);
         Time.timeScale = 1;
         GameManger.Instance.UnMuteAll();
         GameDefine.CanGetTask = true;
@@ -221,12 +172,12 @@ public class AddTask : MonoBehaviour
                 from = "zhanji_" + FindInputField(i + 10).text;
                 toward = int.Parse(FindInputField(i).text);
                 time = double.Parse(FindInputField(i + 5).text);
-
+                kill = Random.Range(0.5f, 1);
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
                 PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
                 Count();
 
-                AddToDateBase(id, PlayerPrefs.GetString(target), from, toward, time);
+                MySqlT.Instance.AddToDateBase(id, PlayerPrefs.GetString(target), from, kill, toward, time);
                 #endregion
             }
         }
@@ -253,7 +204,7 @@ public class AddTask : MonoBehaviour
                 target = PlayerPrefs.GetString(d.options[d.value].text);
                 float offset_x = float.Parse(FindInputField(i).text);
                 float offset_y = float.Parse(FindInputField(i + 5).text);
-                AddObjDataBase(id, target, offset_x, offset_y);
+                MySqlT.Instance.AddObjDataBase(id, target, offset_x, offset_y);
             }
         }
         initInput();

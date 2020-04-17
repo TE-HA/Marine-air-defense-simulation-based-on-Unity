@@ -81,6 +81,14 @@ public class GameManger
 
     }
     #endregion
+   
+    
+    #region 屏蔽海洋
+    public void OceanActive() {
+
+    }
+
+    #endregion
 
     #region 获取战场中心点世界坐标（航母）
     public Vector3 BoatMiddlePoint() {

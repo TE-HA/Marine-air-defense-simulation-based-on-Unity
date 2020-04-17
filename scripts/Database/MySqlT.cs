@@ -59,6 +59,133 @@ public class MySqlT
     #endregion
 
 
+    #region 添加至数据库
+    #region 数据库访问方法
+
+    public void SqlTask(string sql_task)
+    {
+        DealSqlToSet(sql_task);
+    }
+    #endregion
+
+    #region 添加武器反击任务
+    public void AddWeaponTask(int id, string target, string form, int toward, double time)
+    {
+        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('fire', '" + id + "', 'pending','no')";
+        //Debug.Log("增加任务"+sql_all_task);
+        try
+        {
+           SqlTask(sql_all_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+
+
+        string sql_weapon_task = "INSERT INTO `graduate`.`weapon_task` (`Tid`, `TTarget`, `TFrom`, `TType`, `TQueue`, `TTime`, `TToward`) VALUES ('" + id + "', '" + target + "', '" + form + "', 'fire', '1000', '" + time + "', '" + toward + "')";
+        //Debug.Log(sql_weapon_task);
+        try
+        {
+            SqlTask(sql_weapon_task);
+        }
+        catch
+        {
+            //
+            Debug.LogError("检查添加数据");
+        }
+    }
+
+
+    #endregion
+
+    #region 添加移动任务
+    public void AddMoveTask(int id, string obj, float offset_x, float offset_y)
+    {
+        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('move', '" + id + "', 'pending','no')";
+        //Debug.Log("增加任务"+sql_all_task);
+        try
+        {
+            SqlTask(sql_all_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+
+
+        string sql_move_task = "INSERT INTO `graduate`.`move_task` (`move_task_id`, `move_task_obj`, `move_task_x`, `move_task_z`) VALUES ('" + id + "', '" + obj + "', '" + offset_x + "', '" + offset_y + "');";
+        //Debug.Log(sql_weapon_task);
+        try
+        {
+            SqlTask(sql_move_task);
+        }
+        catch
+        {
+            //
+            Debug.LogError("检查添加数据");
+        }
+
+    }
+    #endregion
+
+    #region 同时更改all_task and weapon_task数据库
+    public void AddToDateBase(int id, string target, string form, float kill,int toward, double time)
+    {
+        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('attack', '" + id + "', 'pending','no')";
+        try
+        {
+            SqlTask(sql_all_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+
+
+        string sql_weapon_task = "INSERT INTO `graduate`.`weapon_task` (`Tid`, `TTarget`, `TFrom`, `TType`, `TQueue`, `TTime`, `TToward`) VALUES ('" + id + "', '" + target + "', '" + form + "', 'attack', '"+kill+"', '" + time + "', '" + toward + "')";
+        try
+        {
+            SqlTask(sql_weapon_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+    }
+    #endregion
+
+    #region 同时更改all_task and addobj_task数据库
+    public void AddObjDataBase(int id, string target, float x, float y)
+    {
+        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('addobj', '" + id + "', 'pending','no')";
+        try
+        {
+            SqlTask(sql_all_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+
+
+        string sql_addobj_task = "INSERT INTO `graduate`.`addobj_task` (`Aid`, `Atarget`, `Ax`, `Ay`) VALUES ('" + id + "', '" + target + "', '" + x + "','" + y + "')";
+        try
+        {
+            SqlTask(sql_addobj_task);
+        }
+        catch
+        {
+            Debug.LogError("检查添加数据");
+        }
+    }
+    #endregion
+
+
+    #endregion
+
+
+
     #region 代码模板
     void find()
     {

@@ -19,99 +19,57 @@ public class planeMove : MonoBehaviour
         return GameManger.Instance.DistanceBetweenTwoGameObject(enemy.transform,gameObject.transform);
     }
     #endregion
-
-    #region 添加至数据库
-    public void SqlTask(string sql_task)
-    {
-        MySqlT.Instance.DealSqlToSet(sql_task);
-    }
-
-    public void AddWeaponTask(int id, string target, string form, int toward, double time)
-    {
-        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('fire', '" + id + "', 'pending','no')";
-        //Debug.Log("增加任务"+sql_all_task);
-        try
-        {
-            SqlTask(sql_all_task);
-        }
-        catch
-        {
-            Debug.LogError("检查添加数据");
-        }
-
-
-        string sql_weapon_task = "INSERT INTO `graduate`.`weapon_task` (`Tid`, `TTarget`, `TFrom`, `TType`, `TQueue`, `TTime`, `TToward`) VALUES ('" + id + "', '" + target + "', '" + form + "', 'fire', '1000', '" + time + "', '" + toward + "')";
-        //Debug.Log(sql_weapon_task);
-        try
-        {
-            SqlTask(sql_weapon_task);
-        }
-        catch
-        {
-            //
-            Debug.LogError("检查添加数据");
-        }
-    }
-
-    public void AddMoveTask(int id, string obj, float offset_x, float offset_y)
-    {
-        string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('move', '" + id + "', 'pending','no')";
-        //Debug.Log("增加任务"+sql_all_task);
-        try
-        {
-            SqlTask(sql_all_task);
-        }
-        catch
-        {
-            Debug.LogError("检查添加数据");
-        }
-
-
-        string sql_move_task = "INSERT INTO `graduate`.`move_task` (`move_task_id`, `move_task_obj`, `move_task_x`, `move_task_z`) VALUES ('" + id + "', '" + obj + "', '" + offset_x + "', '" + offset_y + "');";
-        //Debug.Log(sql_weapon_task);
-        try
-        {
-            SqlTask(sql_move_task);
-        }
-        catch
-        {
-            //
-            Debug.LogError("检查添加数据");
-        }
-
-    }
-    #endregion
-
     #region 预警功能同时添加任务至数据库（指控系统）
     public void Warning()
     {
-        try
-        {
-            int lengh = GameData.enemyDaodan.Count;
-            
-            for (int i = 0; i < lengh; i++)
-            {
-                //Debug.Log(GameData.enemyDaodan[i].name);
-                if (GetDistance(GameData.enemyDaodan[i]) < minDistance)
-                {
-                    //指控功能添加。。。。
-                    
-                    AddWeaponTask(PlayerPrefs.GetInt("TaskID"), GameData.enemyDaodan[i].name, "km_1", -1, PlayerPrefs.GetInt("CurrTime") + 2);
-                    PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
+        // try
+        // {
+        int lengh = GameData.enemyDaodan.Count;
 
-                   /* AddMoveTask(PlayerPrefs.GetInt("TaskID"),"km_main",200,200);
-                    PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
+        for (int i = 0; i < lengh; i++)
+        {
+            //Debug.Log(GameData.enemyDaodan[i].name);
+            if (GetDistance(GameData.enemyDaodan[i]) < minDistance)
+            {
+                //指控功能添加。。。。
+                MySqlT.Instance.AddWeaponTask(PlayerPrefs.GetInt("TaskID"), GameData.enemyDaodan[i].name, "km_1", -1, PlayerPrefs.GetInt("CurrTime") + 2);
+                PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
+
+                /* AddMoveTask(PlayerPrefs.GetInt("TaskID"),"km_main",200,200);
+                 PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
 */
-                    GameData.enemyDaodan.Remove(GameData.enemyDaodan[i]);
-                    GameDefine.CanGetTask = true;
-                }
-                else
-                {
-                    continue;
-                }
+                GameData.enemyDaodan.Remove(GameData.enemyDaodan[i]);
+                GameDefine.CanGetTask = true;
+            }
+            else
+            {
+                continue;
             }
         }
-        catch { }
+
+        int lengh2 = GameData.enemyPlane.Count;
+
+        for (int i = 0; i < lengh2; i++)
+        {
+            //Debug.Log(GameData.enemyDaodan[i].name);
+            if (GetDistance(GameData.enemyPlane[i]) < minDistance)
+            {
+                //指控功能添加。。。。
+
+                MySqlT.Instance.AddWeaponTask(PlayerPrefs.GetInt("TaskID"), GameData.enemyPlane[i].name, "km_5", -1, PlayerPrefs.GetInt("CurrTime") + 2);
+                PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
+
+                GameData.enemyPlane.Remove(GameData.enemyPlane[i]);
+                GameDefine.CanGetTask = true;
+            }
+            else
+            {
+                continue;
+            }
+
+            //}
+            // catch { }
+        }
     }
     #endregion
 
