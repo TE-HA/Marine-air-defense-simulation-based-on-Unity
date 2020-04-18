@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class planeMove : MonoBehaviour
 {
-    #region 参数设置
+    /*#region 参数设置
     public float speed=100f;
     private int jiange = 60;//时间间隔
     private float minDistance = 10000f;//小于此距离时报警
@@ -24,21 +24,24 @@ public class planeMove : MonoBehaviour
     {
         // try
         // {
-        int lengh = GameData.enemyDaodan.Count;
+        int lengh = GameData.EnemyDaodan.Count;
 
         for (int i = 0; i < lengh; i++)
         {
             //Debug.Log(GameData.enemyDaodan[i].name);
-            if (GetDistance(GameData.enemyDaodan[i]) < minDistance)
+            if (GetDistance(GameData.EnemyDaodan[i]) < minDistance)
             {
                 //指控功能添加。。。。
-                MySqlT.Instance.AddWeaponTask(PlayerPrefs.GetInt("TaskID"), GameData.enemyDaodan[i].name, "km_1", -1, PlayerPrefs.GetInt("CurrTime") + 2);
+                //taskHeap.Instance.Insert();
+
+               /* MySqlT.Instance.AddWeaponTask(PlayerPrefs.GetInt("TaskID"), GameData.enemyDaodan[i].name, "km_1", -1, PlayerPrefs.GetInt("CurrTime") + 2);
                 PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
 
                 /* AddMoveTask(PlayerPrefs.GetInt("TaskID"),"km_main",200,200);
                  PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
-*/
-                GameData.enemyDaodan.Remove(GameData.enemyDaodan[i]);
+
+
+                GameData.EnemyDaodan.Remove(GameData.EnemyDaodan[i]);
                 GameDefine.CanGetTask = true;
             }
             else
@@ -79,7 +82,7 @@ public class planeMove : MonoBehaviour
     void FixedUpdate()
     {
         if (jiange<0) {
-            Warning();
+           // Warning();
             jiange = 60;
         }
         else {
@@ -124,5 +127,5 @@ public class planeMove : MonoBehaviour
         }
     }
     #endregion
+}*/
 }
-

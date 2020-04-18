@@ -3,37 +3,23 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
-public class TaskNode : MonoBehaviour
+public class TaskNode
 {
-    public int TaskID;
+    public string Name;
     public float Tqueue = -1;
-    public TaskNode leftchild;
-    public TaskNode rightchild;
-
     public int jiange = 60;
 
-    private void FixedUpdate()
-    {
-        if (jiange < 0)
-        {
-            Tqueue++;
-            jiange = 60;
-        }
-        else {
-            jiange--;
-        }
-    }
-
+   
     public TaskNode() {
 
     }
-    public TaskNode(int id,float queue)
+    public TaskNode(string name,float queue)
     {
-        this.TaskID = id;
+        this.Name = name;
         this.Tqueue = queue;
     }
 
     public void display() {
-        Debug.Log(TaskID);
+        Debug.Log(Name+" "+Tqueue);
     }
 }

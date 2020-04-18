@@ -97,6 +97,8 @@ public class fire_daodan_plane : MonoBehaviour
             }
             else
             {
+                taskHeap.Instance.Insert(new TaskNode(gameObject.name,gameObject.GetComponent<dangerValue>().DangerValue*10));
+
                 #region
                 GameData.messageType = 5;
                 GameData.message = " 拦截导弹失败，将其视为新威胁";

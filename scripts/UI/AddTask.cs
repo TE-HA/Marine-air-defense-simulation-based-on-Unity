@@ -101,7 +101,7 @@ public class AddTask : MonoBehaviour
     public void RandomTask()
     {
 
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= 50; i++)
         {
             target = "km_main";
             toward = Random.Range(0, 360);
@@ -110,7 +110,7 @@ public class AddTask : MonoBehaviour
 
             id = PlayerPrefs.GetInt("TaskID");
             PlayerPrefs.SetInt("TaskID", id + 1);
-            kill = Random.Range(0.5f, 1);
+            kill = Random.Range(6,20);
 
             time = PlayerPrefs.GetInt("CurrTime") + 5 * i + 5;
             MySqlT.Instance.AddToDateBase(id, target, from, kill, toward, time);
@@ -172,7 +172,7 @@ public class AddTask : MonoBehaviour
                 from = "zhanji_" + FindInputField(i + 10).text;
                 toward = int.Parse(FindInputField(i).text);
                 time = double.Parse(FindInputField(i + 5).text);
-                kill = Random.Range(0.5f, 1);
+                kill = Random.Range(6, 20);
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
                 PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
                 Count();

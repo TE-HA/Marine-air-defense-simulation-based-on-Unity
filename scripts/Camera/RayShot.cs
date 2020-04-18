@@ -9,6 +9,7 @@ public class RayShot : MonoBehaviour
     public string RayType;
     private float width = 0.5f;
     private LineRenderer lineRender;
+    private int shexianchixushijian = 120;
 
     private Material material_fire;
     private Material material_warning;
@@ -20,28 +21,9 @@ public class RayShot : MonoBehaviour
         material_watch = Resources.Load<Material>(GameDefine.WatchRay);
     }
 
-    /*
-      #region 射线信息
-        GameObject fireRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-        fireRay.GetComponent<RayShot>().from = _from;
-        fireRay.GetComponent<RayShot>().to = _target;
-        fireRay.GetComponent<RayShot>().material = Resources.Load<Material>(GameDefine.ShotRay);
 
-        GameObject warningRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-        warningRay.GetComponent<RayShot>().from = GameObject.Find("km_3");
-        warningRay.GetComponent<RayShot>().to = _target;
-        warningRay.GetComponent<RayShot>().material = Resources.Load<Material>(GameDefine.WarningRay);
 
-        GameObject watchRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-        watchRay.GetComponent<RayShot>().from = GameObject.Find("km_6");
-        watchRay.GetComponent<RayShot>().to = _target;
-        watchRay.GetComponent<RayShot>().material = Resources.Load<Material>(GameDefine.WatchRay);
-        #endregion
-
-         */
-
-    // Update is called once per frame
-    void FixedUpdate()
+     void FixedUpdate()
     {
         if (to == null || from == null)
         {
@@ -64,6 +46,13 @@ public class RayShot : MonoBehaviour
         switch (RayType) {
             case "FireRay":
                 lineRender.material = material_fire;
+                if (shexianchixushijian < 0)
+                {
+                    Destroy(gameObject);
+                }
+                else {
+                    shexianchixushijian--;
+                }
                 break;
             case "WarningRay":
                 lineRender.material = material_warning;

@@ -2,10 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData{
+public class GameData {
+ //单例可存储数据文件
+    private static GameData _Instance;
+    public static GameData Instance
+    {
+        get
+        {
+            if (_Instance == null)
+            {
+                _Instance = new GameData();
+            }
+            return _Instance;
+        }
+    }
+
+
     //enemy
-    public static List<GameObject> enemyDaodan = new List<GameObject>();
-    public static List<GameObject> enemyPlane = new List<GameObject>();
+    private static bool daodan_flag = false;
+    private static bool daodan_plane = false;
+    public List<GameObject> EnemyDaodan = new List<GameObject>();
+    public List<GameObject> EnemyPlane = new List<GameObject>();
+    public watching[] watchAssets = new watching[6*GameDefine.watchingAssets];
+
+    public static List<int> dandaoCount = new List<int>();
+    public static List<int> dandaoCountAfter = new List<int>();
 
     //message
     public static bool canShow = false;
@@ -19,4 +40,4 @@ public class GameData{
     public static int messageType = -1;
 
     public static string message = string.Empty;
-}
+     }

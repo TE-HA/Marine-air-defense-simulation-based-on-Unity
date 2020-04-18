@@ -41,11 +41,12 @@ public class weapon : MonoBehaviour
         instance = (GameObject)Instantiate(Resources.Load(GameDefine.DaodanPlane), _from.transform.Find("FirePoint").position, plane.transform.rotation);
         PlayerPrefs.SetInt(GameDefine.EnemyPlaneDaodanCount, PlayerPrefs.GetInt(GameDefine.EnemyPlaneDaodanCount) + 1);
         instance.name = "planedaodan_" + PlayerPrefs.GetInt(GameDefine.EnemyPlaneDaodanCount);
-        GameData.enemyDaodan.Add(instance);
 
         instance.GetComponent<fire_daodan_plane>().target = _target.transform;
         instance.GetComponent<fire_daodan_plane>().from = _from.transform;
-
+        instance.GetComponent<dangerValue>().DangerValue = queue;
+        GameData.Instance.EnemyDaodan.Add(instance);
+        //yujinziyuan
 
         if (instance == null)
         {
@@ -63,7 +64,6 @@ public class weapon : MonoBehaviour
         {
             return;
         }
-        // GameObject.Find(from_A).GetComponent<spaceFire>().Fire(_from,_target);
         GameObject instance = null;
         if (_from == null)
         {
@@ -73,24 +73,7 @@ public class weapon : MonoBehaviour
         instance.GetComponent<fire_daodan>().target = _target.transform;
         instance.GetComponent<fire_daodan>().from = _from.transform;
 
-        #region 射线信息
-        GameObject fireRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-        fireRay.GetComponent<RayShot>().from = _from;
-        fireRay.GetComponent<RayShot>().to = _target;
-        fireRay.GetComponent<RayShot>().RayType = GameDefine.RayType.FireRay.ToString();
 
-        GameObject warningRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-        warningRay.GetComponent<RayShot>().from = GameObject.Find("km_3");
-        warningRay.GetComponent<RayShot>().to = _target;
-        warningRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WarningRay.ToString();
-
-        GameObject watchRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-        watchRay.GetComponent<RayShot>().from = GameObject.Find("km_6");
-        watchRay.GetComponent<RayShot>().to = _target;
-        watchRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WatchRay.ToString();
-        #endregion
-
-    
         if (instance == null)
         {
             return;
@@ -118,9 +101,8 @@ public class weapon : MonoBehaviour
     {
         Vector3 bornPoint = new Vector3();
         Vector3 middle = GameManger.Instance.MiddlePoint();
-        int lenth = 3000;
-        bornPoint.x = middle.x - lenth * Mathf.Sin(toward * Mathf.PI / 180);
-        bornPoint.z = middle.z - lenth * Mathf.Cos(toward * Mathf.PI / 180);
+        bornPoint.x = middle.x - GameDefine.enemyDistance * Mathf.Sin(toward * Mathf.PI / 180);
+        bornPoint.z = middle.z - GameDefine.enemyDistance * Mathf.Cos(toward * Mathf.PI / 180);
         bornPoint.y = Random.Range(500, 600);
         return bornPoint;
     }
@@ -142,6 +124,7 @@ public class weapon : MonoBehaviour
             type = dt.Rows[0][3].ToString();
             from = dt.Rows[0][2].ToString();
             target = dt.Rows[0][1].ToString();
+            queue = (float)dt.Rows[0][4];
             time = double.Parse(dt.Rows[0][5].ToString());
             toward = int.Parse(dt.Rows[0][6].ToString());
             //Debug.Log(type + " " + from + " " + target);
@@ -160,11 +143,12 @@ public class weapon : MonoBehaviour
                     FireZhanjian(find.name, target);
                     //Debug.Log("[战舰反击]：由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹");
 
-                     #region
+                    #region
                     GameData.messageType = 2;
                     GameData.message = " 由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹";
                     GameData.canShow = true;
                     #endregion
+
                     break;
                 case "attack":
                     Vector3 bornPoint = GetBornPoint(toward);
@@ -172,7 +156,9 @@ public class weapon : MonoBehaviour
                     plane.name = from;
                     Vector3 point = GameManger.Instance.MiddlePoint();
                     plane.transform.forward = new Vector3(point.x, bornPoint.y, point.z) - bornPoint;
-                    GameData.enemyPlane.Add(plane);
+                    plane.GetComponent < dangerValue >().DangerValue= queue-5;
+                    GameData.Instance.EnemyPlane.Add(plane);
+                    
                     FirePlane(plane.name, target);
 
                     #region 修改信息 

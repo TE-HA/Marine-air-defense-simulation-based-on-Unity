@@ -6,7 +6,7 @@ public class GameDefine
 {
     #region 内部消息更新
     //能打击导弹的阈值
-    public static float canFireValue = 10;
+    public static float canFireValue = 1000;
 
     //能否从数据库获取任务数据
     //true:能
@@ -22,7 +22,11 @@ public class GameDefine
     //false：不能
     public static bool ShowStatus = false;
 
-    public static float percent = 0.6f;
+    public static float percent = 0.5f;
+    
+    public static int fireAssets=1;
+    public static int watchingAssets=3;
+    public static int warningAssets=3;
     #endregion
 
     #region 所有不变类型的数据定义
@@ -49,6 +53,10 @@ public class GameDefine
     public static string ShotRay = "Prefabs/Materials/ShotRay";
     public static string WarningRay = "Prefabs/Materials/WarningRay";
     public static string WatchRay = "Prefabs/Materials/WatchRay";
+    public static string FireRayName = "FireRay";
+    public static string WarningRayName = "WarningRay";
+    public static string WatchRayName = "WatchRay";
+
     #endregion
 
     #region GUI按钮name OnGUI
@@ -126,7 +134,7 @@ public class GameDefine
     #region 敌军信息
     //enemy plane daodan count
     public const string EnemyPlaneDaodanCount = "EnemyPlaneDaodanCount";
-
+    public const int enemyDistance = 7000;
     //enemyPlaneCount
     public static string EnemyPlaneCount = "EnemyPlaneCount";
     #endregion
