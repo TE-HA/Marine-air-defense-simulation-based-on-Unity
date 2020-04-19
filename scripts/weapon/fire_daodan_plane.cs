@@ -97,8 +97,16 @@ public class fire_daodan_plane : MonoBehaviour
             }
             else
             {
-                taskHeap.Instance.Insert(new TaskNode(gameObject.name,gameObject.GetComponent<dangerValue>().DangerValue*10));
-
+                if (GameManger.Instance.DistanceBetweenTwoGameObject(gameObject.transform, GameObject.Find("km_main").transform) < 3000)
+                {
+                    gameObject.GetComponent<dangerValue>().DangerValue += 800;
+                    taskHeap.Instance.Insert(new TaskNode(gameObject.name, gameObject.GetComponent<dangerValue>().DangerValue));
+                }
+                else
+                {
+                    gameObject.GetComponent<dangerValue>().DangerValue *= 2;
+                    taskHeap.Instance.Insert(new TaskNode(gameObject.name, gameObject.GetComponent<dangerValue>().DangerValue));
+                }
                 #region
                 GameData.messageType = 5;
                 GameData.message = " 拦截导弹失败，将其视为新威胁";

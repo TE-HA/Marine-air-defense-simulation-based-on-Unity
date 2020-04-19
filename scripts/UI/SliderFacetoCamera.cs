@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SliderFacetoCamera : MonoBehaviour
 {
-
     #region 血条始终朝向MainCamera
     private Camera refCamera;
     //public bool reverseFace = false;
@@ -13,7 +12,6 @@ public class SliderFacetoCamera : MonoBehaviour
     void Awake()
     {
         mRoot = transform;
-
     }
 
     // Update is called once per frame
@@ -31,8 +29,9 @@ public class SliderFacetoCamera : MonoBehaviour
                 Vector3 scale = new Vector3(x, x, x);
                 gameObject.transform.localScale = scale;
             }
-            else {
-                gameObject.transform.localScale = new Vector3(1.5f,1.5f,1.5f);
+            else
+            {
+                gameObject.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             }
 
             Vector3 targetPos = mRoot.position + refCamera.transform.rotation * Vector3.back;
@@ -46,4 +45,6 @@ public class SliderFacetoCamera : MonoBehaviour
         }
     }
     #endregion
+
 }
+   

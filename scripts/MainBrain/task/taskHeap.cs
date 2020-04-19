@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 public class taskHeap
 {
     //单例可存储数据文件
@@ -33,7 +34,12 @@ public class taskHeap
     {
         for (int i = 0; i < TaskCount; i++)
         {
-            heap[i].Tqueue*=UnityEngine.Random.Range(1,10);
+            heap[i].Tqueue += 10;
+            try
+            {
+                GameObject.Find(heap[i].Name).GetComponent<dangerValue>().DangerValue += 10;
+            }
+            catch { }
         }
     }
 

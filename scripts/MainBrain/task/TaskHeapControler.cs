@@ -34,63 +34,47 @@ public class TaskHeapControler : MonoBehaviour
             string target = taskHeap.Instance.heap[0].Name;
             string fireUnit = "km_" + FireUnit(target);
 
-            for (int i=0;i<6*GameDefine.watchingAssets-1;i++) {
-                int first = i;
-                if (!GameData.Instance.watchAssets[first].used)
+            //制导资源
+            if (taskHeap.Instance.heap[0].Tqueue < 200)
+            {
+                for (int i = 0; i < 6 * GameDefine.watchingAssets - 1; i++)
                 {
-                    GameData.Instance.watchAssets[first]._target = GameObject.Find(target);
-                    GameData.Instance.watchAssets[first].used = true;
-                    GameData.Instance.watchAssets[first].index = first;
-                }
-                int second = i + 1;
-                if (first != second && GameData.Instance.watchAssets[second].used)
-                {
-                    GameData.Instance.watchAssets[second]._target = GameObject.Find(target);
-                    GameData.Instance.watchAssets[second].used = true;
-                    GameData.Instance.watchAssets[second].index = second;
-                    break;
-                }
-                else
-                {
-                    if (second == 17)
+                    int first = i;
+                    if (!GameData.Instance.watchAssets[first].used)
                     {
-                        second = -1;
-                    }
-                    second++;
-                }
-            }
-            /*int first;
-            while (true)
-            {
-                first = Random.Range(0, 17);
-                if (!GameData.Instance.watchAssets[first].used)
-                {
-                    GameData.Instance.watchAssets[first]._target = GameObject.Find(target);
-                    GameData.Instance.watchAssets[first].used = true;
-                    GameData.Instance.watchAssets[first].index = first;
-                    break;
-                }
-                else {
-                    continue;
-                }
-            }
+                        //Debug.Log("我占用了第 " + first + " 号制导资源");
+                        GameData.Instance.watchAssets[first].used = true;
 
-            int second;
-            while (true)
-            {
-                second = Random.Range(0, 17);
-                if (first != second && !GameData.Instance.watchAssets[second].used)
-                {
-                    GameData.Instance.watchAssets[second]._target = GameObject.Find(target);
-                    GameData.Instance.watchAssets[second].used = true;
-                    GameData.Instance.watchAssets[second].index = second;
-                    break;
+                        GameObject watching = (GameObject)Instantiate(Resources.Load(GameDefine.WatchRayRay));
+                        watching.GetComponent<watching>()._target = GameObject.Find(target);
+                        watching.GetComponent<watching>()._from = GameObject.Find("km_"+((first / GameDefine.watchingAssets)+1).ToString());
+                        watching.GetComponent<watching>().used = true;
+                        watching.GetComponent<watching>().ones = false;
+                        watching.GetComponent<watching>().index = first;
+                        break;
+                    }
                 }
-                else
+
+                for (int i = 6 * GameDefine.watchingAssets - 1; i >= 0; i--)
                 {
-                    continue;
+                    int second = i;
+                    if (!GameData.Instance.watchAssets[second].used)
+                    {
+                        //Debug.Log("我占用了第 " + second + " 号制导资源");
+                        GameData.Instance.watchAssets[second].used = true;
+
+                        GameObject watching = (GameObject)Instantiate(Resources.Load(GameDefine.WatchRayRay));
+                        watching.GetComponent<watching>()._target = GameObject.Find(target);
+                        watching.GetComponent<watching>()._from = GameObject.Find("km_"+((second / GameDefine.watchingAssets)+1).ToString());
+                        watching.GetComponent<watching>().used = true;
+                        watching.GetComponent<watching>().ones = false;
+                        watching.GetComponent<watching>().index = second;
+                        break;
+
+                    }
                 }
-            }*/
+            }
+        
             MySqlT.Instance.AddWeaponTask(PlayerPrefs.GetInt("TaskID"), target, fireUnit, -1, PlayerPrefs.GetInt("CurrTime") + 1);
             PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
             GameDefine.CanGetTask = true;
@@ -105,10 +89,10 @@ public class TaskHeapControler : MonoBehaviour
 
         for (int i = 0; i < disArr.Length; i++)
         {
-            Debug.Log(GameObject.Find("km_" + (i + 1).ToString()).name);
+            //Debug.Log(GameObject.Find("km_" + (i + 1).ToString()).name);
             try
             {
-                disArr[i] = GameManger.Instance.DistanceBetweenTwoGameObject(GameObject.Find(target).transform, GameObject.Find("km_" + (i + 1).ToString()).transform);
+                disArr[i] = (GameManger.Instance.DistanceBetweenTwoGameObject(GameObject.Find(target).transform, GameObject.Find("km_" + (i + 1).ToString()).transform))/ PlayerPrefs.GetInt("km_" + (i + 1).ToString() + "_fireAssets");
             }
             catch {
                 disArr[i] = float.MaxValue;
@@ -118,7 +102,7 @@ public class TaskHeapControler : MonoBehaviour
 
         for (int i = 0; i < disArr.Length; i++)
         {
-            for (int j = i; j > 0; j--)
+            for (int j = disArr.Length-1; j > i; j--)
             {
                 if (disArr[i] > disArr[j])
                 {
@@ -132,13 +116,20 @@ public class TaskHeapControler : MonoBehaviour
                 }
             }
         }
+        string ziyuan = "";
+        for (int i = 0; i < disArr.Length; i++)
+        {
+            ziyuan += disArr[i].ToString() + "_";
+        }
+        //Debug.Log(ziyuan);
 
         for (int i = 0; i < disArr.Length; i++)
         {
-            if (GameObject.Find("km_"+index[i].ToString()).GetComponent<fire>().used == false)
+            if (GameObject.Find("km_"+index[i].ToString()).GetComponent<fire>().used == false&&PlayerPrefs.GetInt("km_"+index[i].ToString()+"_fireAssets")>0)
             {
                 GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>()._target = GameObject.Find(target);
                 GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>().used =true;
+                PlayerPrefs.SetInt("km_" + index[i].ToString() + "_fireAssets",PlayerPrefs.GetInt("km_" + index[i].ToString() + "_fireAssets")-1);
                 return index[i].ToString();
             }
         }

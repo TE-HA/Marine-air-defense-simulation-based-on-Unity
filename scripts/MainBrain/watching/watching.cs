@@ -5,9 +5,16 @@ using UnityEngine;
 public class watching : MonoBehaviour
 {
     public GameObject _target;
+    public GameObject _from;
     public int index = -1;
     public bool used = false;
     public bool ones = false;
+
+    public watching()
+    {
+
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -16,25 +23,28 @@ public class watching : MonoBehaviour
 
     public void Ray()
     {
-        if (!ones) {
-            GameObject watchRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
-            watchRay.name = GameDefine.WatchRay;
-            watchRay.GetComponent<RayShot>().from = gameObject;
-            watchRay.GetComponent<RayShot>().to = _target;
-            watchRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WatchRay.ToString();
-            ones = true;
-        }
+        GameObject watchRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
+        watchRay.name = GameDefine.WatchRay;
+        watchRay.GetComponent<RayShot>().from = _from;
+        watchRay.GetComponent<RayShot>().to = _target;
+        watchRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WatchRay.ToString();
+        ones = true;
     }
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (used) {
+        if (!ones && used)
+        {
             Ray();
         }
-        if (_target==null) {
-            used = false;
-            if (index!=-1) {
+        if (_target == null)
+        {
+            if (index != -1)
+            {
                 GameData.Instance.watchAssets[index].used = false;
+                //Debug.Log("我释放了第 " + index + " 号制导资源");
+                index = -1;
+                Destroy(gameObject);
             }
         }
     }

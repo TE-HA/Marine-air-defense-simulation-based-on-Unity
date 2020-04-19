@@ -18,6 +18,7 @@ public class lookat : MonoBehaviour {
             return;
         }
         transform.LookAt(target);
-        //transform.RotateAround(target.transform.position, Vector3.up, 200 * Time.deltaTime);
+
+
     }
 }

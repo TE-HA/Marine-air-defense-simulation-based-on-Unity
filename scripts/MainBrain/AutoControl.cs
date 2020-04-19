@@ -102,7 +102,7 @@ public class AutoControl : MonoBehaviour
         //task
         if (GameDefine.CanGetTask)
         {
-            Debug.Log("获取任务");
+            //Debug.Log("获取任务");
             GetAllTask(MySqlT._get_all_task);
             GameDefine.CanGetTask = false;
         }

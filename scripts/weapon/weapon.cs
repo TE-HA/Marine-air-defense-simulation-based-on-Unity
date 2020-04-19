@@ -140,7 +140,13 @@ public class weapon : MonoBehaviour
                 #region 判断武器攻击类型
                 case "fire":
                     GameObject find = GameObject.Find(from);
-                    FireZhanjian(find.name, target);
+                    try
+                    {
+                        FireZhanjian(find.name, target);
+                    }
+                    catch {
+                        Debug.Log("[彩蛋出现]:弹药耗尽！");
+                    }
                     //Debug.Log("[战舰反击]：由 " + PlayerPrefs.GetString(find.name) + " 发射，拦截 " + target + " 导弹");
 
                     #region

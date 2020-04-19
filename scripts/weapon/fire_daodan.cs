@@ -9,7 +9,7 @@ public class fire_daodan : MonoBehaviour
     private float first_speed = 100f;
     private float RocSpeed = 300f;
     // private float RocSpeed_second = 90000000f;
-    private float height = 30f;
+    private float height = 60f;
     public Transform target;
     public Transform from;
     private float accelerlation = 40f;

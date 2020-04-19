@@ -16,6 +16,9 @@ public class warning : MonoBehaviour
     #region 判断导弹距离战场距离的功能
     public float GetDistance(GameObject enemy)
     {
+        if (enemy==null) {
+            return float.MaxValue;
+        }
         return GameManger.Instance.DistanceBetweenTwoGameObject(enemy.transform, gameObject.transform);
     }
     #endregion

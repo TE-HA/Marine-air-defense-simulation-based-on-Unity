@@ -101,7 +101,7 @@ public class AddTask : MonoBehaviour
     public void RandomTask()
     {
 
-        for (int i = 1; i <= 50; i++)
+        for (int i = 1; i <= 70; i++)
         {
             target = "km_main";
             toward = Random.Range(0, 360);
@@ -132,7 +132,7 @@ public class AddTask : MonoBehaviour
             }*/
         }
         Count();
-        Debug.Log("添加成功");
+        //Debug.Log("添加成功");
         lunci++;
     }
     #endregion

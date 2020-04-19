@@ -83,6 +83,17 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetInt("km_5_info_slider", 20000);
         PlayerPrefs.SetInt("km_6_info_slider", 20000);
         PlayerPrefs.SetInt("plane_warning_info_slider", 20000);
+
+
+        PlayerPrefs.SetInt("km_1_fireAssets", 20);
+        PlayerPrefs.SetInt("km_2_fireAssets", 40);
+        PlayerPrefs.SetInt("km_3_fireAssets", 25);
+        PlayerPrefs.SetInt("km_4_fireAssets", 20);
+        PlayerPrefs.SetInt("km_5_fireAssets", 35);
+        PlayerPrefs.SetInt("km_6_fireAssets", 45);
+
+
+
         #endregion
 
         #region judge by tag 的链表
@@ -122,6 +133,9 @@ public class Menu : MonoBehaviour
         InitBloodSlider("km_5");
         InitBloodSlider("km_6");
         InitBloodSlider("Plane_Warning");
+
+        
+
         #endregion
         #endregion
     }
@@ -310,15 +324,20 @@ public class Menu : MonoBehaviour
         }
         #endregion
 
-        #region GUI中测试堆
-        if (GUI.Button(new Rect(1400, 230, 80, 20), "Heap"))
+        string ziyuan = "";
+        string ziyuan2 = "";
+        #region GUI中显示资源
+        if (GUI.Button(new Rect(1400, 230, 80, 20), "FireAssets"))
         {
+            for (int i = 1; i <= 6; i++)
+            {
+                ziyuan += PlayerPrefs.GetInt("km_" + i + "_fireAssets").ToString() + "_";
+            }
+            Debug.Log(ziyuan);
+            Debug.Log(PlayerPrefs.GetInt("km_main_info_slider"));
 
-        }
 
-        if (GUI.Button(new Rect(1400, 260, 80, 20), "HeapShow"))
-        {
-            taskHeap.Instance.Show();
+          
         }
         #endregion
     }

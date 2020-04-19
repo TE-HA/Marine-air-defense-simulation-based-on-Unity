@@ -6,7 +6,7 @@ public class GameDefine
 {
     #region 内部消息更新
     //能打击导弹的阈值
-    public static float canFireValue = 1000;
+    public static float canFireValue = 100;
 
     //能否从数据库获取任务数据
     //true:能
@@ -56,6 +56,7 @@ public class GameDefine
     public static string FireRayName = "FireRay";
     public static string WarningRayName = "WarningRay";
     public static string WatchRayName = "WatchRay";
+    public const string WatchRayRay= "Prefabs/UI/watching";
 
     #endregion
 
