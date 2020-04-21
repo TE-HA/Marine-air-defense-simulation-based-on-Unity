@@ -25,6 +25,17 @@ public class AddTask : MonoBehaviour
     private float queue = -1;
     #endregion
 
+public string[] ZhanjianName = new string[7];
+
+    public void initZhanjian()
+    {
+        ZhanjianName[0] = "km_main";
+        for (int i = 1; i <= 6; i++)
+        {
+            ZhanjianName[i] = "km_" + i;
+        }
+    }
+
     #region 根据id寻找对应的控件
     public InputField FindInputField(int rows)
     {
@@ -43,6 +54,10 @@ public class AddTask : MonoBehaviour
 
     void Start()
     {
+        #region init zhanjian name
+        initZhanjian();
+        #endregion
+
         #region 初始化暂停、静音以供输入
         if (Time.timeScale == 0)
         {
@@ -85,7 +100,9 @@ public class AddTask : MonoBehaviour
     void FixedUpdate()
     {
     }
-
+    public string RandomEnemyName() {
+        return ZhanjianName[Random.Range(0,7)];
+    }
 
     #region 初始化输入框，重置为空
     public void initInput()
@@ -96,14 +113,15 @@ public class AddTask : MonoBehaviour
         }
     }
     #endregion
+
     int lunci = 1;
+
     #region 添加随机敌机任务
     public void RandomTask()
     {
-
-        for (int i = 1; i <= 70; i++)
+        for (int i = 1; i <= 50; i++)
         {
-            target = "km_main";
+            target = RandomEnemyName();
             toward = Random.Range(0, 360);
             from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
             PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));

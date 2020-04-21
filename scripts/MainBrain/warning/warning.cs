@@ -7,16 +7,22 @@ public class warning : MonoBehaviour
     private bool used = false;
     private GameObject follow;
     private int minDistance = 10000;
+    string fire;
+    int num;
+    bool flag = false;
     // Use this for initialization
     void Start()
     {
+        fire = gameObject.name;
+        num = int.Parse(fire.Substring(3, 1));
 
     }
 
     #region 判断导弹距离战场距离的功能
     public float GetDistance(GameObject enemy)
     {
-        if (enemy==null) {
+        if (enemy == null)
+        {
             return float.MaxValue;
         }
         return GameManger.Instance.DistanceBetweenTwoGameObject(enemy.transform, gameObject.transform);
@@ -50,10 +56,11 @@ public class warning : MonoBehaviour
         {
             if (GetDistance(GameData.Instance.EnemyDaodan[i]) < minDistance)
             {
-                follow=GameData.Instance.EnemyDaodan[i];
+                follow = GameData.Instance.EnemyDaodan[i];
                 Ray(follow);
                 taskHeap.Instance.Insert(new TaskNode(GameData.Instance.EnemyDaodan[i].name, GameData.Instance.EnemyDaodan[i].GetComponent<dangerValue>().DangerValue));
                 GameData.Instance.EnemyDaodan.Remove(GameData.Instance.EnemyDaodan[i]);
+
                 return;
             }
             else
@@ -71,6 +78,8 @@ public class warning : MonoBehaviour
         warningRay.GetComponent<RayShot>().from = gameObject;
         warningRay.GetComponent<RayShot>().to = _target;
         warningRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WarningRay.ToString();
+        GameData.Instance.warning[num - 1]--;
+        flag = true;
         used = true;
     }
 
@@ -80,7 +89,13 @@ public class warning : MonoBehaviour
         {
             Warning();
         }
-        if (follow==null) {
+        if (follow == null)
+        {
+            if (flag)
+            {
+                GameData.Instance.warning[num - 1]++;
+                flag = false;
+            }
             used = false;
         }
     }

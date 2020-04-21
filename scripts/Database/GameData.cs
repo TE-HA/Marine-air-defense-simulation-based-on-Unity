@@ -24,8 +24,14 @@ public class GameData
     private static bool daodan_plane = false;
     public List<GameObject> EnemyDaodan = new List<GameObject>();
     public List<GameObject> EnemyPlane = new List<GameObject>();
-    public watching[] watchAssets = new watching[6 * GameDefine.watchingAssets];
 
+    public watching[] watchAssets = new watching[6 * GameDefine.watchingAssets];
+    public float[] xueliang = new float[7];
+    public int[] daodan = new int[6];
+    public int[] fire = new int[6];
+    public int[] warning = new int[6];
+    public int[] watch = new int[6];
+    
     public static List<int> dandaoCount = new List<int>();
     public static List<int> dandaoCountAfter = new List<int>();
 

@@ -137,4 +137,14 @@ public class GameManger
     }
     #endregion
 
+ #region 返回两Vector3的距离
+    public float DistanceBetweenTwoVector3(Vector3 first, Vector3 second)
+    {
+        float x =first.x - second.x;
+        float y = first.y - second.y;
+        float z = first.z - second.z;
+        return Mathf.Sqrt(x * x + y * y + z * z);
+    }
+    #endregion
+
    }

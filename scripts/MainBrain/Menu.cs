@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
@@ -13,9 +14,11 @@ public class Menu : MonoBehaviour
     public GameObject plane;
     public GameObject PausePanel;
     public GameObject ShowLogPanel;
+    public GameObject ShowAssets;
     public int ClearTime = 0;
     public int jiange = 0;
     public List<string> tagList;
+    public List<string> zhanjian;
     #endregion
 
     // 数据定义
@@ -82,15 +85,14 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetInt("km_4_info_slider", 20000);
         PlayerPrefs.SetInt("km_5_info_slider", 20000);
         PlayerPrefs.SetInt("km_6_info_slider", 20000);
-        PlayerPrefs.SetInt("plane_warning_info_slider", 20000);
 
 
-        PlayerPrefs.SetInt("km_1_fireAssets", 20);
-        PlayerPrefs.SetInt("km_2_fireAssets", 40);
-        PlayerPrefs.SetInt("km_3_fireAssets", 25);
-        PlayerPrefs.SetInt("km_4_fireAssets", 20);
-        PlayerPrefs.SetInt("km_5_fireAssets", 35);
-        PlayerPrefs.SetInt("km_6_fireAssets", 45);
+        PlayerPrefs.SetInt("km_1_fireAssets", 80);
+        PlayerPrefs.SetInt("km_2_fireAssets", 80);
+        PlayerPrefs.SetInt("km_3_fireAssets", 90);
+        PlayerPrefs.SetInt("km_4_fireAssets", 70);
+        PlayerPrefs.SetInt("km_5_fireAssets", 85);
+        PlayerPrefs.SetInt("km_6_fireAssets", 75);
 
 
 
@@ -107,6 +109,15 @@ public class Menu : MonoBehaviour
         tagList.Add("sun");
         tagList.Add("mycamera");
         tagList.Add("other");
+
+        zhanjian = new List<string>();
+        zhanjian.Add("km_main");
+        zhanjian.Add("km_1");
+        zhanjian.Add("km_2");
+        zhanjian.Add("km_3");
+        zhanjian.Add("km_4");
+        zhanjian.Add("km_5");
+        zhanjian.Add("km_6");
         #endregion
 
         #region 初始化参数输入界面,作战想定参数输入
@@ -121,6 +132,8 @@ public class Menu : MonoBehaviour
         #region 初始化游戏日志
         ShowLogPanel = GameObject.Find(GameDefine.ShowLogPanelName);
         UnShowLog();
+        ShowAssets = GameObject.Find(GameDefine.ShowAssets);
+        UnShowAssetsPanel();
         #endregion
 
         #region 初始化血条位置
@@ -134,7 +147,7 @@ public class Menu : MonoBehaviour
         InitBloodSlider("km_6");
         InitBloodSlider("Plane_Warning");
 
-        
+
 
         #endregion
         #endregion
@@ -196,6 +209,24 @@ public class Menu : MonoBehaviour
         locayion_xx.text = "(" + (int)middle.x + " , " + (int)middle.z + ")";
     }
     #endregion
+
+    #region 游戏资源打开与关闭方法
+    public void ShowAssetsPanel()
+    {
+        ShowAssets.GetComponent<CanvasGroup>().alpha = 1;
+        ShowAssets.GetComponent<CanvasGroup>().interactable = true;
+        ShowAssets.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        GameDefine.ShowAssetsLog = true;
+    }
+    public void UnShowAssetsPanel()
+    {
+        ShowAssets.GetComponent<CanvasGroup>().alpha = 0;
+        ShowAssets.GetComponent<CanvasGroup>().interactable = false;
+        ShowAssets.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        GameDefine.ShowAssetsLog = false;
+    }
+    #endregion
+
 
     #region 游戏日志打开与关闭方法
     public void ShowLog()
@@ -324,22 +355,34 @@ public class Menu : MonoBehaviour
         }
         #endregion
 
-        string ziyuan = "";
-        string ziyuan2 = "";
         #region GUI中显示资源
         if (GUI.Button(new Rect(1400, 230, 80, 20), "FireAssets"))
         {
-            for (int i = 1; i <= 6; i++)
+            if (GameDefine.ShowAssetsLog)
             {
-                ziyuan += PlayerPrefs.GetInt("km_" + i + "_fireAssets").ToString() + "_";
+                UnShowAssetsPanel();
             }
-            Debug.Log(ziyuan);
-            Debug.Log(PlayerPrefs.GetInt("km_main_info_slider"));
+            else
+            {
 
+                ShowAssetsPanel();
+            }
+        }
+        #endregion
 
-          
+        #region GUI中战后分析
+        if (GUI.Button(new Rect(1400, 260, 80, 20), "Analyse"))
+        {
+            DataSet ds = MySqlT.Instance.DealSqlToSet(MySqlT._count_every_daodan);
+            DataTable dt = ds.Tables[0];
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!zhanjian.Contains(dt.Rows[i][0].ToString()))
+                {
+                    Debug.Log(dt.Rows[i][1]);
+                }
+            }
         }
         #endregion
     }
 }
-

@@ -82,7 +82,7 @@ public class fire_daodan_plane : MonoBehaviour
         {
             PlayerPrefs.SetInt(collision.gameObject.name + "_info_slider", PlayerPrefs.GetInt(collision.gameObject.name + "_info_slider") - 2000);
             Destroy(gameObject);
-            Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
+            //Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
         }
         else if (collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
         {

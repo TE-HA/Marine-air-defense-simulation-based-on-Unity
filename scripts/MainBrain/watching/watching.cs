@@ -28,6 +28,12 @@ public class watching : MonoBehaviour
         watchRay.GetComponent<RayShot>().from = _from;
         watchRay.GetComponent<RayShot>().to = _target;
         watchRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WatchRay.ToString();
+
+
+        string fire = _from.name;
+        int num = int.Parse(fire.Substring(3, 1));
+        GameData.Instance.watch[num - 1]--;
+
         ones = true;
     }
     // Update is called once per frame
@@ -44,6 +50,10 @@ public class watching : MonoBehaviour
                 GameData.Instance.watchAssets[index].used = false;
                 //Debug.Log("我释放了第 " + index + " 号制导资源");
                 index = -1;
+                string fire = _from.name;
+                int num = int.Parse(fire.Substring(3, 1));
+                GameData.Instance.watch[num - 1]++;
+
                 Destroy(gameObject);
             }
         }

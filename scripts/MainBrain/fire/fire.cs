@@ -16,13 +16,18 @@ public class fire : MonoBehaviour
 
     public void Ray()
     {
-        if (!ones) {
+        if (!ones)
+        {
             GameObject fireRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
             fireRay.name = GameDefine.FireRayName;
             fireRay.GetComponent<RayShot>().from = gameObject;
             fireRay.GetComponent<RayShot>().to = _target;
             fireRay.GetComponent<RayShot>().RayType = GameDefine.RayType.FireRay.ToString();
             ones = true;
+
+            string fire = gameObject.name;
+            int num = int.Parse(fire.Substring(3, 1));
+            GameData.Instance.fire[num - 1]=0;
         }
     }
 
@@ -36,9 +41,15 @@ public class fire : MonoBehaviour
             Ray();
             fasheshiyan--;
         }
-        else {
+        else
+        {
             used = false;
             ones = false;
+
+            string fire = gameObject.name;
+            int num = int.Parse(fire.Substring(3, 1));
+            GameData.Instance.fire[num - 1]=1;
+
             fasheshiyan = 120;
         }
 

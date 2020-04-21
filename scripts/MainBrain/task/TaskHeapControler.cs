@@ -47,7 +47,7 @@ public class TaskHeapControler : MonoBehaviour
 
                         GameObject watching = (GameObject)Instantiate(Resources.Load(GameDefine.WatchRayRay));
                         watching.GetComponent<watching>()._target = GameObject.Find(target);
-                        watching.GetComponent<watching>()._from = GameObject.Find("km_"+((first / GameDefine.watchingAssets)+1).ToString());
+                        watching.GetComponent<watching>()._from = GameObject.Find("km_" + ((first / GameDefine.watchingAssets) + 1).ToString());
                         watching.GetComponent<watching>().used = true;
                         watching.GetComponent<watching>().ones = false;
                         watching.GetComponent<watching>().index = first;
@@ -65,7 +65,7 @@ public class TaskHeapControler : MonoBehaviour
 
                         GameObject watching = (GameObject)Instantiate(Resources.Load(GameDefine.WatchRayRay));
                         watching.GetComponent<watching>()._target = GameObject.Find(target);
-                        watching.GetComponent<watching>()._from = GameObject.Find("km_"+((second / GameDefine.watchingAssets)+1).ToString());
+                        watching.GetComponent<watching>()._from = GameObject.Find("km_" + ((second / GameDefine.watchingAssets) + 1).ToString());
                         watching.GetComponent<watching>().used = true;
                         watching.GetComponent<watching>().ones = false;
                         watching.GetComponent<watching>().index = second;
@@ -73,8 +73,9 @@ public class TaskHeapControler : MonoBehaviour
 
                     }
                 }
+
             }
-        
+
             MySqlT.Instance.AddWeaponTask(PlayerPrefs.GetInt("TaskID"), target, fireUnit, -1, PlayerPrefs.GetInt("CurrTime") + 1);
             PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
             GameDefine.CanGetTask = true;
@@ -92,9 +93,15 @@ public class TaskHeapControler : MonoBehaviour
             //Debug.Log(GameObject.Find("km_" + (i + 1).ToString()).name);
             try
             {
-                disArr[i] = (GameManger.Instance.DistanceBetweenTwoGameObject(GameObject.Find(target).transform, GameObject.Find("km_" + (i + 1).ToString()).transform))/ PlayerPrefs.GetInt("km_" + (i + 1).ToString() + "_fireAssets");
+                Vector3 time_2s = new Vector3();
+                time_2s.x = 200 * 2 * GameObject.Find(target).transform.forward.x;
+                time_2s.y = 200 * 2 * GameObject.Find(target).transform.forward.y;
+                time_2s.z = 200 * 2 * GameObject.Find(target).transform.forward.z;
+                //Debug.Log(time_2s);
+                disArr[i] = (GameManger.Instance.DistanceBetweenTwoVector3(GameObject.Find(target).transform.position+time_2s, GameObject.Find("km_" + (i + 1).ToString()).transform.position)) / PlayerPrefs.GetInt("km_" + (i + 1).ToString() + "_fireAssets");
             }
-            catch {
+            catch
+            {
                 disArr[i] = float.MaxValue;
             }
             index[i] = i + 1;
@@ -102,7 +109,7 @@ public class TaskHeapControler : MonoBehaviour
 
         for (int i = 0; i < disArr.Length; i++)
         {
-            for (int j = disArr.Length-1; j > i; j--)
+            for (int j = disArr.Length - 1; j > i; j--)
             {
                 if (disArr[i] > disArr[j])
                 {
@@ -125,13 +132,14 @@ public class TaskHeapControler : MonoBehaviour
 
         for (int i = 0; i < disArr.Length; i++)
         {
-            if (GameObject.Find("km_"+index[i].ToString()).GetComponent<fire>().used == false&&PlayerPrefs.GetInt("km_"+index[i].ToString()+"_fireAssets")>0)
+            if (GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>().used == false && PlayerPrefs.GetInt("km_" + index[i].ToString() + "_fireAssets") > 0)
             {
                 GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>()._target = GameObject.Find(target);
-                GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>().used =true;
-                PlayerPrefs.SetInt("km_" + index[i].ToString() + "_fireAssets",PlayerPrefs.GetInt("km_" + index[i].ToString() + "_fireAssets")-1);
+                GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>().used = true;
+                PlayerPrefs.SetInt("km_" + index[i].ToString() + "_fireAssets", PlayerPrefs.GetInt("km_" + index[i].ToString() + "_fireAssets") - 1);
                 return index[i].ToString();
             }
+
         }
         Debug.Log("[彩蛋出现]，武器均被占用！");
         return null;

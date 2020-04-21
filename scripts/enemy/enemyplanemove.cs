@@ -28,13 +28,13 @@ public class enemyplanemove : MonoBehaviour {
         }
         if (isHitsmall)
         {
-            Destroy(Instantiate(Resources.Load(GameDefine.BeHitEffect), transform.position, Quaternion.identity), 1f);
+           // Destroy(Instantiate(Resources.Load(GameDefine.BeHitEffect), transform.position, Quaternion.identity), 1f);
         }
 
         if (transform.position.y < 5)
         {
             //LoadShip();            
-            Destroy(Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.position, Quaternion.identity), 1f);
+           // Destroy(Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.position, Quaternion.identity), 1f);
             Destroy(gameObject);
         }
 

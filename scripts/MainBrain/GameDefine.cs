@@ -22,6 +22,19 @@ public class GameDefine
     //false：不能
     public static bool ShowStatus = false;
 
+
+    //能否显示游戏运行资源日志
+    //true：能
+    //false：不能
+    public static bool ShowAssetsLog = false;
+
+
+    //能否显示射线
+    //true：能
+    //false：不能
+    public static bool canRay = true;
+
+    //导弹毁伤的概率
     public static float percent = 0.5f;
     
     public static int fireAssets=1;
@@ -33,7 +46,6 @@ public class GameDefine
     #endregion
 
     #region 场景sence
-    public const string startSence = "startGame";
     public const string mainSence = "currentGame";
     #endregion
 
@@ -75,6 +87,7 @@ public class GameDefine
     public const string Panel = "Prefabs/UI/Panel";
     public const string PausePanelName = "InputMenu";
     public const string ShowLogPanelName = "GameLog";
+    public const string ShowAssets = "Assets";
     public const string BloodSlider = "Prefabs/UI/BloodSlider";
     public const string BloodSlider_main = "km_main_info";
     public const string BloodSlider_1 = "km_1_info";
