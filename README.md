@@ -42,3 +42,6 @@ Marine air defense simulation based on Unity in 2020
 
 完成各模块功能作图，完善论文体系结构，为后期填充内容打下基础
 2020.4.24
+
+今天咸鱼了，早上完成个petri图，没了
+2020.4.25
