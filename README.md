@@ -45,3 +45,6 @@ Marine air defense simulation based on Unity in 2020
 
 今天咸鱼了，早上完成个petri图，没了
 2020.4.25
+
+完善系统所使用的工具MySql、C#、3D MAX、etc，并构思之后的论文
+2020.4.26
