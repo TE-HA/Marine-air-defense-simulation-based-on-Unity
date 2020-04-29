@@ -30,16 +30,27 @@ public class taskHeap
         heap = new TaskNode[HeapSize];
     }
 
-    public void UpdateQueue()
+    public void Update_Queue()
     {
         for (int i = 0; i < TaskCount; i++)
         {
-            heap[i].Tqueue += 10;
-            try
+            if (heap[i].Tqueue < GameDefine.canFireValue)
             {
-                GameObject.Find(heap[i].Name).GetComponent<dangerValue>().DangerValue += 10;
+                //释放制导资源
+                // GameData.Instance.watchAssets[heap[i].watch_1].used = false;
+                // GameData.Instance.watch[heap[i].watch_1]++;
+                // GameData.Instance.FreeWatchAssets(heap[i].watch_1);
+                // GameData.Instance.FreeWatchAssets(heap[i].watch_2);
+                int[] end = GameData.Instance.target_watch[heap[i].Name];
+
+                GameObject w1 = GameObject.Find(heap[i].Name).transform.Find("watch_" + end[0]).gameObject;
+                GameObject w2 = GameObject.Find(heap[i].Name).transform.Find("watch_" + end[1]).gameObject;
+                w1.GetComponent<watching>().FreeWatching();
+                w2.GetComponent<watching>().FreeWatching();
+                Debug.Log("资源被抢占");
+                GameData.Instance.target_watch.Remove(heap[i].Name);
+                Delete(i);
             }
-            catch { }
         }
     }
 
@@ -52,14 +63,17 @@ public class taskHeap
 
     public void Show()
     {
+        string end = string.Empty;
         if (heap == null)
         {
             return;
         }
         for (int i = 0; i < TaskCount; i++)
         {
-            heap[i].display();
+            end+=heap[i].Tqueue+" ";
         }
+        GameObject.Find("Heap").GetComponent<nodeControl>().jiedian = end;
+        Debug.Log(end);
     }
 
     public void Insert(TaskNode node)
@@ -69,7 +83,8 @@ public class taskHeap
             heap[TaskCount] = node;
             UpJust(TaskCount);
             TaskCount++;
-        }
+
+      }
         catch
         {
            UnityEngine.Debug.Log("yuejie");

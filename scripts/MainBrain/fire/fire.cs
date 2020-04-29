@@ -27,7 +27,7 @@ public class fire : MonoBehaviour
 
             string fire = gameObject.name;
             int num = int.Parse(fire.Substring(3, 1));
-            GameData.Instance.fire[num - 1]=0;
+            GameData.Instance.fire[num - 1] = 0;
         }
     }
 
@@ -48,7 +48,7 @@ public class fire : MonoBehaviour
 
             string fire = gameObject.name;
             int num = int.Parse(fire.Substring(3, 1));
-            GameData.Instance.fire[num - 1]=1;
+            GameData.Instance.fire[num - 1] = 1;
 
             fasheshiyan = 120;
         }
@@ -59,6 +59,7 @@ public class fire : MonoBehaviour
             //目标消失。立即释放资源
             used = false;
             ones = false;
+
             fasheshiyan = 120;
         }
     }

@@ -46,7 +46,18 @@ public class free : MonoBehaviour
         speedDown = Vector3.zero;
         // 获取按键输入
         //Debug.Log(camera.GetComponent<Camera>().depth);
-        if (Input.mousePosition.y <= 10) speedForward = -tourCamera.up;
+        if (Input.mousePosition.y <= 10)
+        {
+            if (gameObject.transform.position.y < 20)
+            {
+                speedForward = Vector3.zero;
+            }
+            else
+            {
+                speedForward = -tourCamera.up;
+            }
+        }
+
         if (Input.mousePosition.y > Screen.height - 10) speedBack = tourCamera.up;
         if (Input.mousePosition.x <= 30) speedLeft = -tourCamera.right;
         if (Input.mousePosition.x > Screen.width - 30) speedRight = tourCamera.right;
@@ -64,12 +75,19 @@ public class free : MonoBehaviour
             gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, point, step);
             gameObject.transform.forward = Vector3.down;
         }
-        float wheel = Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 10000;
 
-        //改变相机的位置
-        tourCamera.transform.Translate(Vector3.forward * wheel);
-        direction = (speedForward + speedBack + speedLeft + speedRight) * 100;
-        #endregion
+        float wheel = Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 10000;
+        if (wheel > 0 && gameObject.transform.position.y < 20)
+        {
+            //Debug.Log(wheel);
+        }
+        else
+        {    //改变相机的位置
+            tourCamera.transform.Translate(Vector3.forward * wheel);
+            direction = (speedForward + speedBack + speedLeft + speedRight) * 100;
+        }
+
+           #endregion
         #region 鼠标旋转
         if (Input.GetMouseButton(0))
         {
@@ -100,9 +118,9 @@ public class free : MonoBehaviour
     {
         if (GameDefine.ganglai)
         {
-            Vector3 point =GameDefine.middlepoint;
+            Vector3 point = GameDefine.middlepoint;
             point.y = 600;
-            gameObject.transform.localPosition =point;
+            gameObject.transform.localPosition = point;
             gameObject.transform.forward = Vector3.down;
             GameDefine.ganglai = false;
         }
@@ -111,7 +129,7 @@ public class free : MonoBehaviour
         if (gameObject.transform.position.y > 600 && go == null)
         {
             Vector3 point = GameManger.Instance.MiddlePoint();
-            GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Camera2D), new Vector3(point.x,600,point.z), transform.rotation);
+            GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Camera2D), new Vector3(point.x, 600, point.z), transform.rotation);
             instance.name = "Camera2D";
             SecurityCamera.ChangeCamera(instance.name);
 

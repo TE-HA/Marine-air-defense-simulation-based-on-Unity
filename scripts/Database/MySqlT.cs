@@ -8,8 +8,10 @@ public class MySqlT
     #region sql查询语句集合
     //查询所有任务
     public static string _get_all_task = "SELECT * FROM graduate.all_task where (all_task_status='pending')and (all_task_get='no')";
-    //查询id为***的weapon任务
-    public static string _get_weapon_task = "SELECT * FROM graduate.weapon_task where (Tid=";
+    //查询id为***的attack任务
+    public static string _get_attack_task = "SELECT * FROM graduate.attack_task where (attack_task_id=";
+    //查询id为***的fire任务
+    public static string _get_fire_task = "SELECT * FROM graduate.fire_task where (fire_task_id=";
     //查询id为***的move任务
     public static string _get_move_task = "SELECT * FROM graduate.move_task where (move_task_id=";
     //查询id为***的addobj任务
@@ -20,7 +22,8 @@ public class MySqlT
     public static string _update_status_pending = "update graduate.all_task set all_task_status='pending'";
 
     //查询拦截每发导弹次数
-    public static string _count_every_daodan = "SELECT TTarget,count(0)  as chongfu FROM graduate.weapon_task group by TTarget having count(TTarget>1);";
+    public static string _count_every_daodan = "SELECT fire_task_target,count(0)  as chongfu FROM graduate.fire_task group by fire_task_target having count(fire_task_target >1);";
+
     #endregion
 
     //单例可存储数据文件
@@ -72,7 +75,7 @@ public class MySqlT
     #endregion
 
     #region 添加武器反击任务
-    public void AddWeaponTask(int id, string target, string form, int toward, double time)
+    public void AddFireTask(int id, string target, string form, double time)
     {
         string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('fire', '" + id + "', 'pending','no')";
         //Debug.Log("增加任务"+sql_all_task);
@@ -86,11 +89,11 @@ public class MySqlT
         }
 
 
-        string sql_weapon_task = "INSERT INTO `graduate`.`weapon_task` (`Tid`, `TTarget`, `TFrom`, `TType`, `TQueue`, `TTime`, `TToward`) VALUES ('" + id + "', '" + target + "', '" + form + "', 'fire', '1000', '" + time + "', '" + toward + "')";
+        string sql_fire_task = "INSERT INTO `graduate`.`fire_task` (`fire_task_id`, `fire_task_target`, `fire_task_from`, `fire_task_time`) VALUES ('" + id + "', '" + target + "', '" + form + "', '" + time + "')";
         //Debug.Log(sql_weapon_task);
         try
         {
-            SqlTask(sql_weapon_task);
+            SqlTask(sql_fire_task);
         }
         catch
         {
@@ -133,7 +136,7 @@ public class MySqlT
     #endregion
 
     #region 同时更改all_task and weapon_task数据库
-    public void AddToDateBase(int id, string target, string form, float kill,int toward, double time)
+    public void AddToAttackDataBase(int id, string target, string form, float kill,int toward, double time)
     {
         string sql_all_task = "INSERT INTO `graduate`.`all_task` (`all_task_type`, `all_task_id`, `all_task_status`,`all_task_get`) VALUES('attack', '" + id + "', 'pending','no')";
         try
@@ -146,10 +149,10 @@ public class MySqlT
         }
 
 
-        string sql_weapon_task = "INSERT INTO `graduate`.`weapon_task` (`Tid`, `TTarget`, `TFrom`, `TType`, `TQueue`, `TTime`, `TToward`) VALUES ('" + id + "', '" + target + "', '" + form + "', 'attack', '"+kill+"', '" + time + "', '" + toward + "')";
+        string sql_attack_task = "INSERT INTO `graduate`.`attack_task` (`attack_task_id`, `attack_task_target`, `attack_task_from`, `attack_task_time`, `attack_task_toward`, `attack_task_queue`) VALUES ('" + id + "', '" + target + "', '" + form  + "', '" + time + "', '" + toward + "', '"+kill + "')";
         try
         {
-            SqlTask(sql_weapon_task);
+            SqlTask(sql_attack_task);
         }
         catch
         {

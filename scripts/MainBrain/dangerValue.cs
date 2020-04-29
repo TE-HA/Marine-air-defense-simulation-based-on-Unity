@@ -3,32 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class dangerValue : MonoBehaviour {
+public class dangerValue : MonoBehaviour
+{
     public float DangerValue;
     private GameObject text;
+    private int jiange = 60;
+    private bool added = false;
     // Use this for initialization
     void Start()
     {
-        if (gameObject.tag != "plane")
-        {
-
-
-            text = gameObject.transform.Find("Text").gameObject;
-        }
+        text = gameObject.transform.Find("Text").gameObject;
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-        if (gameObject.tag != "plane")
-        {
-            if (GameDefine.CurrentCamera.name == "Camera2D")
+
+    void FixedUpdate()
+    {
+        if (!added) {
+            if (jiange < 0)
             {
-                text.SetActive(true);
+                if (GameManger.Instance.DistanceBetweenTwoVector3(Vector3.zero, gameObject.transform.position) < 3000)
+                {
+                    DangerValue += 100;
+                }
+                else {
+                    DangerValue += 10;
+                }
+                jiange = 60;
             }
             else
             {
-                text.SetActive(false);
+                jiange--;
             }
         }
-	}
+        else { }
+        //add to heap
+        if (!added && DangerValue > GameDefine.canFireValue)
+        {
+            taskHeap.Instance.Insert(new TaskNode(gameObject.name, DangerValue));
+            added = true;
+        }
+        if (GameDefine.CurrentCamera.name == "Camera2D")
+        {
+            text.SetActive(true);
+        }
+        else
+        {
+            text.SetActive(false);
+        }
+    }
 }

@@ -53,14 +53,14 @@ public class AutoControl : MonoBehaviour
             {
                 #region 得到任务类型并区分
                 case "attack":
-                    GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Weapon), transform.position, transform.rotation);
+                    GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Attack), transform.position, transform.rotation);
                     instance.name = GameDefine.TaskType.attack.ToString();
-                    instance.GetComponent<weapon>().all_task_id = (int)dt.Rows[i][1];
+                    instance.GetComponent<attack>().all_task_id = (int)dt.Rows[i][1];
                     break;
                 case "fire":
-                    GameObject instance_fire = (GameObject)Instantiate(Resources.Load(GameDefine.Weapon), transform.position, transform.rotation);
+                    GameObject instance_fire = (GameObject)Instantiate(Resources.Load(GameDefine.FireZhanjian), transform.position, transform.rotation);
                     instance_fire.name = GameDefine.TaskType.fire.ToString();
-                    instance_fire.GetComponent<weapon>().all_task_id = (int)dt.Rows[i][1];
+                    instance_fire.GetComponent<firezhanjian>().all_task_id = (int)dt.Rows[i][1];
                     break;
                 case "move":
                     GameObject instance_move = (GameObject)Instantiate(Resources.Load(GameDefine.Move), transform.position, transform.rotation);

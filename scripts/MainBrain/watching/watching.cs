@@ -25,10 +25,10 @@ public class watching : MonoBehaviour
     {
         GameObject watchRay = (GameObject)Instantiate(Resources.Load(GameDefine.Ray));
         watchRay.name = GameDefine.WatchRay;
+        watchRay.transform.SetParent(GameObject.Find(_target.name).transform.Find("watch_"+index).transform);
         watchRay.GetComponent<RayShot>().from = _from;
         watchRay.GetComponent<RayShot>().to = _target;
         watchRay.GetComponent<RayShot>().RayType = GameDefine.RayType.WatchRay.ToString();
-
 
         string fire = _from.name;
         int num = int.Parse(fire.Substring(3, 1));
@@ -36,6 +36,13 @@ public class watching : MonoBehaviour
 
         ones = true;
     }
+
+    public void FreeWatching()
+    {
+        GameData.Instance.FreeWatchAssets(index, _from.name);
+        Destroy(gameObject);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -43,18 +50,17 @@ public class watching : MonoBehaviour
         {
             Ray();
         }
+
+        if (index != -1 && !GameData.Instance.watchAssets[index].used)
+        {
+
+        }
+
         if (_target == null)
         {
             if (index != -1)
             {
-                GameData.Instance.watchAssets[index].used = false;
-                //Debug.Log("我释放了第 " + index + " 号制导资源");
-                index = -1;
-                string fire = _from.name;
-                int num = int.Parse(fire.Substring(3, 1));
-                GameData.Instance.watch[num - 1]++;
-
-                Destroy(gameObject);
+                //FreeWatching();
             }
         }
     }

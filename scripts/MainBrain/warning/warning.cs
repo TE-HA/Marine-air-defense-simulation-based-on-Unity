@@ -41,7 +41,7 @@ public class warning : MonoBehaviour
 
                 //warning
                 Ray(follow);
-                taskHeap.Instance.Insert(new TaskNode(GameData.Instance.EnemyPlane[i].name, GameData.Instance.EnemyPlane[i].GetComponent<dangerValue>().DangerValue));
+                //taskHeap.Instance.Insert(new TaskNode(GameData.Instance.EnemyPlane[i].name, GameData.Instance.EnemyPlane[i].GetComponent<dangerValue>().DangerValue));
                 GameData.Instance.EnemyPlane.Remove(GameData.Instance.EnemyPlane[i]);
                 return;
             }
@@ -58,7 +58,7 @@ public class warning : MonoBehaviour
             {
                 follow = GameData.Instance.EnemyDaodan[i];
                 Ray(follow);
-                taskHeap.Instance.Insert(new TaskNode(GameData.Instance.EnemyDaodan[i].name, GameData.Instance.EnemyDaodan[i].GetComponent<dangerValue>().DangerValue));
+                //taskHeap.Instance.Insert(new TaskNode(GameData.Instance.EnemyDaodan[i].name, GameData.Instance.EnemyDaodan[i].GetComponent<dangerValue>().DangerValue));
                 GameData.Instance.EnemyDaodan.Remove(GameData.Instance.EnemyDaodan[i]);
 
                 return;

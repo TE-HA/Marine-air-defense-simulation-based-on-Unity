@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
@@ -15,10 +17,12 @@ public class Menu : MonoBehaviour
     public GameObject PausePanel;
     public GameObject ShowLogPanel;
     public GameObject ShowAssets;
+    public GameObject Heap;
+    public GameObject GameAnalyse;
     public int ClearTime = 0;
     public int jiange = 0;
     public List<string> tagList;
-    public List<string> zhanjian;
+    Dictionary<string, int> fireCount;
     #endregion
 
     // 数据定义
@@ -26,12 +30,14 @@ public class Menu : MonoBehaviour
     {
         #region 数据库清空
         string sql_delete_all_task = "DELETE FROM graduate.all_task";
-        string sql_delete_all_weapon_task = "DELETE FROM graduate.weapon_task";
+        string sql_delete_all_fire_task = "DELETE FROM graduate.fire_task";
+        string sql_delete_all_attack_task = "DELETE FROM graduate.attack_task";
         string sql_delete_all_move_task = "DELETE FROM graduate.move_task";
         string sql_delete_all_addobj_task = "DELETE FROM graduate.addobj_task";
         MySqlT.Instance.DealSqlToSet(sql_delete_all_task);
         MySqlT.Instance.DealSqlToSet(sql_delete_all_move_task);
-        MySqlT.Instance.DealSqlToSet(sql_delete_all_weapon_task);
+        MySqlT.Instance.DealSqlToSet(sql_delete_all_fire_task);
+        MySqlT.Instance.DealSqlToSet(sql_delete_all_attack_task);
         MySqlT.Instance.DealSqlToSet(sql_delete_all_addobj_task);
         #endregion
 
@@ -110,14 +116,6 @@ public class Menu : MonoBehaviour
         tagList.Add("mycamera");
         tagList.Add("other");
 
-        zhanjian = new List<string>();
-        zhanjian.Add("km_main");
-        zhanjian.Add("km_1");
-        zhanjian.Add("km_2");
-        zhanjian.Add("km_3");
-        zhanjian.Add("km_4");
-        zhanjian.Add("km_5");
-        zhanjian.Add("km_6");
         #endregion
 
         #region 初始化参数输入界面,作战想定参数输入
@@ -134,6 +132,14 @@ public class Menu : MonoBehaviour
         UnShowLog();
         ShowAssets = GameObject.Find(GameDefine.ShowAssets);
         UnShowAssetsPanel();
+        GameAnalyse = GameObject.Find(GameDefine.ShowGameAnalyse);
+        UnShowGameAnalyse();
+        Heap = GameObject.Find(GameDefine.ShowHeap);
+        UnShowHeap();
+        #endregion
+
+        #region 初始化游戏分析结果
+        fireCount = new Dictionary<string, int>();
         #endregion
 
         #region 初始化血条位置
@@ -146,8 +152,6 @@ public class Menu : MonoBehaviour
         InitBloodSlider("km_5");
         InitBloodSlider("km_6");
         InitBloodSlider("Plane_Warning");
-
-
 
         #endregion
         #endregion
@@ -207,6 +211,48 @@ public class Menu : MonoBehaviour
         locayion_xx = GameObject.Find("location").GetComponent<Text>();
         Vector3 middle = GameManger.Instance.MiddlePoint();
         locayion_xx.text = "(" + (int)middle.x + " , " + (int)middle.z + ")";
+    }
+    #endregion
+
+
+    #region 游戏分析界面打开与关闭方法
+    public void ShowGameAnalyse()
+    {
+        GameAnalyse.GetComponent<CanvasGroup>().alpha = 1;
+        GameAnalyse.GetComponent<CanvasGroup>().interactable = true;
+        GameAnalyse.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        GameDefine.canShowGameAnalyse = true;
+    }
+    public void UnShowGameAnalyse()
+    {
+        GameAnalyse.GetComponent<CanvasGroup>().alpha = 0;
+        GameAnalyse.GetComponent<CanvasGroup>().interactable = false;
+        GameAnalyse.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        GameDefine.canShowGameAnalyse = false;
+    }
+    #endregion
+
+    #region 字典排序
+    private void DictonarySort()
+    {
+        fireCount = fireCount.OrderBy(p => p.Value).ToDictionary(p => p.Key, p => p.Value);
+    }
+    #endregion
+
+    #region 任务堆显示
+    public void ShowHeap()
+    {
+        Heap.GetComponent<CanvasGroup>().alpha = 1;
+        Heap.GetComponent<CanvasGroup>().interactable = true;
+        Heap.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        GameDefine.canShowHeap = true;
+    }
+    public void UnShowHeap()
+    {
+        Heap.GetComponent<CanvasGroup>().alpha = 0;
+        Heap.GetComponent<CanvasGroup>().interactable = false;
+        Heap.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        GameDefine.canShowHeap = false;
     }
     #endregion
 
@@ -291,7 +337,7 @@ public class Menu : MonoBehaviour
     public void OnGUI()
     {
         #region GUI中的暂停Pause键
-        if (GUI.Button(new Rect(1400, 80, 80, 20), GameDefine.GUIPause))
+        if (GUI.Button(new Rect(310, 660, 80, 20), GameDefine.GUIPause))
         {
             if (Time.timeScale == 0)
             {
@@ -304,7 +350,7 @@ public class Menu : MonoBehaviour
         #endregion
 
         #region GUI中的继续Resume键
-        if (GUI.Button(new Rect(1400, 110, 80, 20), GameDefine.GUIResume))
+        if (GUI.Button(new Rect(400, 660, 80, 20), GameDefine.GUIResume))
         {
             Time.timeScale = 1;
             GameManger.Instance.UnMuteAll();
@@ -321,7 +367,7 @@ public class Menu : MonoBehaviour
         #endregion
 
         #region GUI禁用特效MuteEffect键
-        if (GUI.Button(new Rect(1400, 140, 80, 20), GameDefine.GUIMuteEffect))
+        if (GUI.Button(new Rect(490, 660, 80, 20), GameDefine.GUIMuteEffect))
         {
             if (GameDefine.MuteEffect == true)
             {
@@ -334,15 +380,9 @@ public class Menu : MonoBehaviour
         }
         #endregion
 
-        #region GUI中清除特效ClearEffect键
-        if (GUI.Button(new Rect(1400, 170, 80, 20), GameDefine.GUIClearEffect))
-        {
-            ClearEffect();
-        }
-        #endregion
 
         #region GUI中显示游戏日志
-        if (GUI.Button(new Rect(1400, 200, 80, 20), GameDefine.GUIShowLog))
+        if (GUI.Button(new Rect(580, 660, 80, 20), GameDefine.GUIShowLog))
         {
             if (GameDefine.ShowStatus)
             {
@@ -356,7 +396,7 @@ public class Menu : MonoBehaviour
         #endregion
 
         #region GUI中显示资源
-        if (GUI.Button(new Rect(1400, 230, 80, 20), "FireAssets"))
+        if (GUI.Button(new Rect(670, 660, 80, 20), "FireAssets"))
         {
             if (GameDefine.ShowAssetsLog)
             {
@@ -364,25 +404,59 @@ public class Menu : MonoBehaviour
             }
             else
             {
-
                 ShowAssetsPanel();
             }
         }
         #endregion
 
+        #region GUI中显示任务堆
+        if (GUI.Button(new Rect(760, 660, 80, 20), "HeapStatus"))
+        {
+            if (GameDefine.canShowHeap)
+            {
+                UnShowHeap();
+            }
+            else
+            {
+                ShowHeap();
+            }
+        }
+        #endregion
+
         #region GUI中战后分析
-        if (GUI.Button(new Rect(1400, 260, 80, 20), "Analyse"))
+        if (GUI.Button(new Rect(850, 660, 80, 20), "Analyse"))
         {
             DataSet ds = MySqlT.Instance.DealSqlToSet(MySqlT._count_every_daodan);
             DataTable dt = ds.Tables[0];
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!zhanjian.Contains(dt.Rows[i][0].ToString()))
-                {
-                    Debug.Log(dt.Rows[i][1]);
-                }
+                fireCount.Add(dt.Rows[i][0].ToString(), int.Parse(dt.Rows[i][1].ToString()));
+            }
+
+            DictonarySort();
+
+            foreach (KeyValuePair<string, int> kvp in fireCount)
+            {
+                Debug.Log(string.Format("{0}  {1}", kvp.Key, kvp.Value));
+            }
+
+            if (GameDefine.canShowGameAnalyse)
+            {
+                UnShowGameAnalyse();
+            }
+            else
+            {
+                ShowGameAnalyse();
             }
         }
         #endregion
+
+        #region GUI中清除特效ClearEffect键
+        if (GUI.Button(new Rect(940, 660, 80, 20), GameDefine.GUIClearEffect))
+        {
+            ClearEffect();
+        }
+        #endregion
+
     }
 }

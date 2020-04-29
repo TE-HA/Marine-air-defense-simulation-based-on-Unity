@@ -13,6 +13,12 @@ public class GameDefine
     //false:不能
     public static bool CanGetTask = false;
 
+    //能否更新任务树状态
+    //true:能
+    //false:不能
+    public static bool canFreshTaskHeap = false;
+
+
     //栅格线缩放倍数
     public static int GridScale = 1;
     public const string Grid_Name = "Grid";
@@ -23,10 +29,24 @@ public class GameDefine
     public static bool ShowStatus = false;
 
 
+    //能否显示游戏运行任务堆机制
+    //true：能
+    //false：不能
+    public static bool canShowHeap = false;
+
     //能否显示游戏运行资源日志
     //true：能
     //false：不能
     public static bool ShowAssetsLog = false;
+
+
+
+
+   //能否显示游戏分析结果
+    //true：能
+    //false：不能
+    public static bool canShowGameAnalyse = false;
+
 
 
     //能否显示射线
@@ -35,7 +55,8 @@ public class GameDefine
     public static bool canRay = true;
 
     //导弹毁伤的概率
-    public static float percent = 0.5f;
+    public static float percent = 0.6f;
+
     
     public static int fireAssets=1;
     public static int watchingAssets=3;
@@ -88,6 +109,8 @@ public class GameDefine
     public const string PausePanelName = "InputMenu";
     public const string ShowLogPanelName = "GameLog";
     public const string ShowAssets = "Assets";
+    public const string ShowGameAnalyse = "VictoryMenu";
+    public const string ShowHeap = "Heap";
     public const string BloodSlider = "Prefabs/UI/BloodSlider";
     public const string BloodSlider_main = "km_main_info";
     public const string BloodSlider_1 = "km_1_info";
@@ -128,7 +151,8 @@ public class GameDefine
     #endregion
 
     #region 武器weapon
-    public const string Weapon = "Prefabs/weapon";
+    public const string Attack = "Prefabs/attack";
+    public const string FireZhanjian = "Prefabs/firezhanjian";
     public static Vector3 daodanScale = new Vector3(3, 3, 3);
     #endregion
 

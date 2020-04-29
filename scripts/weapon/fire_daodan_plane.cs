@@ -76,13 +76,28 @@ public class fire_daodan_plane : MonoBehaviour
         }
     }
 
+    void destory_free()
+    {
+        int[] end = GameData.Instance.target_watch[gameObject.name];
+
+        GameObject w1 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[0]).gameObject;
+        GameObject w2 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[1]).gameObject;
+        w1.GetComponent<watching>().FreeWatching();
+        w2.GetComponent<watching>().FreeWatching();
+
+        GameData.Instance.target_watch.Remove(gameObject.name);
+
+        Destroy(gameObject);
+
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == GameDefine.Tag.plane.ToString() || collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString())
         {
-            PlayerPrefs.SetInt(collision.gameObject.name + "_info_slider", PlayerPrefs.GetInt(collision.gameObject.name + "_info_slider") - 2000);
-            Destroy(gameObject);
-            //Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
+            PlayerPrefs.SetInt(collision.gameObject.name + "_info_slider", PlayerPrefs.GetInt(collision.gameObject.name + "_info_slider") - (int)gameObject.GetComponent<dangerValue>().DangerValue);
+            destory_free();
         }
         else if (collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
         {
@@ -93,7 +108,8 @@ public class fire_daodan_plane : MonoBehaviour
                 GameData.message = " 拦截导弹成功";
                 GameData.canShow = true;
                 #endregion
-                Destroy(gameObject);
+
+                destory_free();
             }
             else
             {

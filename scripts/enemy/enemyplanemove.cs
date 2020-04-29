@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemyplanemove : MonoBehaviour {
+public class enemyplanemove : MonoBehaviour
+{
     #region 定义参数
     public float speed = 70f;
     private int hit_count = 0;
@@ -12,13 +13,15 @@ public class enemyplanemove : MonoBehaviour {
     #endregion
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-        transform.forward = transform.forward - transform.up * hit_count*0.01f;
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        transform.forward = transform.forward - transform.up * hit_count * 0.005f;
 
         transform.position += transform.forward * speed * Time.deltaTime;
 
@@ -28,18 +31,19 @@ public class enemyplanemove : MonoBehaviour {
         }
         if (isHitsmall)
         {
-           // Destroy(Instantiate(Resources.Load(GameDefine.BeHitEffect), transform.position, Quaternion.identity), 1f);
+            // Destroy(Instantiate(Resources.Load(GameDefine.BeHitEffect), transform.position, Quaternion.identity), 1f);
         }
 
         if (transform.position.y < 5)
         {
             //LoadShip();            
-           // Destroy(Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.position, Quaternion.identity), 1f);
+            // Destroy(Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.position, Quaternion.identity), 1f);
             Destroy(gameObject);
         }
 
         Vector3 point = GameManger.Instance.MiddlePoint();
-        if (gameObject.transform.position.x>point.x+ distance||gameObject.transform.position.x<point.x-distance||gameObject.transform.position.z>point.z+distance||gameObject.transform.position.z<point.z-distance) {
+        if (gameObject.transform.position.x > point.x + distance || gameObject.transform.position.x < point.x - distance || gameObject.transform.position.z > point.z + distance || gameObject.transform.position.z < point.z - distance)
+        {
             Destroy(gameObject);
         }
     }

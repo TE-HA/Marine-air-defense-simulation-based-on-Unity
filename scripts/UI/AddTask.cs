@@ -93,7 +93,7 @@ public string[] ZhanjianName = new string[7];
     void Count()
     {
         EnemyCount.text = PlayerPrefs.GetInt("EnemyCount").ToString();
-        EnemyTaskCount.text = PlayerPrefs.GetInt("EnemyTaskCount").ToString();
+        EnemyTaskCount.text = (PlayerPrefs.GetInt("EnemyTaskCount")*2).ToString();
     }
     #endregion
 
@@ -119,35 +119,24 @@ public string[] ZhanjianName = new string[7];
     #region 添加随机敌机任务
     public void RandomTask()
     {
-        for (int i = 1; i <= 50; i++)
+        for (int i = 1; i <= 5; i++)
         {
-            target = RandomEnemyName();
-            toward = Random.Range(0, 360);
-            from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
-            PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
+            for (int j=1;j<=10;j++) {
+                target = RandomEnemyName();
+                toward = Random.Range(0, 360);
+                from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
+                PlayerPrefs.SetInt("EnemyPlaneCount", 1 + PlayerPrefs.GetInt("EnemyPlaneCount"));
 
-            id = PlayerPrefs.GetInt("TaskID");
-            PlayerPrefs.SetInt("TaskID", id + 1);
-            kill = Random.Range(6,20);
-
-            time = PlayerPrefs.GetInt("CurrTime") + 5 * i + 5;
-            MySqlT.Instance.AddToDateBase(id, target, from, kill, toward, time);
-
-            PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
-            PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
-
-            /*from = "zhanji_" + (i + (lunci - 1) * 10).ToString();
-            for (int j = 0; j < 3; j++)
-            {
                 id = PlayerPrefs.GetInt("TaskID");
                 PlayerPrefs.SetInt("TaskID", id + 1);
+                kill = Random.Range(6, 20);
 
-                time = PlayerPrefs.GetInt("CurrTime") + 7 * i + 2 * j;
-                AddToDateBase(id, target, from, toward, time);
+                time = PlayerPrefs.GetInt("CurrTime") + i*30+j*5 - 20;
+                MySqlT.Instance.AddToAttackDataBase(id, target, from, kill, toward, time);
 
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
                 PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
-            }*/
+            }
         }
         Count();
         //Debug.Log("添加成功");
@@ -195,7 +184,7 @@ public string[] ZhanjianName = new string[7];
                 PlayerPrefs.SetInt("EnemyTaskCount", PlayerPrefs.GetInt("EnemyTaskCount") + 1);
                 Count();
 
-                MySqlT.Instance.AddToDateBase(id, PlayerPrefs.GetString(target), from, kill, toward, time);
+                MySqlT.Instance.AddToAttackDataBase(id, PlayerPrefs.GetString(target), from, kill, toward, time);
                 #endregion
             }
         }

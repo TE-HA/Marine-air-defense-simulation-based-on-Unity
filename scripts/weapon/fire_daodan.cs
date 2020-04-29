@@ -120,11 +120,16 @@ public class fire_daodan : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString() || collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
+        if (collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
         {
             Destroy(gameObject);
             Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
             isHit = true;
+        }
+
+        if (collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString())
+        {
+            Debug.Log("[彩蛋出现]：攻击友军");
         }
 
         if (collision.gameObject.tag == GameDefine.Tag.plane.ToString())
@@ -133,9 +138,23 @@ public class fire_daodan : MonoBehaviour
             GameData.messageType = 6;
             GameData.message = "拦截 " + collision.gameObject.name + " 飞机成功";
             GameData.canShow = true;
+
+            int[] end = GameData.Instance.target_watch[collision.gameObject.name];
+            
+            GameObject w1 = GameObject.Find(collision.gameObject.name).transform.Find("watch_"+end[0]).gameObject;
+            GameObject w2 = GameObject.Find(collision.gameObject.name).transform.Find("watch_"+end[1]).gameObject;
+            w1.GetComponent<watching>().FreeWatching();
+            w2.GetComponent<watching>().FreeWatching();
+
+
+            GameData.Instance.target_watch.Remove(collision.gameObject.name);
+
+
+            //Destroy(w1);
+            //Destroy(w2);
             #endregion
 
-           // Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
+            // Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
             isHit = true;
             Destroy(gameObject);
         }
