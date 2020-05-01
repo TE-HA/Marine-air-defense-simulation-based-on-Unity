@@ -25,7 +25,7 @@ public class AddTask : MonoBehaviour
     private float queue = -1;
     #endregion
 
-public string[] ZhanjianName = new string[7];
+    public string[] ZhanjianName = new string[7];
 
     public void initZhanjian()
     {
@@ -93,15 +93,16 @@ public string[] ZhanjianName = new string[7];
     void Count()
     {
         EnemyCount.text = PlayerPrefs.GetInt("EnemyCount").ToString();
-        EnemyTaskCount.text = (PlayerPrefs.GetInt("EnemyTaskCount")*2).ToString();
+        EnemyTaskCount.text = (PlayerPrefs.GetInt("EnemyTaskCount") * 2).ToString();
     }
     #endregion
 
     void FixedUpdate()
     {
     }
-    public string RandomEnemyName() {
-        return ZhanjianName[Random.Range(0,7)];
+    public string RandomEnemyName()
+    {
+        return ZhanjianName[Random.Range(0, 7)];
     }
 
     #region 初始化输入框，重置为空
@@ -121,7 +122,8 @@ public string[] ZhanjianName = new string[7];
     {
         for (int i = 1; i <= 5; i++)
         {
-            for (int j=1;j<=10;j++) {
+            for (int j = 1; j <= 10; j++)
+            {
                 target = RandomEnemyName();
                 toward = Random.Range(0, 360);
                 from = "zhanji_" + PlayerPrefs.GetInt("EnemyPlaneCount");
@@ -131,7 +133,7 @@ public string[] ZhanjianName = new string[7];
                 PlayerPrefs.SetInt("TaskID", id + 1);
                 kill = Random.Range(6, 20);
 
-                time = PlayerPrefs.GetInt("CurrTime") + i*30+j*5 - 20;
+                time = PlayerPrefs.GetInt("CurrTime") + i * 30 + j*2 - 20;
                 MySqlT.Instance.AddToAttackDataBase(id, target, from, kill, toward, time);
 
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);

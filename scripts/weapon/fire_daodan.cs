@@ -153,7 +153,8 @@ public class fire_daodan : MonoBehaviour
             //Destroy(w1);
             //Destroy(w2);
             #endregion
-
+   Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
+          
             // Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitBoomExplosion), transform.Find("point").position, Quaternion.identity)));
             isHit = true;
             Destroy(gameObject);

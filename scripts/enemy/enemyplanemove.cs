@@ -9,13 +9,13 @@ public class enemyplanemove : MonoBehaviour
     private int hit_count = 0;
     private bool isHitsmall = false;
     private bool isHitHeavy = false;
-    private int distance = 8000;
+    private int distance = 11000;
     #endregion
 
     // Use this for initialization
     void Start()
     {
-
+        GameData.Instance.isAdded.Add(gameObject,false);
     }
 
     // Update is called once per frame
@@ -38,6 +38,7 @@ public class enemyplanemove : MonoBehaviour
         {
             //LoadShip();            
             // Destroy(Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.position, Quaternion.identity), 1f);
+            GameData.Instance.isAdded.Remove(gameObject);
             Destroy(gameObject);
         }
 

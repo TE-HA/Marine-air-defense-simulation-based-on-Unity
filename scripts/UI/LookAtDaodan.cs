@@ -13,18 +13,18 @@ public class LookAtDaodan : MonoBehaviour
     /// <summary>
     /// 跟随保持的高度
     /// </summary>
-    private float height = 10;
+    private float height = 1500;
     /// <summary>
     /// 跟随保持的距离
     /// </summary>
     /// 
-	private float damping = 5.0f;
-    private float distance = 10;
+	private float damping = 250f;
+    private float distance = 1000;
     Vector3 _pos;
     // Use this for initialization
     void Start()
     {
-        target = gameObject;
+        target = gameObject.transform.Find("daodan").gameObject;
     }
 
     // Update is called once per frame
@@ -34,13 +34,13 @@ public class LookAtDaodan : MonoBehaviour
     }
     void LateUpdate()
     {
-        if (target == null)
+        /*if (target == null)
         {
             return;
         }
         Vector3 wantedPosition = target.transform.TransformPoint(0, height, -distance);
         transform.position = Vector3.Lerp(transform.position, wantedPosition, Time.deltaTime * damping);
-        transform.LookAt(target.transform, target.transform.up);
+       */ transform.LookAt(target.transform);
     }
     #endregion
 }

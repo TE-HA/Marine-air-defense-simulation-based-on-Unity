@@ -22,13 +22,13 @@ public class RayShot : MonoBehaviour
     }
 
 
-
      void FixedUpdate()
     {
         if (to == null || from == null)
         {
             Destroy(gameObject);
         }
+      
         lineRender = gameObject.GetComponent<LineRenderer>();
         List<Vector3> points = new List<Vector3>();
         try

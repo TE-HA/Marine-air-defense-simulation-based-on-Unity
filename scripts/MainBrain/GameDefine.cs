@@ -6,12 +6,20 @@ public class GameDefine
 {
     #region 内部消息更新
     //能打击导弹的阈值
-    public static float canFireValue = 100;
+    public static float canFireValue = 150;
 
     //能否从数据库获取任务数据
     //true:能
     //false:不能
     public static bool CanGetTask = false;
+
+
+  //能否屏蔽射线
+    //true:能
+    //false:不能
+    public static bool MuteWarningRay = false;
+    public static bool MuteWatchRay = false;
+    public static bool MuteFireRay = false;
 
     //能否更新任务树状态
     //true:能
@@ -94,13 +102,17 @@ public class GameDefine
     #endregion
 
     #region GUI按钮name OnGUI
-    public const string GUICreate = "create";
-    public const string GUIPause = "pause";
-    public const string GUIResume = "resume";
-    public const string GUIMuteEffect = "mute effect";
-    public const string GUIClearEffect = "clear effect";
-    public const string GUIUpdate = "update";
-    public const string GUIShowLog = "showlog";
+    public const string GUIFireAssets = "FireAssets";
+    public const string GUIPause = "PauseInput";
+    public const string GUIResume = "Resume";
+    public const string GUIMuteEffect = "MuteEffect";
+    public const string GUIMuteWarningRay = "WarnRay";
+    public const string GUIMuteWatchRay = "WatchRay";
+    public const string GUIMuteFireRay = "FireRay";
+    public const string GUIPauseShow = "PauseShow";
+    public const string GUIHeapStatus = "HeapStatus";
+    public const string GUIShowLog = "ShowLog";
+    public const string GUIAnalyse = "Analyse";
     #endregion
 
     #region 面板 panel
@@ -172,7 +184,7 @@ public class GameDefine
     #region 敌军信息
     //enemy plane daodan count
     public const string EnemyPlaneDaodanCount = "EnemyPlaneDaodanCount";
-    public const int enemyDistance = 7000;
+    public const int enemyDistance = 10000;
     //enemyPlaneCount
     public static string EnemyPlaneCount = "EnemyPlaneCount";
     #endregion

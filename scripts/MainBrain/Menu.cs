@@ -196,6 +196,7 @@ public class Menu : MonoBehaviour
             time.text = PlayerPrefs.GetInt("CurrTime").ToString() + " 秒";
             PlayerPrefs.SetInt("CurrTime", PlayerPrefs.GetInt("CurrTime") + 1);
             jiange = 60;
+            Debug.Log(GameData.Instance.isAdded.Count+"长度");
         }
         else
         {
@@ -336,6 +337,24 @@ public class Menu : MonoBehaviour
 
     public void OnGUI()
     {
+        #region GUI中清除特效暂停键
+        if (GUI.Button(new Rect(220, 660, 80, 20), GameDefine.GUIPauseShow))
+        {
+            if (Time.timeScale == 0.02f)
+            {
+                Time.timeScale = 1;
+                GameManger.Instance.UnMuteAll();
+            }
+            else
+            {
+                Time.timeScale = 0.02f;
+                GameManger.Instance.MuteAll();
+            }
+        }
+        #endregion
+
+
+
         #region GUI中的暂停Pause键
         if (GUI.Button(new Rect(310, 660, 80, 20), GameDefine.GUIPause))
         {
@@ -396,7 +415,7 @@ public class Menu : MonoBehaviour
         #endregion
 
         #region GUI中显示资源
-        if (GUI.Button(new Rect(670, 660, 80, 20), "FireAssets"))
+        if (GUI.Button(new Rect(670, 660, 80, 20), GameDefine.GUIFireAssets))
         {
             if (GameDefine.ShowAssetsLog)
             {
@@ -410,7 +429,7 @@ public class Menu : MonoBehaviour
         #endregion
 
         #region GUI中显示任务堆
-        if (GUI.Button(new Rect(760, 660, 80, 20), "HeapStatus"))
+        if (GUI.Button(new Rect(760, 660, 80, 20), GameDefine.GUIHeapStatus))
         {
             if (GameDefine.canShowHeap)
             {
@@ -424,10 +443,11 @@ public class Menu : MonoBehaviour
         #endregion
 
         #region GUI中战后分析
-        if (GUI.Button(new Rect(850, 660, 80, 20), "Analyse"))
+        if (GUI.Button(new Rect(850, 660, 80, 20), GameDefine.GUIAnalyse))
         {
             DataSet ds = MySqlT.Instance.DealSqlToSet(MySqlT._count_every_daodan);
             DataTable dt = ds.Tables[0];
+            fireCount.Clear();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 fireCount.Add(dt.Rows[i][0].ToString(), int.Parse(dt.Rows[i][1].ToString()));
@@ -437,8 +457,20 @@ public class Menu : MonoBehaviour
 
             foreach (KeyValuePair<string, int> kvp in fireCount)
             {
-                Debug.Log(string.Format("{0}  {1}", kvp.Key, kvp.Value));
+                //Debug.Log("/");
+                //Debug.Log(string.Format("{0} {1} {2}", kvp.Key, GameData.Instance.behitInfo[kvp.Key],kvp.Value));
+                 Debug.Log(string.Format("{0} {1}", kvp.Key, kvp.Value));
+                //Debug.Log(GameData.Instance.behitInfo[kvp.Key]);           
             }
+
+            foreach (KeyValuePair<string, string> kvp in GameData.Instance.behitInfo)
+            {
+                Debug.Log("*****");
+                //Debug.Log(string.Format("{0} {1} {2}", kvp.Key, GameData.Instance.behitInfo[kvp.Key],kvp.Value));
+                Debug.Log(string.Format("{0} {1} {2}", kvp.Key, kvp.Value,fireCount[kvp.Key]));
+                //Debug.Log(GameData.Instance.behitInfo[kvp.Key]);           
+            }
+
 
             if (GameDefine.canShowGameAnalyse)
             {
@@ -451,10 +483,42 @@ public class Menu : MonoBehaviour
         }
         #endregion
 
-        #region GUI中清除特效ClearEffect键
-        if (GUI.Button(new Rect(940, 660, 80, 20), GameDefine.GUIClearEffect))
+        #region GUI中清除特效MuteRay键
+        if (GUI.Button(new Rect(940, 660, 80, 20), GameDefine.GUIMuteWarningRay))
         {
-            ClearEffect();
+            if (GameDefine.MuteWarningRay)
+            {
+                GameDefine.MuteWarningRay = false;
+            }
+            else {
+                GameDefine.MuteWarningRay = true;
+            }
+        }
+        #endregion
+
+ #region GUI中清除特效MuteRay键
+        if (GUI.Button(new Rect(1030, 660, 80, 20), GameDefine.GUIMuteWatchRay))
+        {
+            if (GameDefine.MuteWatchRay)
+            {
+                GameDefine.MuteWatchRay = false;
+            }
+            else {
+                GameDefine.MuteWatchRay = true;
+            }
+        }
+        #endregion
+
+        #region GUI中清除特效MuteRay键
+        if (GUI.Button(new Rect(1120, 660, 80, 20), GameDefine.GUIMuteFireRay))
+        {
+            if (GameDefine.MuteFireRay)
+            {
+                GameDefine.MuteFireRay = false;
+            }
+            else {
+                GameDefine.MuteFireRay = true;
+            }
         }
         #endregion
 

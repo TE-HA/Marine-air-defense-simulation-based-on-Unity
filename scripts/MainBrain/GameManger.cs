@@ -18,13 +18,21 @@ public class GameManger
 {
     //单例可存储数据文件
     private static GameManger _Instance;
+    private static readonly object InstanceLock = new object();
     public static GameManger Instance
     {
         get
         {
+            //利用双锁模式避免高并发下非单例模式
             if (_Instance == null)
             {
-                _Instance = new GameManger();
+                lock (InstanceLock)
+                {
+                    if (_Instance == null)
+                    {
+                        _Instance = new GameManger();
+                    }
+                }
             }
             return _Instance;
         }

@@ -59,7 +59,7 @@ public class TaskHeapControler : MonoBehaviour
                 watching.GetComponent<watching>().index = second;
 
                 end[1] = second;
-
+            
                 break;
             }
         }
@@ -137,7 +137,7 @@ public class TaskHeapControler : MonoBehaviour
 
         if ((float)watch_not_used / 18 < 0.2f)
         {
-            GameDefine.canFireValue += 10;
+            GameDefine.canFireValue += 30;
         }
         else if ((float)watch_not_used / 18 > 0.5f)
         {
@@ -145,7 +145,7 @@ public class TaskHeapControler : MonoBehaviour
             {
                 GameDefine.canFireValue -= 50;
             }
-            else if (GameDefine.canFireValue <= 150 && GameDefine.canFireValue > 100)
+            else if (GameDefine.canFireValue <= 150 && GameDefine.canFireValue >100)
             {
                 GameDefine.canFireValue -= 10;
 

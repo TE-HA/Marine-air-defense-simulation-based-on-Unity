@@ -7,13 +7,23 @@ public class taskHeap
 {
     //单例可存储数据文件
     private static taskHeap _Instance;
+    private static readonly object taskheap_lock = new object();
+    //private bool delLock = false;
+
     public static taskHeap Instance
     {
         get
         {
+            //利用双锁模式避免高并发下非单例模式
             if (_Instance == null)
             {
-                _Instance = new taskHeap();
+                lock (taskheap_lock)
+                {
+                    if (_Instance == null)
+                    {
+                        _Instance = new taskHeap();
+                    }
+                }
             }
             return _Instance;
         }
@@ -23,7 +33,7 @@ public class taskHeap
     //public TaskNode end;
     public TaskNode[] heap;
     public int TaskCount = 0;
-    private int HeapSize = 20;
+    private int HeapSize = 30;
 
     public taskHeap()
     {
@@ -36,23 +46,12 @@ public class taskHeap
         {
             if (heap[i].Tqueue < GameDefine.canFireValue)
             {
-                //释放制导资源
-                // GameData.Instance.watchAssets[heap[i].watch_1].used = false;
-                // GameData.Instance.watch[heap[i].watch_1]++;
-                // GameData.Instance.FreeWatchAssets(heap[i].watch_1);
-                // GameData.Instance.FreeWatchAssets(heap[i].watch_2);
-                int[] end = GameData.Instance.target_watch[heap[i].Name];
-
-                GameObject w1 = GameObject.Find(heap[i].Name).transform.Find("watch_" + end[0]).gameObject;
-                GameObject w2 = GameObject.Find(heap[i].Name).transform.Find("watch_" + end[1]).gameObject;
-                w1.GetComponent<watching>().FreeWatching();
-                w2.GetComponent<watching>().FreeWatching();
-                Debug.Log("资源被抢占");
-                GameData.Instance.target_watch.Remove(heap[i].Name);
+                GameData.Instance.isAdded[GameObject.Find(heap[i].Name)] = false;
                 Delete(i);
             }
         }
     }
+
 
     public void Delete(int index) {
         Swap(index,TaskCount-1);
@@ -73,7 +72,7 @@ public class taskHeap
             end+=heap[i].Tqueue+" ";
         }
         GameObject.Find("Heap").GetComponent<nodeControl>().jiedian = end;
-        Debug.Log(end);
+        //Debug.Log(end);
     }
 
     public void Insert(TaskNode node)

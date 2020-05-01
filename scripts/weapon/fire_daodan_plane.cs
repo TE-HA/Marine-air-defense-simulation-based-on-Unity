@@ -19,6 +19,7 @@ public class fire_daodan_plane : MonoBehaviour
     void Start()
     {
         _target = target.position - from.position;
+        GameData.Instance.isAdded.Add(gameObject, false);
     }
 
     // Update is called once per frame
@@ -60,7 +61,6 @@ public class fire_daodan_plane : MonoBehaviour
 
         if (transform.position.y <= -2)
         {
-            Destroy(gameObject);
             //Destroy(collision.gameObject);
             if (GameDefine.MuteEffect == false)
             {
@@ -73,21 +73,30 @@ public class fire_daodan_plane : MonoBehaviour
                     Destroy(Instantiate((GameObject)Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.Find("point").position, Quaternion.identity)), 3f);
                 }
             }
+
+            destory_free();
         }
     }
 
     void destory_free()
     {
-        int[] end = GameData.Instance.target_watch[gameObject.name];
+        try
+        {
+            int[] end = GameData.Instance.target_watch[gameObject.name];
 
-        GameObject w1 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[0]).gameObject;
-        GameObject w2 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[1]).gameObject;
-        w1.GetComponent<watching>().FreeWatching();
-        w2.GetComponent<watching>().FreeWatching();
+            GameObject w1 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[0]).gameObject;
+            GameObject w2 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[1]).gameObject;
+            w1.GetComponent<watching>().FreeWatching();
+            w2.GetComponent<watching>().FreeWatching();
 
-        GameData.Instance.target_watch.Remove(gameObject.name);
-
-        Destroy(gameObject);
+            GameData.Instance.target_watch.Remove(gameObject.name);
+            GameData.Instance.isAdded.Remove(gameObject);
+        }
+        catch { }
+        finally
+        {
+            Destroy(gameObject);
+        }
 
     }
 
@@ -97,6 +106,9 @@ public class fire_daodan_plane : MonoBehaviour
         if (collision.gameObject.tag == GameDefine.Tag.plane.ToString() || collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString())
         {
             PlayerPrefs.SetInt(collision.gameObject.name + "_info_slider", PlayerPrefs.GetInt(collision.gameObject.name + "_info_slider") - (int)gameObject.GetComponent<dangerValue>().DangerValue);
+            Debug.Log(gameObject.name + " " + collision.gameObject.name);
+            GameData.Instance.behitInfo.Add(gameObject.name, collision.gameObject.name);
+            Debug.Log(GameData.Instance.behitInfo[gameObject.name]);
             destory_free();
         }
         else if (collision.gameObject.tag == GameDefine.Tag.daodan.ToString())

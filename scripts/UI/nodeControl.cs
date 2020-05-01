@@ -53,6 +53,5 @@ public class nodeControl : MonoBehaviour
         {
             node_list[i].transform.Find("value").GetComponent<Text>().text = kk[i];
         }
-
     }
 }

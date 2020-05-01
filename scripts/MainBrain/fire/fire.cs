@@ -23,6 +23,7 @@ public class fire : MonoBehaviour
             fireRay.GetComponent<RayShot>().from = gameObject;
             fireRay.GetComponent<RayShot>().to = _target;
             fireRay.GetComponent<RayShot>().RayType = GameDefine.RayType.FireRay.ToString();
+
             ones = true;
 
             string fire = gameObject.name;

@@ -6,26 +6,34 @@ public class GameData
 {
     //单例可存储数据文件
     private static GameData _Instance;
+    private static readonly object InstanceLock = new object();
     public static GameData Instance
     {
         get
         {
+            //利用双锁模式避免高并发下非单例模式
             if (_Instance == null)
             {
-                _Instance = new GameData();
+                lock (InstanceLock)
+                {
+                    if (_Instance == null)
+                    {
+                        _Instance = new GameData();
+                    }
+                }
             }
             return _Instance;
         }
     }
-
-
     //enemy
     private static bool daodan_flag = false;
     private static bool daodan_plane = false;
     public List<GameObject> EnemyDaodan = new List<GameObject>();
     public List<GameObject> EnemyPlane = new List<GameObject>();
+    public Dictionary<GameObject, bool> isAdded = new Dictionary<GameObject, bool>();
     public Dictionary<string, int[]> target_watch = new Dictionary<string, int[]>();
     public watching[] watchAssets = new watching[6 * GameDefine.watchingAssets];
+    public Dictionary<string, string> behitInfo = new Dictionary<string, string>();
 
     public void FreeWatchAssets(int index, string zhanjian_index)
     {
