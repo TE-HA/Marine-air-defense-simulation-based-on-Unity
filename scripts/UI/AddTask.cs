@@ -23,6 +23,14 @@ public class AddTask : MonoBehaviour
 
     private string type = "attack";
     private float queue = -1;
+
+    static int lunci = 5;
+    static int every_lunci_plane_count = 20;
+
+
+    static int per_plane_split_time = 1;
+    static int every_lunci_time = every_lunci_plane_count * per_plane_split_time + 10;
+
     #endregion
 
     public string[] ZhanjianName = new string[7];
@@ -68,6 +76,9 @@ public class AddTask : MonoBehaviour
         #endregion
 
         InputField = GameObject.Find("InputMenu");
+
+        PlayerPrefs.SetInt("AttackP",60/per_plane_split_time);
+        PlayerPrefs.SetInt("BeginTime", PlayerPrefs.GetInt("CurrTime"));
 
         #region 按钮监听
         EnemyCount = GameObject.Find("EnemyCount").GetComponent<Text>();
@@ -115,14 +126,13 @@ public class AddTask : MonoBehaviour
     }
     #endregion
 
-    int lunci = 1;
 
     #region 添加随机敌机任务
     public void RandomTask()
     {
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i <= lunci; i++)
         {
-            for (int j = 1; j <= 10; j++)
+            for (int j = 1; j <= every_lunci_plane_count; j++)
             {
                 target = RandomEnemyName();
                 toward = Random.Range(0, 360);
@@ -133,7 +143,7 @@ public class AddTask : MonoBehaviour
                 PlayerPrefs.SetInt("TaskID", id + 1);
                 kill = Random.Range(6, 20);
 
-                time = PlayerPrefs.GetInt("CurrTime") + i * 30 + j*2 - 20;
+                time = PlayerPrefs.GetInt("CurrTime") +i*every_lunci_time+ j*per_plane_split_time-every_lunci_time;
                 MySqlT.Instance.AddToAttackDataBase(id, target, from, kill, toward, time);
 
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
@@ -157,6 +167,8 @@ public class AddTask : MonoBehaviour
         Time.timeScale = 1;
         GameManger.Instance.UnMuteAll();
         GameDefine.CanGetTask = true;
+        PlayerPrefs.SetInt("WasteTime", PlayerPrefs.GetInt("CurrTime"));
+        
     }
     #endregion
 

@@ -33,7 +33,10 @@ public class GameData
     public Dictionary<GameObject, bool> isAdded = new Dictionary<GameObject, bool>();
     public Dictionary<string, int[]> target_watch = new Dictionary<string, int[]>();
     public watching[] watchAssets = new watching[6 * GameDefine.watchingAssets];
-    public Dictionary<string, string> behitInfo = new Dictionary<string, string>();
+
+    public List<string> behit_key = new List<string>();
+    public List<string> behit_value = new List<string>();
+   // public Dictionary<string, string> behitInfo = new Dictionary<string, string>();
 
     public void FreeWatchAssets(int index, string zhanjian_index)
     {

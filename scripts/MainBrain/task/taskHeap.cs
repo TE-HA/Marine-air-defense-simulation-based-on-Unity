@@ -33,7 +33,7 @@ public class taskHeap
     //public TaskNode end;
     public TaskNode[] heap;
     public int TaskCount = 0;
-    private int HeapSize = 30;
+    private int HeapSize = 50;
 
     public taskHeap()
     {

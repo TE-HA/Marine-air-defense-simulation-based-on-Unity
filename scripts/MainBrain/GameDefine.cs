@@ -117,8 +117,10 @@ public class GameDefine
 
     #region 面板 panel
     public const string InputMenu = "Prefabs/UI/InputMenu";
+    public const string AnalyseMenu = "Prefabs/UI/VictoryMenu";
     public const string Panel = "Prefabs/UI/Panel";
     public const string PausePanelName = "InputMenu";
+    public const string AnalysePanelName = "AnalyseMenu";
     public const string ShowLogPanelName = "GameLog";
     public const string ShowAssets = "Assets";
     public const string ShowGameAnalyse = "VictoryMenu";

@@ -22,7 +22,7 @@ public class MySqlT
     public static string _update_status_pending = "update graduate.all_task set all_task_status='pending'";
 
     //查询拦截每发导弹次数
-    public static string _count_every_daodan = "SELECT fire_task_target,count(0)  as chongfu FROM graduate.fire_task group by fire_task_target having count(fire_task_target >1);";
+    public static string _count_every_daodan = "SELECT fire_task_target,count(0)  as chongfu FROM graduate.fire_task group by fire_task_target having count(fire_task_target >=1);";
 
     #endregion
 

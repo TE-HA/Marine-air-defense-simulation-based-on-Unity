@@ -119,6 +119,7 @@ public class TaskHeapControler : MonoBehaviour
 
             MySqlT.Instance.AddFireTask(PlayerPrefs.GetInt("TaskID"), target, fireUnit, PlayerPrefs.GetInt("CurrTime") + 1);
             PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
+            PlayerPrefs.SetInt("LanjieCount",PlayerPrefs.GetInt("LanjieCount")+1);
             GameDefine.CanGetTask = true;
             dotask = 60;
         }

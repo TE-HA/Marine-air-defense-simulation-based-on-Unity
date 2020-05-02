@@ -15,6 +15,7 @@ public class Menu : MonoBehaviour
     public Text locayion_xx;
     public GameObject plane;
     public GameObject PausePanel;
+    public GameObject VictoryPanel;
     public GameObject ShowLogPanel;
     public GameObject ShowAssets;
     public GameObject Heap;
@@ -22,7 +23,9 @@ public class Menu : MonoBehaviour
     public int ClearTime = 0;
     public int jiange = 0;
     public List<string> tagList;
-    Dictionary<string, int> fireCount;
+    public List<string> fire_target = new List<string>();
+    public List<int> fire_count = new List<int>();
+    //Dictionary<string, int> fireCount;
     #endregion
 
     // 数据定义
@@ -77,9 +80,12 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetString("plane_warning_info_name", "预警机");
 
         PlayerPrefs.SetInt("CurrTime", 0);
+        PlayerPrefs.SetInt("WasteTime", 0);
         PlayerPrefs.SetInt("EnemyPlaneDaodanCount", 0);
         PlayerPrefs.SetInt("EnemyPlaneCount", 0);
         PlayerPrefs.SetInt("EnemyTaskCount", 0);
+        PlayerPrefs.SetInt("LanjieCount", 0);
+        PlayerPrefs.SetInt("AttackP", 0);
         PlayerPrefs.SetInt("TaskID", 1);
         PlayerPrefs.SetInt("FireTaskID", 1);
 
@@ -132,14 +138,14 @@ public class Menu : MonoBehaviour
         UnShowLog();
         ShowAssets = GameObject.Find(GameDefine.ShowAssets);
         UnShowAssetsPanel();
-        GameAnalyse = GameObject.Find(GameDefine.ShowGameAnalyse);
-        UnShowGameAnalyse();
+        /*GameAnalyse = GameObject.Find(GameDefine.ShowGameAnalyse);
+        UnShowGameAnalyse();*/
         Heap = GameObject.Find(GameDefine.ShowHeap);
         UnShowHeap();
         #endregion
 
         #region 初始化游戏分析结果
-        fireCount = new Dictionary<string, int>();
+        //fireCount = new Dictionary<string, int>();
         #endregion
 
         #region 初始化血条位置
@@ -196,7 +202,7 @@ public class Menu : MonoBehaviour
             time.text = PlayerPrefs.GetInt("CurrTime").ToString() + " 秒";
             PlayerPrefs.SetInt("CurrTime", PlayerPrefs.GetInt("CurrTime") + 1);
             jiange = 60;
-            Debug.Log(GameData.Instance.isAdded.Count+"长度");
+            //Debug.Log(GameData.Instance.isAdded.Count+"长度");
         }
         else
         {
@@ -236,7 +242,7 @@ public class Menu : MonoBehaviour
     #region 字典排序
     private void DictonarySort()
     {
-        fireCount = fireCount.OrderBy(p => p.Value).ToDictionary(p => p.Key, p => p.Value);
+        //fireCount = fireCount.OrderBy(p => p.Value).ToDictionary(p => p.Key, p => p.Value);
     }
     #endregion
 
@@ -371,17 +377,18 @@ public class Menu : MonoBehaviour
         #region GUI中的继续Resume键
         if (GUI.Button(new Rect(400, 660, 80, 20), GameDefine.GUIResume))
         {
-            Time.timeScale = 1;
-            GameManger.Instance.UnMuteAll();
+            /* Time.timeScale = 1;
+             GameManger.Instance.UnMuteAll();
 
-            if (PausePanel == null)
-            {
-                return;
-            }
-            else
-            {
-                Destroy(PausePanel);
-            }
+             if (PausePanel == null)
+             {
+                 return;
+             }
+             else
+             {
+                 Destroy(PausePanel);
+             }*/
+            Time.timeScale = 4;
         }
         #endregion
 
@@ -445,42 +452,150 @@ public class Menu : MonoBehaviour
         #region GUI中战后分析
         if (GUI.Button(new Rect(850, 660, 80, 20), GameDefine.GUIAnalyse))
         {
-            DataSet ds = MySqlT.Instance.DealSqlToSet(MySqlT._count_every_daodan);
-            DataTable dt = ds.Tables[0];
-            fireCount.Clear();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            if (!GameDefine.canShowGameAnalyse)
             {
-                fireCount.Add(dt.Rows[i][0].ToString(), int.Parse(dt.Rows[i][1].ToString()));
-            }
+                if (PlayerPrefs.GetInt("EnemyCount") == 0)
+                {
+                    return;
+                }
 
-            DictonarySort();
+                VictoryPanel = (GameObject)Instantiate(Resources.Load(GameDefine.AnalyseMenu));
+                VictoryPanel.name = GameDefine.AnalysePanelName;
+                GameDefine.canShowGameAnalyse = true;
 
-            foreach (KeyValuePair<string, int> kvp in fireCount)
-            {
-                //Debug.Log("/");
-                //Debug.Log(string.Format("{0} {1} {2}", kvp.Key, GameData.Instance.behitInfo[kvp.Key],kvp.Value));
-                 Debug.Log(string.Format("{0} {1}", kvp.Key, kvp.Value));
-                //Debug.Log(GameData.Instance.behitInfo[kvp.Key]);           
-            }
+                DataSet ds = MySqlT.Instance.DealSqlToSet(MySqlT._count_every_daodan);
+                DataTable dt = ds.Tables[0];
+                //fireCount.Clear();
+                fire_target.Clear();
+                fire_count.Clear();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    //fireCount.Add(dt.Rows[i][0].ToString(), int.Parse(dt.Rows[i][1].ToString()));
+                    fire_target.Add(dt.Rows[i][0].ToString());
+                    fire_count.Add(int.Parse(dt.Rows[i][1].ToString()));
+                }
 
-            foreach (KeyValuePair<string, string> kvp in GameData.Instance.behitInfo)
-            {
-                Debug.Log("*****");
-                //Debug.Log(string.Format("{0} {1} {2}", kvp.Key, GameData.Instance.behitInfo[kvp.Key],kvp.Value));
-                Debug.Log(string.Format("{0} {1} {2}", kvp.Key, kvp.Value,fireCount[kvp.Key]));
-                //Debug.Log(GameData.Instance.behitInfo[kvp.Key]);           
-            }
+                //DictonarySort();
+
+                int goal_value = 0;//未击中
+                int not_goal_value = 0;//击中
+                int not_goal_count = 0;
+                int[] behit = new int[7];
+                int behit_boat_count = 0;
+                int behit_value = 0;
+
+                behit[0] = 30000 - PlayerPrefs.GetInt("km_main_info_slider");
+                for (int i = 1; i < 7; i++)
+                {
+                    behit[i] = 20000 - PlayerPrefs.GetInt("km_" + i + "_info_slider");
+                }
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (behit[i] != 0)
+                    {
+                        behit_boat_count++;
+                    }
+                    behit_value += behit[i];
+                }
+
+                /* foreach (KeyValuePair<string, int> kvp in fireCount)
+                 {
+                     goal_value += kvp.Value;
+                     //Debug.Log(string.Format("{0} {1}", kvp.Key, kvp.Value));
+                 }*/
+
+                for (int i = 0; i < fire_count.Count; i++)
+                {
+                    goal_value += fire_count[i];
+                }
+                /*foreach (KeyValuePair<string, string> kvp in GameData.Instance.behitInfo)
+                {
+                    Debug.Log("*****");
+                    not_goal_count++;
+                    not_goal_value += fireCount[kvp.Key];
+                    //Debug.Log(string.Format("{0} {1} {2}", kvp.Key, kvp.Value, fireCount[kvp.Key]));
+                    Debug.Log("kvp.key"+kvp.Key);
+                    Debug.Log("kvp.value"+kvp.Value);
+                    Debug.Log("first[kvp.key]"+fireCount[kvp.Key]);
+                }
+
+                //Debug.Log("count:"+GameData.Instance.behit_key.Count);
+
+                for (int i = 0; i < fire_target.Count; i++)
+                {
+                    Debug.Log("各目标:" + fire_target[i] + "击中次数：" + fire_count[i]);
+                }*/
+                for (int i = 0; i < GameData.Instance.behit_key.Count; i++)
+                {
+                    try
+                    {
+                        not_goal_count++;
+                        not_goal_value += fire_count[fire_target.IndexOf(GameData.Instance.behit_key[i])];
+                    }
+                    catch
+                    {
+                        not_goal_count++;
+                        not_goal_value += 0;
+                        Debug.Log("这个bug真变态啊，把我找了一下午！！！！");
+                    }
+                }
+
+            /*
+                Debug.Log("持续时间：" + (PlayerPrefs.GetInt("CurrTime") - PlayerPrefs.GetInt("WasteTime")).ToString());
+                Debug.Log("敌机数量：" + PlayerPrefs.GetInt("EnemyCount").ToString());
+                Debug.Log("任务数量：" + PlayerPrefs.GetInt("LanjieCount").ToString());
+                Debug.Log("空袭密度：" + PlayerPrefs.GetInt("AttackP").ToString());
+                Debug.Log("单发概率：" + GameDefine.percent.ToString());
+                Debug.Log("单目标拦截：" + GameDefine.percent.ToString());
+                Debug.Log("拦截失败的次数：" + ((float)not_goal_value / not_goal_count).ToString("0.00"));
+                Debug.Log("友方被打击的次数：" + behit_boat_count.ToString());
+                Debug.Log("友方被打击的血量：" + (behit_value / 7).ToString());
+                Debug.Log("友方被打击的血量：" + (behit_value / 7).ToString());
+                float k = (float)GameData.Instance.behit_key.Count / PlayerPrefs.GetInt("EnemyCount");
+                Debug.Log("拦截百分比：" + (1 - k).ToString("0.00"));
+*/
 
 
-            if (GameDefine.canShowGameAnalyse)
-            {
-                UnShowGameAnalyse();
+                GameObject.Find("wastetime").GetComponent<Text>().text = (PlayerPrefs.GetInt("CurrTime") - PlayerPrefs.GetInt("WasteTime")).ToString();
+                GameObject.Find("planecount").GetComponent<Text>().text = PlayerPrefs.GetInt("EnemyCount").ToString();
+                GameObject.Find("taskcount").GetComponent<Text>().text = PlayerPrefs.GetInt("LanjieCount").ToString();
+                GameObject.Find("attackp").GetComponent<Text>().text = PlayerPrefs.GetInt("AttackP").ToString();
+                GameObject.Find("persent").GetComponent<Text>().text = GameDefine.percent.ToString();
+
+                if (PlayerPrefs.GetInt("LanjieCount") == 0)
+                {
+                    GameObject.Find("sucesscount").GetComponent<Text>().text = "0";
+                }
+                else
+                {
+                    float x = (float)PlayerPrefs.GetInt("LanjieCount") / PlayerPrefs.GetInt("EnemyCount");
+                    x = x / 2;
+                    GameObject.Find("sucesscount").GetComponent<Text>().text = x.ToString("0.00");
+                }
+
+                if (not_goal_count == 0)
+                {
+                    GameObject.Find("failcount").GetComponent<Text>().text = 0.ToString();
+                }
+                else
+                {
+                    GameObject.Find("failcount").GetComponent<Text>().text = ((float)not_goal_value / not_goal_count).ToString("0.00");
+                }
+
+                GameObject.Find("behitcount").GetComponent<Text>().text = behit_boat_count.ToString();
+                GameObject.Find("bihitxueliang").GetComponent<Text>().text = (behit_value / 7).ToString();
+                GameObject.Find("behitplanecount").GetComponent<Text>().text = PlayerPrefs.GetInt("EnemyCount").ToString();
+                float l = (float)GameData.Instance.behit_key.Count / PlayerPrefs.GetInt("EnemyCount");
+                GameObject.Find("successpersent").GetComponent<Text>().text = (1 - l).ToString("0.00");
             }
             else
             {
-                ShowGameAnalyse();
+                GameDefine.canShowGameAnalyse = false;
+                Destroy(VictoryPanel);
             }
         }
+    
         #endregion
 
         #region GUI中清除特效MuteRay键
@@ -490,20 +605,22 @@ public class Menu : MonoBehaviour
             {
                 GameDefine.MuteWarningRay = false;
             }
-            else {
+            else
+            {
                 GameDefine.MuteWarningRay = true;
             }
         }
         #endregion
 
- #region GUI中清除特效MuteRay键
+        #region GUI中清除特效MuteRay键
         if (GUI.Button(new Rect(1030, 660, 80, 20), GameDefine.GUIMuteWatchRay))
         {
             if (GameDefine.MuteWatchRay)
             {
                 GameDefine.MuteWatchRay = false;
             }
-            else {
+            else
+            {
                 GameDefine.MuteWatchRay = true;
             }
         }
@@ -516,11 +633,11 @@ public class Menu : MonoBehaviour
             {
                 GameDefine.MuteFireRay = false;
             }
-            else {
+            else
+            {
                 GameDefine.MuteFireRay = true;
             }
         }
         #endregion
-
     }
 }

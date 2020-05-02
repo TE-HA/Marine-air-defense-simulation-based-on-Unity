@@ -106,9 +106,9 @@ public class fire_daodan_plane : MonoBehaviour
         if (collision.gameObject.tag == GameDefine.Tag.plane.ToString() || collision.gameObject.tag == GameDefine.Tag.zhanjian.ToString())
         {
             PlayerPrefs.SetInt(collision.gameObject.name + "_info_slider", PlayerPrefs.GetInt(collision.gameObject.name + "_info_slider") - (int)gameObject.GetComponent<dangerValue>().DangerValue);
-            Debug.Log(gameObject.name + " " + collision.gameObject.name);
-            GameData.Instance.behitInfo.Add(gameObject.name, collision.gameObject.name);
-            Debug.Log(GameData.Instance.behitInfo[gameObject.name]);
+            //Debug.Log(gameObject.name + " " + collision.gameObject.name);
+            GameData.Instance.behit_key.Add(gameObject.name);
+            GameData.Instance.behit_value.Add(collision.gameObject.name);
             destory_free();
         }
         else if (collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
