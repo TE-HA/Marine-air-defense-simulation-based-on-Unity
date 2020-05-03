@@ -33,7 +33,7 @@ public class taskHeap
     //public TaskNode end;
     public TaskNode[] heap;
     public int TaskCount = 0;
-    private int HeapSize = 50;
+    private int HeapSize = 100;
 
     public taskHeap()
     {
@@ -82,11 +82,10 @@ public class taskHeap
             heap[TaskCount] = node;
             UpJust(TaskCount);
             TaskCount++;
-
-      }
+        }
         catch
         {
-           UnityEngine.Debug.Log("yuejie");
+            UnityEngine.Debug.Log("yuejie");
         }
     }
 

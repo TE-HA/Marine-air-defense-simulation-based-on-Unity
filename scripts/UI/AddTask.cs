@@ -24,11 +24,11 @@ public class AddTask : MonoBehaviour
     private string type = "attack";
     private float queue = -1;
 
-    static int lunci = 5;
-    static int every_lunci_plane_count = 20;
+    static int lunci = 1;
+    static int every_lunci_plane_count = 1;
 
 
-    static int per_plane_split_time = 1;
+    static int per_plane_split_time = 10;
     static int every_lunci_time = every_lunci_plane_count * per_plane_split_time + 10;
 
     #endregion

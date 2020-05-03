@@ -107,7 +107,6 @@ public class TaskHeapControler : MonoBehaviour
                     twomitutes--;
                 }*/
                 taskHeap.Instance.Insert(new TaskNode(task.Name, task.Tqueue));
-
                 return;
             }
 

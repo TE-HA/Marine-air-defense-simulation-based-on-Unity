@@ -388,7 +388,7 @@ public class Menu : MonoBehaviour
              {
                  Destroy(PausePanel);
              }*/
-            Time.timeScale = 4;
+            Time.timeScale = 7;
         }
         #endregion
 
@@ -526,6 +526,7 @@ public class Menu : MonoBehaviour
                 {
                     Debug.Log("各目标:" + fire_target[i] + "击中次数：" + fire_count[i]);
                 }*/
+
                 for (int i = 0; i < GameData.Instance.behit_key.Count; i++)
                 {
                     try
@@ -537,24 +538,24 @@ public class Menu : MonoBehaviour
                     {
                         not_goal_count++;
                         not_goal_value += 0;
-                        Debug.Log("这个bug真变态啊，把我找了一下午！！！！");
+                        //Debug.Log("这个bug真变态啊，把我找了一下午！！！！");
                     }
                 }
 
-            /*
-                Debug.Log("持续时间：" + (PlayerPrefs.GetInt("CurrTime") - PlayerPrefs.GetInt("WasteTime")).ToString());
-                Debug.Log("敌机数量：" + PlayerPrefs.GetInt("EnemyCount").ToString());
-                Debug.Log("任务数量：" + PlayerPrefs.GetInt("LanjieCount").ToString());
-                Debug.Log("空袭密度：" + PlayerPrefs.GetInt("AttackP").ToString());
-                Debug.Log("单发概率：" + GameDefine.percent.ToString());
-                Debug.Log("单目标拦截：" + GameDefine.percent.ToString());
-                Debug.Log("拦截失败的次数：" + ((float)not_goal_value / not_goal_count).ToString("0.00"));
-                Debug.Log("友方被打击的次数：" + behit_boat_count.ToString());
-                Debug.Log("友方被打击的血量：" + (behit_value / 7).ToString());
-                Debug.Log("友方被打击的血量：" + (behit_value / 7).ToString());
-                float k = (float)GameData.Instance.behit_key.Count / PlayerPrefs.GetInt("EnemyCount");
-                Debug.Log("拦截百分比：" + (1 - k).ToString("0.00"));
-*/
+                /*
+                    Debug.Log("持续时间：" + (PlayerPrefs.GetInt("CurrTime") - PlayerPrefs.GetInt("WasteTime")).ToString());
+                    Debug.Log("敌机数量：" + PlayerPrefs.GetInt("EnemyCount").ToString());
+                    Debug.Log("任务数量：" + PlayerPrefs.GetInt("LanjieCount").ToString());
+                    Debug.Log("空袭密度：" + PlayerPrefs.GetInt("AttackP").ToString());
+                    Debug.Log("单发概率：" + GameDefine.percent.ToString());
+                    Debug.Log("单目标拦截：" + GameDefine.percent.ToString());
+                    Debug.Log("拦截失败的次数：" + ((float)not_goal_value / not_goal_count).ToString("0.00"));
+                    Debug.Log("友方被打击的次数：" + behit_boat_count.ToString());
+                    Debug.Log("友方被打击的血量：" + (behit_value / 7).ToString());
+                    Debug.Log("友方被打击的血量：" + (behit_value / 7).ToString());
+                    float k = (float)GameData.Instance.behit_key.Count / PlayerPrefs.GetInt("EnemyCount");
+                    Debug.Log("拦截百分比：" + (1 - k).ToString("0.00"));
+    */
 
 
                 GameObject.Find("wastetime").GetComponent<Text>().text = (PlayerPrefs.GetInt("CurrTime") - PlayerPrefs.GetInt("WasteTime")).ToString();
@@ -595,7 +596,7 @@ public class Menu : MonoBehaviour
                 Destroy(VictoryPanel);
             }
         }
-    
+
         #endregion
 
         #region GUI中清除特效MuteRay键
