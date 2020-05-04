@@ -34,7 +34,7 @@ public class firezhanjian : MonoBehaviour {
         instance = (GameObject)Instantiate(Resources.Load(GameDefine.DaodanZhanjian), _from.transform.Find("FirePoint").position, transform.rotation);
         instance.GetComponent<fire_daodan>().target = _target.transform;
         instance.GetComponent<fire_daodan>().from = _from.transform;
-
+        GameObject.Find(from).GetComponent<fire>()._target = _target;
 
         if (instance == null)
         {

@@ -24,12 +24,11 @@ public class AddTask : MonoBehaviour
     private string type = "attack";
     private float queue = -1;
 
-    static int lunci = 1;
-    static int every_lunci_plane_count = 1;
+    public static int lunci = 5;
+    public static int every_lunci_plane_count = 20;
 
-
-    static int per_plane_split_time = 10;
-    static int every_lunci_time = every_lunci_plane_count * per_plane_split_time + 10;
+    public static int per_plane_split_time = 2;
+    public static int every_lunci_time = every_lunci_plane_count * per_plane_split_time + 10;
 
     #endregion
 
@@ -141,9 +140,9 @@ public class AddTask : MonoBehaviour
 
                 id = PlayerPrefs.GetInt("TaskID");
                 PlayerPrefs.SetInt("TaskID", id + 1);
-                kill = Random.Range(6, 20);
+                kill = Random.Range(10,500);
 
-                time = PlayerPrefs.GetInt("CurrTime") +i*every_lunci_time+ j*per_plane_split_time-every_lunci_time;
+                time = PlayerPrefs.GetInt("CurrTime") + i * every_lunci_time + j * per_plane_split_time - every_lunci_time;
                 MySqlT.Instance.AddToAttackDataBase(id, target, from, kill, toward, time);
 
                 PlayerPrefs.SetInt("EnemyCount", PlayerPrefs.GetInt("EnemyCount") + 1);
@@ -152,7 +151,6 @@ public class AddTask : MonoBehaviour
         }
         Count();
         //Debug.Log("添加成功");
-        lunci++;
     }
     #endregion
 

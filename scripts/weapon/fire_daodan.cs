@@ -140,15 +140,17 @@ public class fire_daodan : MonoBehaviour
             GameData.canShow = true;
 
             int[] end = GameData.Instance.target_watch[collision.gameObject.name];
-            
-            GameObject w1 = GameObject.Find(collision.gameObject.name).transform.Find("watch_"+end[0]).gameObject;
-            GameObject w2 = GameObject.Find(collision.gameObject.name).transform.Find("watch_"+end[1]).gameObject;
-            w1.GetComponent<watching>().FreeWatching();
-            w2.GetComponent<watching>().FreeWatching();
+            try
+            {
+                GameObject w1 = GameObject.Find(collision.gameObject.name).transform.Find("watch_" + end[0]).gameObject;
+                GameObject w2 = GameObject.Find(collision.gameObject.name).transform.Find("watch_" + end[1]).gameObject;
+                w1.GetComponent<watching>().FreeWatching();
+                w2.GetComponent<watching>().FreeWatching();
 
 
-            GameData.Instance.target_watch.Remove(collision.gameObject.name);
-
+                GameData.Instance.target_watch.Remove(collision.gameObject.name);
+            }
+            catch { }
 
             //Destroy(w1);
             //Destroy(w2);

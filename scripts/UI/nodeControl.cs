@@ -42,16 +42,26 @@ public class nodeControl : MonoBehaviour
     string[] jiedian_value() {
         return jiedian.Split();
     }
-
+    int jiange = 60;
     // Update is called once per frame
     void FixedUpdate()
     {
-        string[] kk = jiedian_value();
-        ManageActive(kk.Length-1);
+        if (jiange<0) {
+            string[] kk = jiedian_value();
+            //Debug.Log(kk.Length);
+            if (kk.Length>7) {
+                return;
+            }
+            ManageActive(kk.Length - 1);
 
-        for (int i = 0; i < kk.Length; i++)
-        {
-            node_list[i].transform.Find("value").GetComponent<Text>().text = kk[i];
+            for (int i = 0; i < kk.Length; i++)
+            {
+                node_list[i].transform.Find("value").GetComponent<Text>().text = kk[i];
+            }
+            jiange = 60;
+        }
+        else {
+            jiange--;
         }
     }
 }

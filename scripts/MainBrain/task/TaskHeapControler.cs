@@ -17,6 +17,8 @@ public class TaskHeapControler : MonoBehaviour
     int[] zhidaoAdd(string target)
     {
         int[] end = new int[2];
+        end[0] = -1;
+        end[1] = -1;
         #region 制导资源分配
 
         for (int i = 0; i < 6 * GameDefine.watchingAssets - 1; i++)
@@ -59,17 +61,23 @@ public class TaskHeapControler : MonoBehaviour
                 watching.GetComponent<watching>().index = second;
 
                 end[1] = second;
-            
+
                 break;
             }
         }
-
-        GameData.Instance.target_watch.Add(target, end);
+        //Debug.Log(target + "已添加制导资源" + end[0] + " " + end[1]);
+        if (end[0] == -1 || end[1] == -1)
+        {
+        }
+        else
+        {
+            GameData.Instance.target_watch.Add(target, end);
+        }
         return end;
         #endregion
+
     }
     // Update is called once per frame
-
     void FixedUpdate()
     {
         if (jiange < 0)
@@ -90,37 +98,44 @@ public class TaskHeapControler : MonoBehaviour
                 return;
             }
 
+            taskHeap.Instance.Show();            
             TaskNode task = taskHeap.Instance.heap[0];
-            taskHeap.Instance.Show();
-            taskHeap.Instance.Delete(0);
             //Debug.Log(task.Name+" "+task.Tqueue);
             string target = task.Name;
+            taskHeap.Instance.Delete(0);
+            Debug.Log("正在为："+target+"——分配火力");
             string fireUnit = "km_" + FireUnit(target);
             if (fireUnit == "km_")
             {
-                /*if (twomitutes < 0)
-                {
-                    taskHeap.Instance.Insert(new TaskNode(task.Name, task.Tqueue));
-                    twomitutes = 60;
-                }
-                else {
-                    twomitutes--;
-                }*/
-                taskHeap.Instance.Insert(new TaskNode(task.Name, task.Tqueue));
+                GameObject.Find(target).GetComponent<dangerValue>().isAdd = false;
+               // GameObject.Find(target).GetComponent<dangerValue>().DangerValue -= 50;
+                dotask = 30;
                 return;
             }
 
-            if (!GameObject.Find(task.Name).GetComponent<isWatched>().watched)
+            GameObject.Find(target).GetComponent<dangerValue>().isAdd = true;
+            /*try
+            {*/
+            //Debug.Log(target+"here");
+            if (!GameObject.Find(target).GetComponent<isWatched>().watched)
             {
                 int[] end = zhidaoAdd(target);
-                GameObject.Find(task.Name).GetComponent<isWatched>().watched = true;
+                if (end[0] == -1 || end[1] == -1)
+                {
+                    GameObject.Find(target).GetComponent<dangerValue>().isAdd = false;
+                    return;
+                }
+                GameObject.Find(target).GetComponent<isWatched>().watched = true;
             }
+
+            /*}
+            catch { }*/
 
             MySqlT.Instance.AddFireTask(PlayerPrefs.GetInt("TaskID"), target, fireUnit, PlayerPrefs.GetInt("CurrTime") + 1);
             PlayerPrefs.SetInt("TaskID", PlayerPrefs.GetInt("TaskID") + 1);
             PlayerPrefs.SetInt("LanjieCount",PlayerPrefs.GetInt("LanjieCount")+1);
             GameDefine.CanGetTask = true;
-            dotask = 60;
+            dotask = 30;
         }
         else {
             dotask--;
@@ -148,7 +163,6 @@ public class TaskHeapControler : MonoBehaviour
             else if (GameDefine.canFireValue <= 150 && GameDefine.canFireValue >100)
             {
                 GameDefine.canFireValue -= 10;
-
             }
         }
         else { }
@@ -205,13 +219,15 @@ public class TaskHeapControler : MonoBehaviour
         {
             if (GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>().used == false && PlayerPrefs.GetInt("km_" + index[i].ToString() + "_fireAssets") > 0)
             {
-                GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>()._target = GameObject.Find(target);
                 GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>().used = true;
+                GameObject.Find("km_" + index[i].ToString()).GetComponent<fire>()._target = GameObject.Find(target);
                 PlayerPrefs.SetInt("km_" + index[i].ToString() + "_fireAssets", PlayerPrefs.GetInt("km_" + index[i].ToString() + "_fireAssets") - 1);
                 return index[i].ToString();
             }
         }
         Debug.Log("[彩蛋出现]:武器均被占用！");
+        GameDefine.canFireValue += 30;
+            taskHeap.Instance.Update_Queue();
         return null;
     }
 }

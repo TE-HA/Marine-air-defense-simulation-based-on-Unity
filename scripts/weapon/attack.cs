@@ -62,7 +62,7 @@ public class attack : MonoBehaviour
         return bornPoint;
     }
     #endregion
-
+    int jiange = 30;
 
     private void FixedUpdate()
     {
@@ -81,28 +81,36 @@ public class attack : MonoBehaviour
         #endregion
 
         //判断时间
-        if (time == PlayerPrefs.GetInt("CurrTime"))
-        {
-            Vector3 bornPoint = GetBornPoint(toward);
-            plane = (GameObject)Instantiate(Resources.Load(GameDefine.EnemyPlane), bornPoint, transform.rotation);
-            plane.name = from;
-            Vector3 point = GameManger.Instance.MiddlePoint();
-            plane.transform.forward = new Vector3(point.x, bornPoint.y, point.z) - bornPoint;
-            plane.GetComponent<dangerValue>().DangerValue = queue - 5;
-            GameData.Instance.EnemyPlane.Add(plane);
+        if (jiange<0) {
+            if (time == PlayerPrefs.GetInt("CurrTime"))
+            {
+                Vector3 bornPoint = GetBornPoint(toward);
+                plane = (GameObject)Instantiate(Resources.Load(GameDefine.EnemyPlane), bornPoint, transform.rotation);
+                plane.name = from;
+                Vector3 point = GameManger.Instance.MiddlePoint();
+                plane.transform.forward = new Vector3(point.x, bornPoint.y, point.z) - bornPoint;
+                plane.GetComponent<dangerValue>().DangerValue = queue - 5;
+                GameData.Instance.EnemyPlane.Add(plane);
 
-            FirePlane(plane.name, target);
+                FirePlane(plane.name, target);
 
-            #region 修改信息 
-            GameData.messageType = 1;
-            GameData.message = " 由 敌机 " + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰";
-            GameData.canShow = true;
-            #endregion
+                #region 修改信息 
+                GameData.messageType = 1;
+                GameData.message = " 由 敌机 " + plane.name + " 发射，攻击 " + PlayerPrefs.GetString(target) + " 战舰";
+                GameData.canShow = true;
+                #endregion
 
-            //finally
-            string _update_finished = "update graduate.all_task set all_task_status='finished' where (all_task_id =" + all_task_id + ") and (all_task_type='attack')";
-            MySqlT.Instance.DealSqlToSet(_update_finished);
-            Destroy(gameObject);
+                //finally
+                string _update_finished = "update graduate.all_task set all_task_status='finished' where (all_task_id =" + all_task_id + ") and (all_task_type='attack')";
+                MySqlT.Instance.DealSqlToSet(_update_finished);
+                Destroy(gameObject);
+            }
+            else {
+                jiange = 30;
+            }
+        }
+        else {
+            jiange--;
         }
     }
 }

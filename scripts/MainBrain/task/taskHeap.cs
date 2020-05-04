@@ -33,7 +33,7 @@ public class taskHeap
     //public TaskNode end;
     public TaskNode[] heap;
     public int TaskCount = 0;
-    private int HeapSize = 100;
+    private int HeapSize = 20;
 
     public taskHeap()
     {
@@ -46,7 +46,6 @@ public class taskHeap
         {
             if (heap[i].Tqueue < GameDefine.canFireValue)
             {
-                GameData.Instance.isAdded[GameObject.Find(heap[i].Name)] = false;
                 Delete(i);
             }
         }
@@ -75,17 +74,25 @@ public class taskHeap
         //Debug.Log(end);
     }
 
-    public void Insert(TaskNode node)
+    public bool Insert(TaskNode node)
     {
         try
         {
-            heap[TaskCount] = node;
-            UpJust(TaskCount);
-            TaskCount++;
+            if (TaskCount < HeapSize)
+            {
+                heap[TaskCount] = node;
+                UpJust(TaskCount);
+                TaskCount++;
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         catch
         {
             UnityEngine.Debug.Log("yuejie");
+            return false;
         }
     }
 

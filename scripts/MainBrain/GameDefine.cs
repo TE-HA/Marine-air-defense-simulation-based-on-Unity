@@ -6,13 +6,17 @@ public class GameDefine
 {
     #region 内部消息更新
     //能打击导弹的阈值
-    public static float canFireValue = 150;
+    public static float canFireValue = 100;
 
     //能否从数据库获取任务数据
     //true:能
     //false:不能
     public static bool CanGetTask = false;
 
+    //轮次打完
+    //true:打完
+    //false:没打完
+    public static bool RoundOver = false;
 
   //能否屏蔽射线
     //true:能

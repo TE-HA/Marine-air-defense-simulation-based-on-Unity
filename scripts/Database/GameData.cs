@@ -30,7 +30,7 @@ public class GameData
     private static bool daodan_plane = false;
     public List<GameObject> EnemyDaodan = new List<GameObject>();
     public List<GameObject> EnemyPlane = new List<GameObject>();
-    public Dictionary<GameObject, bool> isAdded = new Dictionary<GameObject, bool>();
+    //public Dictionary<GameObject, bool> isAdded = new Dictionary<GameObject, bool>();
     public Dictionary<string, int[]> target_watch = new Dictionary<string, int[]>();
     public watching[] watchAssets = new watching[6 * GameDefine.watchingAssets];
 

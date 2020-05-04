@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class dangerValue : MonoBehaviour
 {
     public float DangerValue;
+    public bool isAdd=false;
     private GameObject text;
     private int jiange = 60;
     // Use this for initialization
@@ -15,13 +16,13 @@ public class dangerValue : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
-        if (!GameData.Instance.isAdded[gameObject]) {
+    {      
+        if (!isAdd) {
             if (jiange < 0)
             {
                 if (GameManger.Instance.DistanceBetweenTwoVector3(Vector3.zero, gameObject.transform.position) < 5000)
                 {
-                    DangerValue += 100;
+                    DangerValue += 20;
                 }
                 else {
                     DangerValue += 10;
@@ -35,13 +36,26 @@ public class dangerValue : MonoBehaviour
         }
         else { }
 
+
         //add to heap
-        if (!GameData.Instance.isAdded[gameObject] && DangerValue > GameDefine.canFireValue)
+        if (!isAdd && DangerValue > GameDefine.canFireValue)
         {
-            taskHeap.Instance.Insert(new TaskNode(gameObject.name, DangerValue));
-            GameData.Instance.isAdded[gameObject] = true;
+            if (taskHeap.Instance.Insert(new TaskNode(gameObject.name, DangerValue)))
+            {
+                isAdd = true;
+            }
+            else
+            {
+                isAdd = false;
+            }
         }
 
+        /*
+         * */
+     /*   if (DangerValue < GameDefine.canFireValue)
+        {
+            isAdd = false;
+        }*/
 
         if (GameDefine.CurrentCamera.name == "Camera2D")
         {

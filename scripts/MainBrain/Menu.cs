@@ -388,7 +388,7 @@ public class Menu : MonoBehaviour
              {
                  Destroy(PausePanel);
              }*/
-            Time.timeScale = 7;
+            Time.timeScale = 3;
         }
         #endregion
 

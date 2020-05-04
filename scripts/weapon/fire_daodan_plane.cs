@@ -19,7 +19,6 @@ public class fire_daodan_plane : MonoBehaviour
     void Start()
     {
         _target = target.position - from.position;
-        GameData.Instance.isAdded.Add(gameObject, false);
     }
 
     // Update is called once per frame
@@ -59,7 +58,7 @@ public class fire_daodan_plane : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime;
 
 
-        if (transform.position.y <= -2)
+        if (transform.position.y <= -20)
         {
             //Destroy(collision.gameObject);
             if (GameDefine.MuteEffect == false)
@@ -80,24 +79,16 @@ public class fire_daodan_plane : MonoBehaviour
 
     void destory_free()
     {
-        try
-        {
-            int[] end = GameData.Instance.target_watch[gameObject.name];
+        int[] end = GameData.Instance.target_watch[gameObject.name];
+        //Debug.Log(gameObject.name);
+        GameObject w1 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[0]).gameObject;
+        GameObject w2 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[1]).gameObject;
+        w1.GetComponent<watching>().FreeWatching();
+        w2.GetComponent<watching>().FreeWatching();
 
-            GameObject w1 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[0]).gameObject;
-            GameObject w2 = GameObject.Find(gameObject.name).transform.Find("watch_" + end[1]).gameObject;
-            w1.GetComponent<watching>().FreeWatching();
-            w2.GetComponent<watching>().FreeWatching();
-
-            GameData.Instance.target_watch.Remove(gameObject.name);
-            GameData.Instance.isAdded.Remove(gameObject);
-        }
-        catch { }
-        finally
-        {
-            Destroy(gameObject);
-        }
-
+        GameData.Instance.target_watch.Remove(gameObject.name);
+        //Debug.Log(gameObject.name+"已释放制导资源");
+        Destroy(gameObject);
     }
 
 
@@ -109,7 +100,14 @@ public class fire_daodan_plane : MonoBehaviour
             //Debug.Log(gameObject.name + " " + collision.gameObject.name);
             GameData.Instance.behit_key.Add(gameObject.name);
             GameData.Instance.behit_value.Add(collision.gameObject.name);
-            destory_free();
+            if (GameObject.Find(gameObject.name).GetComponent<isWatched>().watched)
+            {
+                destory_free();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         else if (collision.gameObject.tag == GameDefine.Tag.daodan.ToString())
         {
@@ -127,7 +125,7 @@ public class fire_daodan_plane : MonoBehaviour
             {
                 if (GameManger.Instance.DistanceBetweenTwoGameObject(gameObject.transform, GameObject.Find("km_main").transform) < 3000)
                 {
-                    gameObject.GetComponent<dangerValue>().DangerValue += 800;
+                    gameObject.GetComponent<dangerValue>().DangerValue += 100;
                     taskHeap.Instance.Insert(new TaskNode(gameObject.name, gameObject.GetComponent<dangerValue>().DangerValue));
                 }
                 else

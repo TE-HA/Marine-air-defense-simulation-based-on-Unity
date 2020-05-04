@@ -15,7 +15,7 @@ public class enemyplanemove : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameData.Instance.isAdded.Add(gameObject,false);
+        
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class enemyplanemove : MonoBehaviour
         {
             //LoadShip();            
             // Destroy(Instantiate(Resources.Load(GameDefine.HitWaterExplosion), transform.position, Quaternion.identity), 1f);
-            GameData.Instance.isAdded.Remove(gameObject);
+            ///
             Destroy(gameObject);
         }
 
