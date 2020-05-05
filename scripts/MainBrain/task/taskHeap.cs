@@ -51,29 +51,8 @@ public class taskHeap
         }
     }
 
-
-    public void Delete(int index) {
-        Swap(index,TaskCount-1);
-        heap[TaskCount - 1] = null;
-        TaskCount--;
-        DownJust(index);
-    }
-
-    public void Show()
-    {
-        string end = string.Empty;
-        if (heap == null)
-        {
-            return;
-        }
-        for (int i = 0; i < TaskCount; i++)
-        {
-            end+=heap[i].Tqueue+" ";
-        }
-        GameObject.Find("Heap").GetComponent<nodeControl>().jiedian = end;
-        //Debug.Log(end);
-    }
-
+    /*heap
+    #region heap
     public bool Insert(TaskNode node)
     {
         try
@@ -85,7 +64,8 @@ public class taskHeap
                 TaskCount++;
                 return true;
             }
-            else {
+            else
+            {
                 return false;
             }
         }
@@ -94,6 +74,68 @@ public class taskHeap
             UnityEngine.Debug.Log("yuejie");
             return false;
         }
+    }
+
+
+
+    public void Delete(int index)
+    {
+        Swap(index, TaskCount - 1);
+        heap[TaskCount - 1] = null;
+        TaskCount--;
+        DownJust(index);
+    }
+    #endregion
+    /*heap*/
+
+    /*queue*/
+    public bool Insert(TaskNode node)
+    {
+        try
+        {
+            if (TaskCount < HeapSize)
+            {
+                heap[TaskCount] = node;
+                TaskCount++;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch
+        {
+            UnityEngine.Debug.Log("yuejie");
+            return false;
+        }
+    }
+
+
+
+    public void Delete(int index)
+    {
+        for (int i = 0; i < TaskCount - 1; i++)
+        {
+            heap[i] = heap[i + 1];
+        }
+        heap[TaskCount - 1] = null;
+        TaskCount--;
+    }
+    /*queue*/
+    public void Show()
+    {
+        string end = string.Empty;
+        if (heap == null)
+        {
+            return;
+        }
+        for (int i = 0; i < TaskCount; i++)
+        {
+            end += heap[i].Tqueue + " ";
+        }
+        GameObject.Find("Heap").GetComponent<nodeControl>().jiedian = end;
+        //Debug.Log(end);
     }
 
     public void UpJust(int index)
@@ -113,7 +155,8 @@ public class taskHeap
     {
         int index_left = index * 2 + 1;
         int index_right = index * 2 + 2;
-        if (index_left>=TaskCount||index_right>=TaskCount) {
+        if (index_left >= TaskCount || index_right >= TaskCount)
+        {
             return;
         }
         if (heap[index_left].Tqueue > heap[index_right].Tqueue)
@@ -121,12 +164,12 @@ public class taskHeap
             Swap(index, index_left);
             DownJust(index_left);
         }
-        else {
+        else
+        {
             Swap(index, index_right);
             DownJust(index_right);
         }
     }
-
 
     public void Swap(int index1, int index2)
     {

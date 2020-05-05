@@ -27,7 +27,7 @@ public class AddTask : MonoBehaviour
     public static int lunci = 5;
     public static int every_lunci_plane_count = 20;
 
-    public static int per_plane_split_time = 2;
+    public static int per_plane_split_time = 6;
     public static int every_lunci_time = every_lunci_plane_count * per_plane_split_time + 10;
 
     #endregion
