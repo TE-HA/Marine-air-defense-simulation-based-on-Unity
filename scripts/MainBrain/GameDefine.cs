@@ -94,6 +94,7 @@ public class GameDefine
     public const string HitSound = "Prefabs/Sound/VeryLargeExplosion";
     public const string TravelLine = "Prefabs/line";
     public static bool MuteEffect = true;
+    public const string Daodanflyaudio = "Prefabs/Sound/daodanaudio";
 
     public static string ShotRay = "Prefabs/Materials/ShotRay";
     public static string WarningRay = "Prefabs/Materials/WarningRay";

@@ -51,7 +51,7 @@ public class taskHeap
         }
     }
 
-    /*heap
+    /*heap*/
     #region heap
     public bool Insert(TaskNode node)
     {
@@ -89,6 +89,8 @@ public class taskHeap
     /*heap*/
 
     /*queue*/
+    /*
+    #region QUEUE
     public bool Insert(TaskNode node)
     {
         try
@@ -122,7 +124,10 @@ public class taskHeap
         heap[TaskCount - 1] = null;
         TaskCount--;
     }
+    #endregion
     /*queue*/
+
+
     public void Show()
     {
         string end = string.Empty;

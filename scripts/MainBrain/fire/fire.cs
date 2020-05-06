@@ -29,6 +29,9 @@ public class fire : MonoBehaviour
             string fire = gameObject.name;
             int num = int.Parse(fire.Substring(3, 1));
             GameData.Instance.fire[num - 1] = 0;
+
+            GameObject instance = (GameObject)Instantiate(Resources.Load(GameDefine.Daodanflyaudio), transform.position, transform.rotation);
+            instance.name = gameObject.name + "_audio";
         }
     }
 
@@ -46,7 +49,7 @@ public class fire : MonoBehaviour
         {
             used = false;
             ones = false;
-
+            Destroy(GameObject.Find(gameObject.name + "_audio"));
             string fire = gameObject.name;
             int num = int.Parse(fire.Substring(3, 1));
             GameData.Instance.fire[num - 1] = 1;
@@ -60,7 +63,7 @@ public class fire : MonoBehaviour
             //目标消失。立即释放资源
             used = false;
             ones = false;
-
+            Destroy(GameObject.Find(gameObject.name + "_audio"));
             fasheshiyan = 120;
         }
     }
