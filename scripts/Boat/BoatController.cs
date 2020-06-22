@@ -57,6 +57,7 @@ public class BoatController : MonoBehaviour{
 		if (touchInput.sqrMagnitude > 1)
 			touchInput.Normalize();
 
+
 		setInputs (touchInput.x, touchInput.y);
 		#else
 		setInputs (Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
